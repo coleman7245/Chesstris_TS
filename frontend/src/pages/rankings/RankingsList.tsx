@@ -1,6 +1,6 @@
 import './RankingsList.css';
 
-import { Score } from '../../utilities.tsx';
+import { Score } from '../../utilities.ts';
 
 function RankingsList({name, scores}) {
     return (

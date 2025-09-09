@@ -519,4 +519,4 @@ function calculateTBlockRotation(orientation : number) : BlockPositions {
     return config;
   }
 
-  export { createBlockConfig, BlockConfiguration, PositionLimit };
+export { createBlockConfig, BlockConfiguration, PositionLimit };
