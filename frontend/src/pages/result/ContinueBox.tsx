@@ -5,7 +5,7 @@ import { GameContext } from '../../App.tsx';
 
 import './ContinueBox.css';
 
-function ContinueBox({message}) {
+function ContinueBox({message} : {message : string}) {
     const navigate = useNavigate();
     const [gameState, dispatch] = useContext(GameContext);
 

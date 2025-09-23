@@ -10,31 +10,8 @@
     "esModuleInterop": true,
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    "strict": true
-  },
-
-  "files": [
-    "utilities.ts",
-    "tetris_block_moves.ts",
-    "main.tsx",
-    "App.tsx",
-    "main.tsx",
-    "Navbar.tsx",
-    "Form.tsx",
-    "RulesPage.tsx",
-    "ResultPage.tsx",
-    "SaveBox.tsx",
-    "RulesPage.tsx",
-    "DeleteBox.tsx",
-    "ContinueBox.tsx",
-    "RankingsPage.tsx",
-    "RankingsList.tsx",
-    "HomePage.tsx",
-    "Login.tsx",
-    "GamePage.tsx",
-    "GameInfo.tsx",
-    "Board.tsx",
-    "AboutPage.tsx",
-    "TetrisPiece.tsx"
-  ]
+    "strict": true,
+    "moduleResolution": "node",
+    "jsx" : "react-jsx"
+  }
 }

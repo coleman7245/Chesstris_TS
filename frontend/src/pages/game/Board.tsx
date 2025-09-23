@@ -6,10 +6,10 @@ import { chess_piece_images, ChessPieceImages, tetris_block_types } from '../../
 import { TetrisPiece } from './TetrisPiece.tsx';
 
 function getRandomChessPiece(chessPieceImages : ChessPieceImages) : string {
-    let objectLength = Object.keys(chessPieceImages).length;
-    let randomIndex = Math.floor(Math.random() * objectLength);
+    let objectLength : number = Object.keys(chessPieceImages).length;
+    let randomIndex : number = Math.floor(Math.random() * objectLength);
 
-    return chessPieceImages[Object.keys(chessPieceImages)[randomIndex]];
+    return chessPieceImages[Object.keys(chessPieceImages)[randomIndex] as keyof ChessPieceImages];
 }
 
 function getRandomChessPieces(chessPieceImages : ChessPieceImages) {

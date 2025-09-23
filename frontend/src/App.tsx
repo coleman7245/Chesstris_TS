@@ -3,14 +3,14 @@ import { Routes, Route } from 'react-router-dom';
 
 import './App.css';
 
-import HomePage from './pages/home/HomePage.jsx';
-import GamePage from './pages/game/GamePage.jsx';
-import RankingsPage from './pages/rankings/RankingsPage.jsx';
-import AboutPage from './pages/about/AboutPage.jsx';
-import RulesPage from './pages/rules/RulesPage.jsx';
-import ResultPage from './pages/result/ResultPage.jsx';
-import EditPage from './pages/edit/EditPage.jsx';
-import Login from './pages/login/Login.jsx';
+import HomePage from './pages/home/HomePage.tsx';
+import GamePage from './pages/game/GamePage.tsx';
+import RankingsPage from './pages/rankings/RankingsPage.tsx';
+import AboutPage from './pages/about/AboutPage.tsx';
+import RulesPage from './pages/rules/RulesPage.tsx';
+import ResultPage from './pages/result/ResultPage.tsx';
+import EditPage from './pages/edit/EditPage.tsx';
+import Login from './pages/login/Login.tsx';
 
 import {initialGameState, GameState, Time, Game_Phase, Player, Action } from './utilities.ts';
 

@@ -4,9 +4,9 @@ import './TetrisPiece.css';
 import { createBlockConfig, BlockConfiguration, PositionLimit } from '../../tetris_block_moves.ts';
 
 import { GameContext } from '../../App.tsx';
-import { Game_Phase } from '../../utilities.ts';
+import { ChessPieceImages, Game_Phase } from '../../utilities.ts';
 
-function TetrisPiece({sources, type}) {
+function TetrisPiece({sources, type} : {sources : string[], type : string}) {
     const defaultConfig : BlockConfiguration | null = createBlockConfig(type);
     const [gameState, dispatch] = useContext(GameContext);
     const tetrisRef = useRef<HTMLDivElement>(null);

@@ -2,7 +2,7 @@ import './RankingsList.css';
 
 import { Score } from '../../utilities.ts';
 
-function RankingsList({name, scores}) {
+function RankingsList({name, scores} : {name : string, scores : Score[]}) {
     return (
         <ol className='rankings-list'>
             <h2>{name}</h2> <br />
