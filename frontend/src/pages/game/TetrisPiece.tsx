@@ -4,7 +4,7 @@ import './TetrisPiece.css';
 import { createBlockConfig, BlockConfiguration, PositionLimit } from '../../tetris_block_moves.ts';
 
 import { GameContext } from '../../App.tsx';
-import { ChessPieceImages, Game_Phase } from '../../utilities.ts';
+import { Game_Phase } from '../../utilities.ts';
 
 function TetrisPiece({sources, type} : {sources : string[], type : string}) {
     const defaultConfig : BlockConfiguration | null = createBlockConfig(type);
