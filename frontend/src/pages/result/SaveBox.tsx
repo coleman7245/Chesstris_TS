@@ -23,7 +23,7 @@ function SaveBox() {
 
     async function handleSave(url : string, data : GameState) {
         try {
-            const gameState = await fetch(url + '/savedgame', 
+            await fetch(url + '/savedgame', 
                 {
                     method : 'POST',
                     headers: {

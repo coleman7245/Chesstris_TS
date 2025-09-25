@@ -12,7 +12,7 @@ import { GameContext } from '../../App.tsx';
 
 function GamePage() {
     const [gameState, dispatch] = useContext(GameContext);
-    const navigate = useNavigate();
+    const navigate : Function = useNavigate();
 
     useEffect(() => {
         if (gameState.current_phase === Game_Phase.WON) {

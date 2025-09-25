@@ -23,8 +23,8 @@ function getRandomChessPieces(chessPieceImages : ChessPieceImages) {
 }
 
 function createRandomTetrisPiece(tetrisBlockTypes : Array<string>, sources : Array<string>) {
-    let randomIndex = Math.floor(Math.random() * tetrisBlockTypes.length);
-    let type = tetrisBlockTypes[randomIndex];
+    let randomIndex : number = Math.floor(Math.random() * tetrisBlockTypes.length);
+    let type : string = tetrisBlockTypes[randomIndex];
 
     return <TetrisPiece sources={sources} type={type}  />;
 }

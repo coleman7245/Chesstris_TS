@@ -10,7 +10,7 @@ function ContinueBox({message} : {message : string}) {
     const [gameState, dispatch] = useContext(GameContext);
 
     function handleContinue(e : React.MouseEvent<HTMLButtonElement, MouseEvent>) : void {
-        const button = e.target as HTMLElement;
+        const button : HTMLElement = e.target as HTMLElement;
 
         if (button.innerText === 'Yes') {
             //NOTE: Save player data here!!!
@@ -29,7 +29,7 @@ function ContinueBox({message} : {message : string}) {
             Score: {gameState.score} <br /> <br />
             Continue? <br />
             <button id='yes' onClick={(e) => {
-                const event = e as React.MouseEvent<HTMLButtonElement, MouseEvent>;
+                const event : React.MouseEvent<HTMLButtonElement, MouseEvent> = e as React.MouseEvent<HTMLButtonElement, MouseEvent>;
                 handleContinue(event);}
             }>
                 Yes

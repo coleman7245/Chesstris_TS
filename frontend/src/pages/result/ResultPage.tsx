@@ -5,7 +5,7 @@ import ContinueBox from './ContinueBox.tsx';
 import SaveBox from './SaveBox.tsx';
 import DeleteBox from './DeleteBox.tsx';
 
-function ResultPage({message}) {
+function ResultPage({message} : {message : string}) {
     return (
         <>
             <Navbar />
