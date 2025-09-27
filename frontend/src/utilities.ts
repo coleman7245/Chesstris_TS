@@ -51,10 +51,6 @@ type State = {
 
 }
 
-type RefObject = {
-    
-}
-
 enum Game_Phase {
     PLAYING,
     LOST,
