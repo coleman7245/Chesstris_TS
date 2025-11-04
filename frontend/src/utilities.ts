@@ -1,8 +1,4 @@
-type Player = {
-    name : string,
-    email : string,
-    scores : Array<number>
-}
+import Player from './classes/Player.ts';
 
 type Score = {
     score : number,
@@ -61,7 +57,7 @@ enum Game_Phase {
 
 const initialGameState : GameState = {
     player_name : '', 
-    startTime : 0,
+    startTime : Date.now(),
     finishTime : {hours : 0, minutes: 0, seconds: 0}, 
     score : 0,
     board_size : {
