@@ -12,61 +12,23 @@ import ResultPage from './pages/result/ResultPage.tsx';
 import EditPage from './pages/edit/EditPage.tsx';
 import Login from './pages/login/Login.tsx';
 
-import {initialGameState, GameState, Time, Game_Phase, Player, Action } from './utilities.ts';
+import {initialGameState, GameState, Time, Game_Phase, Action } from './utilities.ts';
+import DataHandler from './classes/DataHandler.ts';
 
 const GameContext : React.Context<any> = createContext({});
 
 function handleGameState(gameState : GameState, action : Action) : GameState {
     let newGameState : GameState = {...gameState};
-
-    async function postPlayer(player : Player) {
-        const data = {player};
-
-        try {
-            await fetch('http://localhost:8080/api/players', 
-                {
-                    method : 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                        },
-                    body : JSON.stringify(data)
-                }
-            );
-        }
-        catch(err) {
-            console.log(err);
-        }
-    }
-
-    async function putPlayer(player : Player) {
-        const data = {player};
-
-        try {
-            await fetch(`http://localhost:8080/api/players/${player.name}`, 
-                {
-                    method : 'PUT',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                        },
-                    body : JSON.stringify(data)
-                }
-            );
-        }
-        catch(err) {
-            console.log(err);
-        }
-    }
+    let url : string = '';
 
     switch (action.type) {
         case 'ADD_NEW_PLAYER':
-            postPlayer(action.player);
+            DataHandler.post(action.player, url);
             newGameState.player_name = action.player.name;
             newGameState.startTime = Date.now();
             break;
         case 'EDIT_INPUT':
-            putPlayer(action.player);
+            DataHandler.put(action.player, url, action.player.name);
             newGameState.player_name = action.player.name;
             break;
         case 'UPDATE_TIME':
