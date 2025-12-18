@@ -12,19 +12,5 @@
     "noEmit": true,
     "strict": true,
     "moduleResolution": "nodenext",
-  },
-  "files": [
-   "./server.ts",
-   "./controllers/player.ts",
-   "./controllers/score.ts",
-   "./controllers/time.ts",
-   "./models/CurrentGame.ts",
-   "./models/Player.ts",
-   "./models/Score.ts",
-   "./models/Time.ts",
-   "./routes/PlayerRoute.ts",
-   "./routes/ScoreRoute.ts",
-   "./routes/TimeRoute.ts",
-   "db.ts"
-  ]
+  }
 }
