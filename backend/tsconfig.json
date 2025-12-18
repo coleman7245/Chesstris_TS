@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "module": "es2022",
+    "target": "es2020",
+    "module": "nodenext",
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
@@ -10,10 +11,10 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "strict": true,
-    "moduleResolution": "node"
+    "moduleResolution": "nodenext",
   },
   "files": [
-   "server.ts",
+   "./server.ts",
    "./controllers/player.ts",
    "./controllers/score.ts",
    "./controllers/time.ts",
