@@ -1,7 +1,9 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    "module": "es2022",
+    "target": "es2020",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
@@ -11,7 +13,6 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "strict": true,
-    "moduleResolution": "node",
     "jsx" : "react-jsx"
   }
 }

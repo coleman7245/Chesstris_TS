@@ -1,81 +1,61 @@
-type BlockPositions = {
-  first_block : Position,
-  second_block : Position,
-  third_block : Position,
-  main_block : Position
-}
-
 type Position = {
   top : number,
   left : number
 }
 
-type StartPositions = {
-  first_block: Position,
-  second_block: Position,
-  third_block: Position,
-  main_block: Position,
-  default_position: Array<number>
-}
-
-type PositionLimit = {
-  minX: number, 
-  minY: number, 
-  maxX: number, 
-  maxY: number
-}
+let default_position : Position = {top: 30, left : 135};
 
 type BlockConfiguration = {
-  position: Array<number>,
-  group_positions: StartPositions,
+  position: Position,
+  group_positions: Array<Position>,
   orientation: number,
   rotate_function: Function
 }
 
-function calculateTBlockRotation(orientation : number) : BlockPositions {
-    let newPositions : BlockPositions = {
-      first_block : {
+function calculateTBlockRotation(orientation : number) : Array<Position> {
+    let newPositions : Array<Position> = [
+      {
         top : 0,
         left : 0,
       },
-      second_block : {
+      {
         top : 0,
         left : 0,
       },
-      third_block : {
+      {
         top : 0,
         left : 0,
       },
-      main_block : {
+      {
         top : 0,
         left : 0,
       }
-    };
+    ];
   
     switch (orientation) {
       case 0:
-        newPositions.first_block = { top: 0, left: 30 };
-        newPositions.second_block = { top: 0, left: -30 };
-        newPositions.third_block = { top: 30, left: 0 };
-        newPositions.main_block = { top: 0, left: 0 };
+        newPositions[0] = { top: 0, left: 0 };
+        newPositions[1] = { top: 0, left: 30 };
+        newPositions[2] = { top: 0, left: -30 };
+        newPositions[3]= { top: 30, left: 0 };
         break;
       case 90:
-        newPositions.first_block = { top: -30, left: 0 };
-        newPositions.second_block = { top: 30, left: 0 };
-        newPositions.third_block = { top: 0, left: 30 };
-        newPositions.main_block = { top: 0, left: 0 };
+        newPositions[0] = { top: 0, left: 0 };
+        newPositions[1] = { top: -30, left: 0 };
+        newPositions[2] = { top: 30, left: 0 };
+        newPositions[3] = { top: 0, left: 30 };
         break;
       case 180:
-        newPositions.first_block = { top: 0, left: -30 };
-        newPositions.second_block = { top: 0, left: 30 };
-        newPositions.third_block = { top: -30, left: 0 };
-        newPositions.main_block = { top: 0, left: 0 };
+        newPositions[0] = { top: 0, left: 0 };
+        newPositions[1] = { top: 0, left: -30 };
+        newPositions[2] = { top: 0, left: 30 };
+        newPositions[3] = { top: -30, left: 0 };
         break;
       case 270:
-        newPositions.first_block = { top: 30, left: 0 };
-        newPositions.second_block = { top: -30, left: 0 };
-        newPositions.third_block = { top: 0, left: -30 };
-        newPositions.main_block = { top: 0, left: 0 };
+        newPositions[0] = { top: 0, left: 0 };
+        newPositions[1] = { top: 30, left: 0 };
+        newPositions[2] = { top: -30, left: 0 };
+        newPositions[3] = { top: 0, left: -30 };
         break;
       default:
         break;
@@ -84,50 +64,50 @@ function calculateTBlockRotation(orientation : number) : BlockPositions {
     return newPositions;
   }
   
-  function calculateLBlockRotation(orientation : number) : BlockPositions {
-    let newPositions : BlockPositions = {
-      first_block : {
+  function calculateLBlockRotation(orientation : number) : Array<Position> {
+    let newPositions : Array<Position> = [
+      {
         top : 0,
         left : 0,
       },
-      second_block : {
+      {
         top : 0,
         left : 0,
       },
-      third_block : {
+      {
         top : 0,
         left : 0,
       },
-      main_block : {
+      {
         top : 0,
         left : 0,
       }
-    };
+    ];
   
     switch (orientation) {
       case 0:
-        newPositions.first_block = { top: 30, left: -15 };
-        newPositions.second_block = { top: 0, left: -15 };
-        newPositions.third_block = { top: -30, left: -15 };
-        newPositions.main_block = { top: 30, left: 15 };
+        newPositions[0] = { top: 30, left: 15 };
+        newPositions[1] = { top: 30, left: -15 };
+        newPositions[2] = { top: 0, left: -15 };
+        newPositions[3] = { top: -30, left: -15 };
         break;
       case 90:
-        newPositions.first_block = { top: 15, left: 30 };
-        newPositions.second_block = { top: 15, left: 0 };
-        newPositions.third_block = { top: 15, left: -30 };
-        newPositions.main_block = { top: -15, left: 30 };
+        newPositions[0] = { top: -15, left: 30 };
+        newPositions[1] = { top: 15, left: 30 };
+        newPositions[2] = { top: 15, left: 0 };
+        newPositions[3] = { top: 15, left: -30 };
         break;
       case 180:
-        newPositions.first_block = { top: -30, left: 15 };
-        newPositions.second_block = { top: 0, left: 15 };
-        newPositions.third_block = { top: 30, left: 15 };
-        newPositions.main_block = { top: -30, left: -15 };
+        newPositions[0] = { top: -30, left: -15 };
+        newPositions[1] = { top: -30, left: 15 };
+        newPositions[2] = { top: 0, left: 15 };
+        newPositions[3] = { top: 30, left: 15 };
         break;
       case 270:
-        newPositions.first_block = { top: -15, left: -30 };
-        newPositions.second_block = { top: -15, left: 0 };
-        newPositions.third_block = { top: -15, left: 30 };
-        newPositions.main_block = { top: 15, left: -30 };
+        newPositions[0] = { top: 15, left: -30 };
+        newPositions[1] = { top: -15, left: -30 };
+        newPositions[2] = { top: -15, left: 0 };
+        newPositions[3] = { top: -15, left: 30 };
         break;
       default:
         break;
@@ -136,50 +116,50 @@ function calculateTBlockRotation(orientation : number) : BlockPositions {
     return newPositions;
   }
   
-  function calculateReverseLBlockRotation(orientation : number) : BlockPositions {
-    let newPositions : BlockPositions = {
-      first_block : {
+  function calculateReverseLBlockRotation(orientation : number) : Array<Position> {
+    let newPositions : Array<Position> = [
+      {
         top : 0,
         left : 0,
       },
-      second_block : {
+      {
         top : 0,
         left : 0,
       },
-      third_block : {
+      {
         top : 0,
         left : 0,
       },
-      main_block : {
+      {
         top : 0,
         left : 0,
       }
-    };
+    ];
   
     switch (orientation) {
       case 0:
-        newPositions.first_block = { top: 30, left: 15 };
-        newPositions.second_block = { top: 0, left: 15 };
-        newPositions.third_block = { top: -30, left: 15 };
-        newPositions.main_block = { top: 30, left: -15 };
+        newPositions[0] = { top: 30, left: -15 };
+        newPositions[1] = { top: 30, left: 15 };
+        newPositions[2] = { top: 0, left: 15 };
+        newPositions[3] = { top: -30, left: 15 };
         break;
       case 90:
-        newPositions.first_block = { top: -15, left: 30 };
-        newPositions.second_block = { top: -15, left: 0 };
-        newPositions.third_block = { top: -15, left: -30 };
-        newPositions.main_block = { top: 15, left: 30 };
+        newPositions[0] = { top: 15, left: 30 };
+        newPositions[1] = { top: -15, left: 30 };
+        newPositions[2] = { top: -15, left: 0 };
+        newPositions[3] = { top: -15, left: -30 };
         break;
       case 180:
-        newPositions.first_block = { top: -30, left: -15 };
-        newPositions.second_block = { top: 0, left: -15 };
-        newPositions.third_block = { top: 30, left: -15 };
-        newPositions.main_block = { top: -30, left: 15 };
+        newPositions[0] = { top: -30, left: 15 };
+        newPositions[1] = { top: -30, left: -15 };
+        newPositions[2] = { top: 0, left: -15 };
+        newPositions[3] = { top: 30, left: -15 };
         break;
       case 270:
-        newPositions.first_block = { top: 15, left: -30 };
-        newPositions.second_block = { top: 15, left: 0 };
-        newPositions.third_block = { top: 15, left: 30 };
-        newPositions.main_block = { top: -15, left: -30 };
+        newPositions[0] = { top: -15, left: -30 };
+        newPositions[1] = { top: 15, left: -30 };
+        newPositions[2] = { top: 15, left: 0 };
+        newPositions[3] = { top: 15, left: 30 };
         break;
       default:
         break;
@@ -188,50 +168,50 @@ function calculateTBlockRotation(orientation : number) : BlockPositions {
     return newPositions;
   }
   
-  function calculateSquigglyBlockRotation(orientation : number) : BlockPositions {
-    let newPositions : BlockPositions = {
-      first_block : {
+  function calculateSquigglyBlockRotation(orientation : number) : Array<Position> {
+    let newPositions : Array<Position> = [
+      {
         top : 0,
         left : 0,
       },
-      second_block : {
+      {
         top : 0,
         left : 0,
       },
-      third_block : {
+      {
         top : 0,
         left : 0,
       },
-      main_block : {
+      {
         top : 0,
         left : 0,
       }
-    };
+    ];
   
     switch (orientation) {
       case 0:
-        newPositions.first_block = { top: 15, left: 0 };
-        newPositions.second_block = { top: -15, left: 0 };
-        newPositions.third_block = { top: -15, left: 30 };
-        newPositions.main_block = { top: 15, left: -30 };
+        newPositions[0] = { top: 15, left: -30 };
+        newPositions[1] = { top: 15, left: 0 };
+        newPositions[2] = { top: -15, left: 0 };
+        newPositions[3] = { top: -15, left: 30 };
         break;
       case 90:
-        newPositions.first_block = { top: 0, left: 15 };
-        newPositions.second_block = { top: 0, left: -15 };
-        newPositions.third_block = { top: -30, left: -15 };
-        newPositions.main_block = { top: 30, left: 15 };
+        newPositions[0] = { top: 30, left: 15 };
+        newPositions[1] = { top: 0, left: 15 };
+        newPositions[2] = { top: 0, left: -15 };
+        newPositions[3] = { top: -30, left: -15 };
         break;
       case 180:
-        newPositions.first_block = { top: -15, left: 0 };
-        newPositions.second_block = { top: 15, left: 0 };
-        newPositions.third_block = { top: 15, left: -30 };
-        newPositions.main_block = { top: -15, left: 30 };
+        newPositions[0] = { top: -15, left: 30 };
+        newPositions[1] = { top: -15, left: 0 };
+        newPositions[2] = { top: 15, left: 0 };
+        newPositions[3] = { top: 15, left: -30 };
         break;
       case 270:
-        newPositions.first_block = { top: 0, left: -15 };
-        newPositions.second_block = { top: 0, left: 15 };
-        newPositions.third_block = { top: 30, left: 15 };
-        newPositions.main_block = { top: -30, left: -15 };
+        newPositions[0] = { top: -30, left: -15 };
+        newPositions[1] = { top: 0, left: -15 };
+        newPositions[2] = { top: 0, left: 15 };
+        newPositions[3] = { top: 30, left: 15 };
         break;
       default:
         break;
@@ -240,50 +220,50 @@ function calculateTBlockRotation(orientation : number) : BlockPositions {
     return newPositions;
   }
   
-  function calculateReverseSquigglyBlockRotation(orientation : number) : BlockPositions {
-    let newPositions : BlockPositions = {
-      first_block : {
+  function calculateReverseSquigglyBlockRotation(orientation : number) : Array<Position> {
+    let newPositions : Array<Position> = [
+      {
         top : 0,
         left : 0,
       },
-      second_block : {
+      {
         top : 0,
         left : 0,
       },
-      third_block : {
+      {
         top : 0,
         left : 0,
       },
-      main_block : {
+      {
         top : 0,
         left : 0,
       }
-    };
+    ];
   
     switch (orientation) {
       case 0:
-        newPositions.first_block = { top: 15, left: 0 };
-        newPositions.second_block = { top: -15, left: 0 };
-        newPositions.third_block = { top: -15, left: -30 };
-        newPositions.main_block = { top: 15, left: 30 };
+        newPositions[0] = { top: 15, left: 30 };
+        newPositions[1] = { top: 15, left: 0 };
+        newPositions[2] = { top: -15, left: 0 };
+        newPositions[3] = { top: -15, left: -30 };
         break;
       case 90:
-        newPositions.first_block = { top: 0, left: 15 };
-        newPositions.second_block = { top: 0, left: -15 };
-        newPositions.third_block = { top: 30, left: -15 };
-        newPositions.main_block = { top: -30, left: 15 };
+        newPositions[0] = { top: -30, left: 15 };
+        newPositions[1] = { top: 0, left: 15 };
+        newPositions[2] = { top: 0, left: -15 };
+        newPositions[3] = { top: 30, left: -15 };
         break;
       case 180:
-        newPositions.first_block = { top: -15, left: 0 };
-        newPositions.second_block = { top: 15, left: 0 };
-        newPositions.third_block = { top: 15, left: 30 };
-        newPositions.main_block = { top: -15, left: -30 };
+        newPositions[0] = { top: -15, left: -30 };
+        newPositions[1] = { top: -15, left: 0 };
+        newPositions[2] = { top: 15, left: 0 };
+        newPositions[3] = { top: 15, left: 30 };
         break;
       case 270:
-        newPositions.first_block = { top: 0, left: -15 };
-        newPositions.second_block = { top: 0, left: 15 };
-        newPositions.third_block = { top: -30, left: 15 };
-        newPositions.main_block = { top: 30, left: -15 };
+        newPositions[0] = { top: 30, left: -15 };
+        newPositions[1] = { top: 0, left: -15 };
+        newPositions[2] = { top: 0, left: 15 };
+        newPositions[3] = { top: -30, left: 15 };
         break;
       default:
         break;
@@ -292,50 +272,50 @@ function calculateTBlockRotation(orientation : number) : BlockPositions {
     return newPositions;
   }
   
-  function calculateSquareBlockRotation(orientation : number) : BlockPositions {
-    let newPositions : BlockPositions = {
-      first_block : {
+  function calculateSquareBlockRotation(orientation : number) : Array<Position> {
+    let newPositions : Array<Position> = [
+      {
         top : 0,
         left : 0,
       },
-      second_block : {
+      {
         top : 0,
         left : 0,
       },
-      third_block : {
+      {
         top : 0,
         left : 0,
       },
-      main_block : {
+      {
         top : 0,
         left : 0,
       }
-    };
+    ];
   
     switch (orientation) {
       case 0:
-        newPositions.first_block = { top: -15, left: -15 };
-        newPositions.second_block = { top: 15, left: -15 };
-        newPositions.third_block = { top: 15, left: 15 };
-        newPositions.main_block = { top: -15, left: 15 };
+        newPositions[0] = { top: -15, left: 15 };
+        newPositions[1] = { top: -15, left: -15 };
+        newPositions[2] = { top: 15, left: -15 };
+        newPositions[3] = { top: 15, left: 15 };
         break;
       case 90:
-        newPositions.first_block = { top: 15, left: -15 };
-        newPositions.second_block = { top: 15, left: 15 };
-        newPositions.third_block = { top: -15, left: 15 };
-        newPositions.main_block = { top: -15, left: -15 };
+        newPositions[0] = { top: -15, left: -15 };
+        newPositions[1] = { top: 15, left: -15 };
+        newPositions[2] = { top: 15, left: 15 };
+        newPositions[3] = { top: -15, left: 15 };
         break;
       case 180:
-        newPositions.first_block = { top: 15, left: 15 };
-        newPositions.second_block = { top: -15, left: 15 };
-        newPositions.third_block = { top: -15, left: -15 };
-        newPositions.main_block = { top: 15, left: -15 };
+        newPositions[0] = { top: 15, left: -15 };
+        newPositions[1] = { top: 15, left: 15 };
+        newPositions[2] = { top: -15, left: 15 };
+        newPositions[3] = { top: -15, left: -15 };
         break;
       case 270:
-        newPositions.first_block = { top: -15, left: 15 };
-        newPositions.second_block = { top: -15, left: -15 };
-        newPositions.third_block = { top: 15, left: -15 };
-        newPositions.main_block = { top: 15, left: 15 };
+        newPositions[0] = { top: 15, left: 15 };
+        newPositions[1] = { top: -15, left: 15 };
+        newPositions[2] = { top: -15, left: -15 };
+        newPositions[3] = { top: 15, left: -15 };
         break;
       default:
         break;
@@ -344,50 +324,50 @@ function calculateTBlockRotation(orientation : number) : BlockPositions {
     return newPositions;
   }
   
-  function calculateLineBlockRotation(orientation : number) : BlockPositions {
-    let newPositions : BlockPositions = {
-      first_block : {
+  function calculateLineBlockRotation(orientation : number) : Array<Position> {
+    let newPositions : Array<Position> = [
+      {
         top : 0,
         left : 0,
       },
-      second_block : {
+      {
         top : 0,
         left : 0,
       },
-      third_block : {
+      {
         top : 0,
         left : 0,
       },
-      main_block : {
+      {
         top : 0,
         left : 0,
       }
-    };
+    ];
   
     switch (orientation) {
       case 0:
-        newPositions.first_block = { top: 0, left: -15 };
-        newPositions.second_block = { top: 0, left: 15 };
-        newPositions.third_block = { top: 0, left: 45 };
-        newPositions.main_block = { top: 0, left: -45 };
+        newPositions[0] = { top: 0, left: -45 };
+        newPositions[1] = { top: 0, left: -15 };
+        newPositions[2] = { top: 0, left: 15 };
+        newPositions[3] = { top: 0, left: 45 };
         break;
       case 90:
-        newPositions.first_block = { top: -15, left: 0 };
-        newPositions.second_block = { top: 15, left: 0 };
-        newPositions.third_block = { top: 45, left: 0 };
-        newPositions.main_block = { top: -45, left: 0 };
+        newPositions[0] = { top: -45, left: 0 };
+        newPositions[1] = { top: -15, left: 0 };
+        newPositions[2] = { top: 15, left: 0 };
+        newPositions[3] = { top: 45, left: 0 };
         break;
       case 180:
-        newPositions.first_block = { top: 0, left: 15 };
-        newPositions.second_block = { top: 0, left: -15 };
-        newPositions.third_block = { top: 0, left: -45 };
-        newPositions.main_block = { top: 0, left: 45 };
+        newPositions[0] = { top: 0, left: 45 };
+        newPositions[1] = { top: 0, left: 15 };
+        newPositions[2] = { top: 0, left: -15 };
+        newPositions[3] = { top: 0, left: -45 };
         break;
       case 270:
-        newPositions.first_block = { top: 15, left: 0 };
-        newPositions.second_block = { top: -15, left: 0 };
-        newPositions.third_block = { top: -45, left: 0 };
-        newPositions.main_block = { top: 45, left: 0 };
+        newPositions[0] = { top: 45, left: 0 };
+        newPositions[1] = { top: 15, left: 0 };
+        newPositions[2] = { top: -15, left: 0 };
+        newPositions[3] = { top: -45, left: 0 };
         break;
       default:
         break;
@@ -396,118 +376,62 @@ function calculateTBlockRotation(orientation : number) : BlockPositions {
     return newPositions;
   }
   
-  const tBlockStartPositions : StartPositions = {
-    first_block: { top: 0, left: 30 },
-    second_block: { top: 0, left: -30 },
-    third_block: { top: 30, left: 0 },
-    main_block: { top: 0, left: 0 },
-    default_position: [135, 30]
-  };
-  
-  const lBlockStartPositions : StartPositions = {
-    first_block: { top: 30, left: -15 },
-    second_block: { top: 0, left: -15 },
-    third_block: { top: -30, left: -15 },
-    main_block: { top: 30, left: 15 },
-    default_position: [135, 30]
-  };
-  
-  const reverseLBlockStartPositions : StartPositions = {
-    first_block: { top: 30, left: 15 },
-    second_block: { top: 0, left: 15 },
-    third_block: { top: -30, left: 15 },
-    main_block: { top: 30, left: -15 },
-    default_position: [135, 30]
-  };
-  
-  const squigglyBlockStartPositions : StartPositions = {
-    first_block: { top: 15, left: 0 },
-    second_block: { top: -15, left: 0 },
-    third_block: { top: -15, left: 30 },
-    main_block: { top: 15, left: -30 },
-    default_position: [135, 30]
-  };
-  
-  const reverseSquigglyBlockStartPositions : StartPositions = {
-    first_block: { top: 15, left: 0 },
-    second_block: { top: -15, left: 0 },
-    third_block: { top: -15, left: -30 },
-    main_block: { top: 15, left: 30 },
-    default_position: [135, 30]
-  };
-  
-  const squareBlockStartPositions : StartPositions = {
-    first_block: { top: -15, left: -15 },
-    second_block: { top: 15, left: -15 },
-    third_block: { top: 15, left: 15 },
-    main_block: { top: -15, left: 15 },
-    default_position: [135, 30]
-  };
-  
-  const lineBlockStartPositions : StartPositions = {
-    first_block : { top: 0, left: -15 },
-    second_block : { top: 0, left: 15 },
-    third_block : { top: 0, left: 45 },
-    main_block : { top: 0, left: -45 },
-    default_position: [135, 30]
-  };
-
   function createBlockConfig(type : string) : BlockConfiguration | null {
     let config : BlockConfiguration;
 
     switch(type) {
       case 't':
         config = {
-          position: tBlockStartPositions.default_position,
-          group_positions: tBlockStartPositions,
+          position: default_position,
+          group_positions: calculateTBlockRotation(0),
           orientation: 0,
           rotate_function: calculateTBlockRotation
         };
         break;
       case 'squiggly':
         config = {
-          position: squigglyBlockStartPositions.default_position,
-          group_positions: squigglyBlockStartPositions,
+          position: default_position,
+          group_positions: calculateSquigglyBlockRotation(0),
           orientation: 0,
           rotate_function: calculateSquigglyBlockRotation
         };
         break;
       case 'reverseSquiggly':
         config = {
-          position: reverseSquigglyBlockStartPositions.default_position,
-          group_positions: reverseSquigglyBlockStartPositions,
+          position: default_position,
+          group_positions: calculateReverseSquigglyBlockRotation(0),
           orientation: 0,
           rotate_function: calculateReverseSquigglyBlockRotation
         };
         break;
       case 'l':
         config = {
-          position: lBlockStartPositions.default_position,
-          group_positions: lBlockStartPositions,
+          position: default_position,
+          group_positions: calculateLBlockRotation(0),
           orientation: 0,
           rotate_function: calculateLBlockRotation
         };
         break;
       case 'reverseL':
         config = {
-          position: reverseLBlockStartPositions.default_position,
-          group_positions: reverseLBlockStartPositions,
+          position: default_position,
+          group_positions: calculateReverseLBlockRotation(0),
           orientation: 0,
           rotate_function: calculateReverseLBlockRotation
         };
         break;
       case 'square':
         config = {
-          position: squareBlockStartPositions.default_position,
-          group_positions: squareBlockStartPositions,
+          position: default_position,
+          group_positions: calculateSquareBlockRotation(0),
           orientation: 0,
           rotate_function: calculateSquareBlockRotation
         };
         break;
       case 'line':
         config = {
-          position: lineBlockStartPositions.default_position,
-          group_positions: lineBlockStartPositions,
+          position: default_position,
+          group_positions: calculateLineBlockRotation(0),
           orientation: 0,
           rotate_function: calculateLineBlockRotation
         };
@@ -519,4 +443,4 @@ function calculateTBlockRotation(orientation : number) : BlockPositions {
     return config;
   }
 
-export { createBlockConfig, BlockConfiguration, PositionLimit };
+export { createBlockConfig, BlockConfiguration };

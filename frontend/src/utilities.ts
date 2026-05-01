@@ -72,7 +72,7 @@ const initialGameState : GameState = {
     },
     isPaused : false,
     tetris_pieces : [],
-    default_block_position: []
+    default_block_position: [135, 30]
 }
 
 async function getCurrentGame(dispatch : Function) : Promise<void> {

@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect, useContext } from 'react';
 
 import './TetrisPiece.css';
-import { createBlockConfig, BlockConfiguration, PositionLimit } from '../../tetris_block_moves.ts';
+import { createBlockConfig, BlockConfiguration } from '../../tetris_block_moves.ts';
+import PositionLimit from '../../types.ts';
 
 import { GameContext } from '../../App.tsx';
 import { Game_Phase } from '../../utilities.ts';
@@ -34,19 +35,19 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
 
         switch (event.key) {
             case 'w':
-                newConfig.position[1] -= (newConfig.position[1] - velocity < positionLimit.minY) ? 0 : velocity;
+                newConfig.position.top -= (newConfig.position.top - velocity < positionLimit.minY) ? 0 : velocity;
                 hasScored = true;
                 break;
             case 'a':
-                newConfig.position[0] -= (newConfig.position[0] - velocity < positionLimit.minX) ? 0 : velocity;
+                newConfig.position.left -= (newConfig.position.left - velocity < positionLimit.minX) ? 0 : velocity;
                 hasScored = true;
                 break;
             case 's':
-                newConfig.position[1] += (newConfig.position[1] + velocity > positionLimit.maxY) ? 0 : velocity;
+                newConfig.position.top += (newConfig.position.top + velocity > positionLimit.maxY) ? 0 : velocity;
                 hasScored = true;
                 break;
             case 'd':
-                newConfig.position[0] += (newConfig.position[0] + velocity > positionLimit.maxX) ? 0 : velocity;
+                newConfig.position.left += (newConfig.position.left + velocity > positionLimit.maxX) ? 0 : velocity;
                 hasScored = true;
                 break;
             case "r":
@@ -61,7 +62,7 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
                 break;
         }
 
-        crossedFinishLine = newConfig.position[1] >= gameState.win_state.win_pos_y ? true : false;
+        crossedFinishLine = newConfig.position.top >= gameState.win_state.win_pos_y ? true : false;
         dispatch({type : 'CHANGE_SCORE', hasScored : hasScored, crossedFinishLine : crossedFinishLine});
         setBlockConfig(newConfig);
     }
@@ -73,42 +74,42 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
 
     return (
         <div className='tetris-piece' ref={tetrisRef} autoFocus
-        style={{left: `${(blockConfig) ? blockConfig.position[0] : 0}px`, top: `${(blockConfig) ? blockConfig.position[1] : 0}px`}}
+        style={{left: `${(blockConfig) ? blockConfig.position.left : 0}px`, top: `${(blockConfig) ? blockConfig.position.top : 0}px`}}
         tabIndex={0} onKeyDown={(e) => handleInput(e)}>
             <div className='chesspiece' id='main' style={{
-                top: `${(blockConfig) ? blockConfig.group_positions.main_block.top : 0}px`, 
-                left: `${(blockConfig) ? blockConfig.group_positions.main_block.left : 0}px`
+                top: `${(blockConfig) ? blockConfig.group_positions[0].top : 0}px`, 
+                left: `${(blockConfig) ? blockConfig.group_positions[0].left : 0}px`
                 }}>
                     <img src={sources[0]} style={{
-                top: `${(blockConfig) ? blockConfig.group_positions.main_block.top : 0}px`, 
-                left: `${(blockConfig) ? blockConfig.group_positions.main_block.left : 0}px`
+                top: `${(blockConfig) ? blockConfig.group_positions[0].top : 0}px`, 
+                left: `${(blockConfig) ? blockConfig.group_positions[0].left : 0}px`
                 }} /> 
             </div>
             <div className='chesspiece' id='first' style={{
-                top: `${(blockConfig) ? blockConfig.group_positions.first_block.top : 0}px`,
-                left: `${(blockConfig) ? blockConfig.group_positions.first_block.left : 0}px`,
+                top: `${(blockConfig) ? blockConfig.group_positions[1].top : 0}px`,
+                left: `${(blockConfig) ? blockConfig.group_positions[1].left : 0}px`,
                 }}>
                     <img src={sources[1]} style={{
-                top: `${(blockConfig) ? blockConfig.group_positions.first_block.top : 0}px`,
-                left: `${(blockConfig) ? blockConfig.group_positions.first_block.left : 0}px`,
+                top: `${(blockConfig) ? blockConfig.group_positions[1].top : 0}px`,
+                left: `${(blockConfig) ? blockConfig.group_positions[1].left : 0}px`,
                 }} />  
             </div>
             <div className='chesspiece' id='second' style={{
-                top: `${(blockConfig) ? blockConfig.group_positions.second_block.top : 0}px`,
-                left: `${(blockConfig) ? blockConfig.group_positions.second_block.left : 0}px`,
+                top: `${(blockConfig) ? blockConfig.group_positions[2].top : 0}px`,
+                left: `${(blockConfig) ? blockConfig.group_positions[2].left : 0}px`,
                 }}>
                     <img src={sources[2]} style={{
-                top: `${(blockConfig) ? blockConfig.group_positions.second_block.top : 0}px`,
-                left: `${(blockConfig) ? blockConfig.group_positions.second_block.left : 0}px`,
+                top: `${(blockConfig) ? blockConfig.group_positions[2].top : 0}px`,
+                left: `${(blockConfig) ? blockConfig.group_positions[2].left : 0}px`,
                 }} />  
             </div>
             <div className='chesspiece' id='third' style={{
-                top: `${(blockConfig) ? blockConfig.group_positions.third_block.top : 0}px`,
-                left: `${(blockConfig) ? blockConfig.group_positions.third_block.left : 0}px`,
+                top: `${(blockConfig) ? blockConfig.group_positions[3].top : 0}px`,
+                left: `${(blockConfig) ? blockConfig.group_positions[3].left : 0}px`,
                 }}>
                     <img src={sources[3]} style={{
-                top: `${(blockConfig) ? blockConfig.group_positions.third_block.top : 0}px`,
-                left: `${(blockConfig) ? blockConfig.group_positions.third_block.left : 0}px`,
+                top: `${(blockConfig) ? blockConfig.group_positions[3].top : 0}px`,
+                left: `${(blockConfig) ? blockConfig.group_positions[3].left : 0}px`,
                 }} />  
             </div>
         </div>
