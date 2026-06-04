@@ -24,7 +24,7 @@ type GameState = {
     win_state : WinState,
     isPaused : boolean,
     tetris_pieces : Array<number>,
-    default_block_position: Array<number>
+    default_start_position: Array<number>
 }
 
 type WinState = {
@@ -72,7 +72,7 @@ const initialGameState : GameState = {
     },
     isPaused : false,
     tetris_pieces : [],
-    default_block_position: [135, 30]
+    default_start_position: [135, 30]
 }
 
 async function getCurrentGame(dispatch : Function) : Promise<void> {
@@ -141,9 +141,9 @@ const chess_piece_images : ChessPieceImages = {
 const tetris_block_types : Array<string> = [
     't',
     'squiggly',
-    'reverseSquiggly',
+    'reverse_squiggly',
     'l',
-    'reverseL',
+    'reverse_l',
     'square',
     'line'
 ];

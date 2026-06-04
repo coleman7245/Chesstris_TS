@@ -41,7 +41,7 @@ function handleGameState(gameState : GameState, action : Action) : GameState {
             newGameState.score = 0;
             newGameState.startTime = Date.now();
             newGameState.finishTime = getTime(newGameState.startTime);
-            newGameState.default_block_position = [135, 30];
+            newGameState.default_start_position = [135, 30];
         case 'CHANGE_SCORE':
             if (action.hasScored)
                 newGameState.score += 1;

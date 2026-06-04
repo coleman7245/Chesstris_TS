@@ -37,7 +37,7 @@ function calculateTBlockRotation(orientation : number) : Array<Position> {
         newPositions[0] = { top: 0, left: 0 };
         newPositions[1] = { top: 0, left: 30 };
         newPositions[2] = { top: 0, left: -30 };
-        newPositions[3]= { top: 30, left: 0 };
+        newPositions[3] = { top: 30, left: 0 };
         break;
       case 90:
         newPositions[0] = { top: 0, left: 0 };

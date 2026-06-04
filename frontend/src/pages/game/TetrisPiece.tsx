@@ -1,26 +1,29 @@
 import { useState, useRef, useEffect, useContext } from 'react';
 
 import './TetrisPiece.css';
-import { createBlockConfig, BlockConfiguration } from '../../tetris_block_moves.ts';
+// import { createBlockConfig, BlockConfiguration } from '../../tetris_block_moves.ts';
+import { Block, TBlock, LBlock, SquigglyBlock, SquareBlock, LineBlock } from '../../classes/Block.ts';
 import PositionLimit from '../../types.ts';
 
 import { GameContext } from '../../App.tsx';
 import { Game_Phase } from '../../utilities.ts';
 
 function TetrisPiece({sources, type} : {sources : string[], type : string}) {
-    const defaultConfig : BlockConfiguration | null = createBlockConfig(type);
     const [gameState, dispatch] = useContext(GameContext);
+    // const defaultConfig : BlockConfiguration | null = createBlockConfig(type);
+    const defaultBlock : Block | null = Block.createTetrisBlock(type, gameState['default_start_position'], 0);
     const tetrisRef = useRef<HTMLDivElement>(null);
-    const [blockConfig, setBlockConfig] = useState(defaultConfig);
+    // const [blockConfig, setBlockConfig] = useState(defaultConfig);
+    const [tetrisBlock, setTetrisBlock] = useState(defaultBlock);
     const positionLimit : PositionLimit = {minX: 0, minY: -60, maxX: gameState.board_size.width - 60, maxY: gameState.board_size.height - 120};
     const velocity : number = 30;
 
     function handleInput(event : React.KeyboardEvent) : void {
         event.preventDefault();
-        let newConfig : BlockConfiguration;
+        let newBlock : Block | null;
 
-        if (blockConfig !== null) {
-            newConfig = {
+        if (tetrisBlock !== null) {
+            newBlock = {
                 position: blockConfig.position,
                 group_positions: blockConfig.group_positions,
                 orientation: blockConfig.orientation,
