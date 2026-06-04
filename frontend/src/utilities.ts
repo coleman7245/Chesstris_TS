@@ -1,4 +1,5 @@
 import Player from './classes/Player.ts';
+import Position from './classes/Position.ts';
 
 type Score = {
     score : number,
@@ -24,7 +25,7 @@ type GameState = {
     win_state : WinState,
     isPaused : boolean,
     tetris_pieces : Array<number>,
-    default_start_position: Array<number>
+    default_start_position: Position
 }
 
 type WinState = {
@@ -72,7 +73,7 @@ const initialGameState : GameState = {
     },
     isPaused : false,
     tetris_pieces : [],
-    default_start_position: [135, 30]
+    default_start_position: new Position(135, 30)
 }
 
 async function getCurrentGame(dispatch : Function) : Promise<void> {

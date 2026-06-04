@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useContext } from 'react';
 
 import './TetrisPiece.css';
 // import { createBlockConfig, BlockConfiguration } from '../../tetris_block_moves.ts';
-import { Block, TBlock, LBlock, SquigglyBlock, SquareBlock, LineBlock } from '../../classes/Block.ts';
+import { Block } from '../../classes/Block.ts';
 import PositionLimit from '../../types.ts';
 
 import { GameContext } from '../../App.tsx';
@@ -23,12 +23,7 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
         let newBlock : Block | null;
 
         if (tetrisBlock !== null) {
-            newBlock = {
-                position: blockConfig.position,
-                group_positions: blockConfig.group_positions,
-                orientation: blockConfig.orientation,
-                rotate_function: blockConfig.rotate_function
-            };
+            newBlock = tetrisBlock.copy();
         }
         else
             return;
@@ -36,38 +31,41 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
         let hasScored : boolean = false;
         let crossedFinishLine : boolean = false;
 
-        switch (event.key) {
-            case 'w':
-                newConfig.position.top -= (newConfig.position.top - velocity < positionLimit.minY) ? 0 : velocity;
-                hasScored = true;
-                break;
-            case 'a':
-                newConfig.position.left -= (newConfig.position.left - velocity < positionLimit.minX) ? 0 : velocity;
-                hasScored = true;
-                break;
-            case 's':
-                newConfig.position.top += (newConfig.position.top + velocity > positionLimit.maxY) ? 0 : velocity;
-                hasScored = true;
-                break;
-            case 'd':
-                newConfig.position.left += (newConfig.position.left + velocity > positionLimit.maxX) ? 0 : velocity;
-                hasScored = true;
-                break;
-            case "r":
-                newConfig.orientation =
-                newConfig.orientation === 270 ? 0 : newConfig.orientation + 90;
-                newConfig.group_positions = newConfig.rotate_function(
-                    newConfig.orientation
-                );
-                break;
-            default:
-                hasScored = false;
-                break;
+        if (newBlock != null)
+        {
+            switch (event.key) {
+                case 'w':
+                    newBlock.position.top -= (newBlock.position.top - velocity < positionLimit.minY) ? 0 : velocity;
+                    hasScored = true;
+                    break;
+                case 'a':
+                    newBlock.position.left -= (newBlock.position.left - velocity < positionLimit.minX) ? 0 : velocity;
+                    hasScored = true;
+                    break;
+                case 's':
+                    console.log(newBlock.position.top);
+                    newBlock.position.top += (newBlock.position.top + velocity > positionLimit.maxY) ? 0 : velocity;
+                    console.log(newBlock.position.top);
+                    hasScored = true;
+                    break;
+                case 'd':
+                    newBlock.position.left += (newBlock.position.left + velocity > positionLimit.maxX) ? 0 : velocity;
+                    hasScored = true;
+                    break;
+                case "r":
+                    newBlock.orientation =
+                    newBlock.orientation === 270 ? 0 : newBlock.orientation + 90;
+                    newBlock.calulateRotation(newBlock.orientation);
+                    break;
+                default:
+                    hasScored = false;
+                    break;
+            }
         }
 
-        crossedFinishLine = newConfig.position.top >= gameState.win_state.win_pos_y ? true : false;
+        crossedFinishLine = newBlock.position.top >= gameState.win_state.win_pos_y ? true : false;
         dispatch({type : 'CHANGE_SCORE', hasScored : hasScored, crossedFinishLine : crossedFinishLine});
-        setBlockConfig(newConfig);
+        setTetrisBlock(newBlock);
     }
 
     useEffect(() => {
@@ -77,42 +75,42 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
 
     return (
         <div className='tetris-piece' ref={tetrisRef} autoFocus
-        style={{left: `${(blockConfig) ? blockConfig.position.left : 0}px`, top: `${(blockConfig) ? blockConfig.position.top : 0}px`}}
+        style={{left: `${(tetrisBlock) ? tetrisBlock.position.left : 0}px`, top: `${(tetrisBlock) ? tetrisBlock.position.top : 0}px`}}
         tabIndex={0} onKeyDown={(e) => handleInput(e)}>
             <div className='chesspiece' id='main' style={{
-                top: `${(blockConfig) ? blockConfig.group_positions[0].top : 0}px`, 
-                left: `${(blockConfig) ? blockConfig.group_positions[0].left : 0}px`
+                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[0].top : 0}px`, 
+                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[0].left : 0}px`
                 }}>
                     <img src={sources[0]} style={{
-                top: `${(blockConfig) ? blockConfig.group_positions[0].top : 0}px`, 
-                left: `${(blockConfig) ? blockConfig.group_positions[0].left : 0}px`
+                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[0].top : 0}px`, 
+                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[0].left : 0}px`
                 }} /> 
             </div>
             <div className='chesspiece' id='first' style={{
-                top: `${(blockConfig) ? blockConfig.group_positions[1].top : 0}px`,
-                left: `${(blockConfig) ? blockConfig.group_positions[1].left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[1].top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[1].left : 0}px`,
                 }}>
                     <img src={sources[1]} style={{
-                top: `${(blockConfig) ? blockConfig.group_positions[1].top : 0}px`,
-                left: `${(blockConfig) ? blockConfig.group_positions[1].left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[1].top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[1].left : 0}px`,
                 }} />  
             </div>
             <div className='chesspiece' id='second' style={{
-                top: `${(blockConfig) ? blockConfig.group_positions[2].top : 0}px`,
-                left: `${(blockConfig) ? blockConfig.group_positions[2].left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[2].top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[2].left : 0}px`,
                 }}>
                     <img src={sources[2]} style={{
-                top: `${(blockConfig) ? blockConfig.group_positions[2].top : 0}px`,
-                left: `${(blockConfig) ? blockConfig.group_positions[2].left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[2].top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[2].left : 0}px`,
                 }} />  
             </div>
             <div className='chesspiece' id='third' style={{
-                top: `${(blockConfig) ? blockConfig.group_positions[3].top : 0}px`,
-                left: `${(blockConfig) ? blockConfig.group_positions[3].left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[3].top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[3].left : 0}px`,
                 }}>
                     <img src={sources[3]} style={{
-                top: `${(blockConfig) ? blockConfig.group_positions[3].top : 0}px`,
-                left: `${(blockConfig) ? blockConfig.group_positions[3].left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[3].top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[3].left : 0}px`,
                 }} />  
             </div>
         </div>

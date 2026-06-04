@@ -24,8 +24,8 @@ class Position {
     }
 
     public setPosition(top : number, left : number) {
-        this.top = top;
-        this.left = left;
+        this._top = top;
+        this._left = left;
     }
 }
 

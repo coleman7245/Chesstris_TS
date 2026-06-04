@@ -29,8 +29,6 @@ function GamePage() {
         }
     }, [gameState.current_phase, navigate, dispatch]);
 
-    console.log(gameState.current_phase);
-
     return (
         <div>
             <Navbar />

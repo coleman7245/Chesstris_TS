@@ -11,6 +11,7 @@ import RulesPage from './pages/rules/RulesPage.tsx';
 import ResultPage from './pages/result/ResultPage.tsx';
 import EditPage from './pages/edit/EditPage.tsx';
 import Login from './pages/login/Login.tsx';
+import Position from './classes/Position.ts';
 
 import {initialGameState, GameState, Time, Game_Phase, Action } from './utilities.ts';
 import DataHandler from './classes/DataHandler.ts';
@@ -41,7 +42,7 @@ function handleGameState(gameState : GameState, action : Action) : GameState {
             newGameState.score = 0;
             newGameState.startTime = Date.now();
             newGameState.finishTime = getTime(newGameState.startTime);
-            newGameState.default_start_position = [135, 30];
+            newGameState.default_start_position = new Position(135, 30);
         case 'CHANGE_SCORE':
             if (action.hasScored)
                 newGameState.score += 1;
@@ -81,8 +82,6 @@ function getTime(startTime : number) : Time {
 
 function App() {
     const [gameState, dispatch] = useReducer(handleGameState, initialGameState);
-
-    console.log(gameState.player_name);
 
     return (
         <GameContext.Provider value={[gameState, dispatch]}>

@@ -7,43 +7,43 @@ abstract class Block {
 
     protected constructor(position : Position, orientation : number) {
         this._position = position;
-        this._group_positions = new Array<Position>(4);
+        this._group_positions = new Array<Position>(new Position(0, 0), new Position(0, 0), new Position(0, 0), new Position(0, 0));
         this._orientation = orientation;
         this.calculatePositions();
     }
 
-    protected get groupPositions() : Array<Position> {
+    public get groupPositions() : Array<Position> {
         return this._group_positions;
     }
 
-    protected set groupPositions(groupPositions : Array<Position>) {
+    public set groupPositions(groupPositions : Array<Position>) {
         this._group_positions = groupPositions;
     }
 
-    protected get orientation() : number {
+    public get orientation() : number {
         return this._orientation;
     }
 
-    protected set orientation(orientation : number) {
+    public set orientation(orientation : number) {
         this._orientation = orientation;
     }
 
-    protected get position() : Position {
+    public get position() : Position {
         return this._position;
     }
 
-    protected set position(position : Position) {
+    public set position(position : Position) {
         this._position = position;
     }
     
     protected abstract calculatePositions() : void;
 
-    protected calulateRotation(orientation : number) : void {
+    public calulateRotation(orientation : number) : void {
         this.orientation = orientation;
         this.calculatePositions();
     }
 
-    protected abstract copy(block : Block) : Block;
+    public abstract copy() : Block;
 
     public static createTetrisBlock(type : string, position : Position, orientation : number) : Block | null {
         let newBlock : Block | null = null;
@@ -99,6 +99,7 @@ class TBlock extends Block {
     }
 
     public calculatePositions() : void {
+
         switch (this.orientation) {
             case 0:
                 this._group_positions[0].setPosition(0, 0);
