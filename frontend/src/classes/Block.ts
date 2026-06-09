@@ -383,10 +383,10 @@ class LineBlock extends Block {
                 this._group_positions[3].setPosition(0, 45);
                 break;
             case 90:
-                this._group_positions[0].setPosition(-45, 0);
-                this._group_positions[1].setPosition(-15, 0);
-                this._group_positions[2].setPosition(15, 0);
-                this._group_positions[3].setPosition(45, 0);
+                this._group_positions[0].setPosition(45, 0);
+                this._group_positions[1].setPosition(15, 0);
+                this._group_positions[2].setPosition(-15, 0);
+                this._group_positions[3].setPosition(-45, 0);
                 break;
             case 180:
                 this._group_positions[0].setPosition(0, 45);
@@ -395,10 +395,10 @@ class LineBlock extends Block {
                 this._group_positions[3].setPosition(0, -45);
                 break;
             case 270:
-                this._group_positions[0].setPosition(45, 0);
-                this._group_positions[1].setPosition(15, 0);
-                this._group_positions[2].setPosition(-15, 0);
-                this._group_positions[3].setPosition(-45, 0);
+                this._group_positions[0].setPosition(-45, 0);
+                this._group_positions[1].setPosition(-15, 0);
+                this._group_positions[2].setPosition(15, 0);
+                this._group_positions[3].setPosition(45, 0);
                 break;
             default:
                 break;
