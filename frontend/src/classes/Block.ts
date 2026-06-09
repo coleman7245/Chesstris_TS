@@ -1,3 +1,5 @@
+let once : boolean = false;
+
 import Position from "./Position.ts";
 
 abstract class Block {
@@ -5,11 +7,10 @@ abstract class Block {
     protected _orientation : number;
     protected _position : Position;
 
-    protected constructor(position : Position, orientation : number) {
+    protected constructor(groupPositions : Array<Position>, position : Position, orientation : number) {
         this._position = position;
-        this._group_positions = new Array<Position>(new Position(0, 0), new Position(0, 0), new Position(0, 0), new Position(0, 0));
+        this._group_positions = groupPositions;
         this._orientation = orientation;
-        this.calculatePositions();
     }
 
     public get groupPositions() : Array<Position> {
@@ -45,30 +46,30 @@ abstract class Block {
 
     public abstract copy() : Block;
 
-    public static createTetrisBlock(type : string, position : Position, orientation : number) : Block | null {
+    public static createTetrisBlock(type : string, groupPositions : Array<Position>, position : Position, orientation : number) : Block | null {
         let newBlock : Block | null = null;
         
         switch (type) {
             case 'square':
-                newBlock = new SquareBlock(position, orientation);
+                newBlock = new SquareBlock(groupPositions, position, orientation);
                 return newBlock;
             case 't':
-                newBlock = new TBlock(position, orientation);
+                newBlock = new TBlock(groupPositions, position, orientation);
                 return newBlock;
             case 'l':
-                newBlock = new LBlock(position, orientation, false);
+                newBlock = new LBlock(groupPositions, position, orientation, false);
                 return newBlock;
             case 'reverse_l':
-                newBlock = new LBlock(position, orientation, true);
+                newBlock = new LBlock(groupPositions, position, orientation, true);
                 return newBlock;
             case 'squiggly':
-                newBlock = new SquigglyBlock(position, orientation, false);
+                newBlock = new SquigglyBlock(groupPositions, position, orientation, false);
                 return newBlock;
             case 'reverse_squiggly':
-                newBlock = new SquigglyBlock(position, orientation, true);
+                newBlock = new SquigglyBlock(groupPositions, position, orientation, true);
                 return newBlock;
             case 'line':
-                newBlock = new LineBlock(position, orientation);
+                newBlock = new LineBlock(groupPositions, position, orientation);
                 return newBlock;
             default:
                 return newBlock;
@@ -79,8 +80,8 @@ abstract class Block {
 abstract class ReversableBlock extends Block {
     protected _reversed : boolean;
 
-    constructor(position : Position, orientation : number, reversed : boolean) {
-        super(position, orientation);
+    constructor(groupPositions : Array<Position>, position : Position, orientation : number, reversed : boolean) {
+        super(groupPositions, position, orientation);
         this._reversed = reversed;
     }
 
@@ -94,13 +95,12 @@ abstract class ReversableBlock extends Block {
 }
 
 class TBlock extends Block {
-    constructor(position : Position, orientation : number) {
-        super(position, orientation);
+    constructor(groupPositions : Array<Position>, position : Position, orientation : number) {
+        super(groupPositions, position, orientation);
     }
 
     public calculatePositions() : void {
-
-        switch (this.orientation) {
+        switch (this._orientation) {
             case 0:
                 this._group_positions[0].setPosition(0, 0);
                 this._group_positions[1].setPosition(0, 30);
@@ -131,22 +131,33 @@ class TBlock extends Block {
     }
 
     public copy() : Block {
-        let copy = new TBlock(this._position, this._orientation);
+        let copy = new TBlock(this._group_positions, this._position, this._orientation);
 
         return copy;
+    }
+
+    public equals(other : TBlock) : boolean {
+        for (let i = 0; i < this._group_positions.length; i++) {
+            if (!this.groupPositions[i].equals(other.groupPositions[i]))
+                return false;
+        }
+
+        if (this.orientation !== other.orientation || !this.position.equals(other.position))
+            return false;
+
+        return true;
     }
 }
 
 class LBlock extends ReversableBlock {
 
-    constructor(position : Position, orientation : number, reversed : boolean) {
-        super(position, orientation, reversed);
+    constructor(groupPositions : Array<Position>, position : Position, orientation : number, reversed : boolean) {
+        super(groupPositions, position, orientation, reversed);
     }
 
     public calculatePositions(): void {
-        if (!this.reversed)
-        {
-            switch (this.orientation) {
+        if (!this._reversed) {
+            switch (this._orientation) {
                 case 0:
                     this._group_positions[0].setPosition(30, 15);
                     this._group_positions[1].setPosition(30, -15);
@@ -176,30 +187,30 @@ class LBlock extends ReversableBlock {
             }
         }
         else {
-            switch (this.orientation) {
+            switch (this._orientation) {
                 case 0:
                     this._group_positions[0].setPosition(30, -15);
-                    this._group_positions[0].setPosition(30, 15);
-                    this._group_positions[0].setPosition(0, 15 );
-                    this._group_positions[0].setPosition(-30, 15 );
+                    this._group_positions[1].setPosition(30, 15);
+                    this._group_positions[2].setPosition(0, 15 );
+                    this._group_positions[3].setPosition(-30, 15 );
                     break;
                 case 90:
                     this._group_positions[0].setPosition(15, 30);
-                    this._group_positions[0].setPosition(-15, 30);
-                    this._group_positions[0].setPosition(-15, 0);
-                    this._group_positions[0].setPosition(-15, -30);
+                    this._group_positions[1].setPosition(-15, 30);
+                    this._group_positions[2].setPosition(-15, 0);
+                    this._group_positions[3].setPosition(-15, -30);
                     break;
                 case 180:
                     this._group_positions[0].setPosition(-30, 15);
-                    this._group_positions[0].setPosition(-30, -15);
-                    this._group_positions[0].setPosition(0, -15);
-                    this._group_positions[0].setPosition(30, -15);
+                    this._group_positions[1].setPosition(-30, -15);
+                    this._group_positions[2].setPosition(0, -15);
+                    this._group_positions[3].setPosition(30, -15);
                     break;
                 case 270:
                     this._group_positions[0].setPosition(-15, -30);
-                    this._group_positions[0].setPosition(15, -30);
-                    this._group_positions[0].setPosition(15, 0);
-                    this._group_positions[0].setPosition(15, 30);
+                    this._group_positions[1].setPosition(15, -30);
+                    this._group_positions[2].setPosition(15, 0);
+                    this._group_positions[3].setPosition(15, 30);
                     break;
                 default:
                     break;
@@ -207,21 +218,47 @@ class LBlock extends ReversableBlock {
         }
     }
 
-    public copy() : Block {
-        let copy = new LBlock(this._position, this._orientation, this._reversed);
+    public copy() : LBlock {
+        let copy : LBlock = new LBlock(this._group_positions, this._position, this._orientation, this._reversed);
 
         return copy;
+    }
+
+    public equals(other : LBlock) : boolean {
+        let isEqual : boolean = true;
+
+        for (let i = 0; i < this._group_positions.length; i++) {
+            if (!this.groupPositions[i].equals(other.groupPositions[i])) {
+                console.log("Group positions are not equal!");
+                isEqual = false;
+            }
+        }
+
+        if (this.orientation !== other.orientation) {
+            console.log("Orientation is not equal!");
+            isEqual = false;
+        }
+        if (!this.position.equals(other.position)) {
+            console.log("Positions are not equal!");
+            isEqual = false;    
+        }
+        if (this.reversed !== other.reversed) {
+            console.log("IsReversed is not equal!");
+            isEqual = false;
+        }
+
+        return isEqual;
     }
 }
     
 class SquigglyBlock extends ReversableBlock {
-    constructor(position : Position, orientation : number, reversed : boolean) {
-        super(position, orientation, reversed);
+    constructor(groupPositions : Array<Position>, position : Position, orientation : number, reversed : boolean) {
+        super(groupPositions, position, orientation, reversed);
     }
 
     public calculatePositions(): void {
-        if (!this.reversed) {
-            switch (this.orientation) {
+        if (!this._reversed) {
+            switch (this._orientation) {
                 case 0:
                     this._group_positions[0].setPosition(15, -30);
                     this._group_positions[1].setPosition(15, 0);
@@ -251,7 +288,7 @@ class SquigglyBlock extends ReversableBlock {
             }
         }
         else {
-            switch (this.orientation) {
+            switch (this._orientation) {
                 case 0:
                     this._group_positions[0].setPosition(15, 30);
                     this._group_positions[1].setPosition(15, 0);
@@ -283,19 +320,19 @@ class SquigglyBlock extends ReversableBlock {
     }
 
     public copy() : Block {
-        let copy = new SquigglyBlock(this._position, this._orientation, this._reversed);
+        let copy = new SquigglyBlock(this._group_positions, this._position, this._orientation, this._reversed);
 
         return copy;
     }
 }
 
 class SquareBlock extends Block {
-    constructor(position : Position, orientation : number) {
-        super(position, orientation);
+    constructor(groupPositions : Array<Position>, position : Position, orientation : number) {
+        super(groupPositions, position, orientation);
     }
 
     public calculatePositions(): void {
-        switch (this.orientation) {
+        switch (this._orientation) {
             case 0:
                 this._group_positions[0].setPosition(-15, 15);
                 this._group_positions[1].setPosition(-15, -15);
@@ -326,19 +363,19 @@ class SquareBlock extends Block {
     }
 
     public copy() : Block {
-        let copy = new SquareBlock(this._position, this._orientation);
+        let copy = new SquareBlock(this._group_positions, this._position, this._orientation);
 
         return copy;
     }
 }
 
 class LineBlock extends Block {
-    constructor(position : Position, orientation : number) {
-        super(position, orientation);
+    constructor(groupPositions : Array<Position>, position : Position, orientation : number) {
+        super(groupPositions, position, orientation);
     }
 
     public calculatePositions(): void {
-        switch (this.orientation) {
+        switch (this._orientation) {
             case 0:
                 this._group_positions[0].setPosition(0, -45);
                 this._group_positions[1].setPosition(0, -15);
@@ -369,7 +406,7 @@ class LineBlock extends Block {
     }
 
     public copy() : Block {
-        let copy = new LineBlock(this._position, this._orientation);
+        let copy = new LineBlock(this._group_positions, this._position, this._orientation);
 
         return copy;
     }

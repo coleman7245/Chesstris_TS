@@ -23,6 +23,10 @@ class Position {
         this._top = top;
     }
 
+    public equals(other : Position) : boolean {
+        return (this.top === other.top && this.left === other.left);
+    } 
+
     public setPosition(top : number, left : number) {
         this._top = top;
         this._left = left;

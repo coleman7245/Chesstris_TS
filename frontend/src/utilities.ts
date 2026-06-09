@@ -14,6 +14,16 @@ type Action = {
     crossedFinishLine : boolean
 }
 
+type DefaultGroupPositions = {
+    t : Array<Position>,
+    squiggly : Array<Position>,
+    reverse_squiggly : Array<Position>,
+    l : Array<Position>,
+    reverse_l : Array<Position>,
+    square : Array<Position>,
+    line : Array<Position>
+}
+
 type GameState = {
     player_name : string, 
     startTime : number,
@@ -25,7 +35,8 @@ type GameState = {
     win_state : WinState,
     isPaused : boolean,
     tetris_pieces : Array<number>,
-    default_start_position: Position
+    default_start_position : Position,
+    default_group_positions : DefaultGroupPositions
 }
 
 type WinState = {
@@ -73,7 +84,16 @@ const initialGameState : GameState = {
     },
     isPaused : false,
     tetris_pieces : [],
-    default_start_position: new Position(135, 30)
+    default_start_position : new Position(135, 30),
+    default_group_positions : {
+        't' : [new Position(0, 0), new Position(0, 30), new Position(0, -30), new Position(30, 0)],
+        'squiggly' : [new Position(15, -30), new Position(15, 0), new Position(-15, 0), new Position(-15, 30)],
+        'reverse_squiggly' : [new Position(15, 30), new Position(15, 0), new Position(-15, 0), new Position(-15, -30)],
+        'l' : [new Position(30, 15), new Position(30, -15), new Position(0, -15), new Position(-30, -15)],
+        'reverse_l' : [new Position(30, -15), new Position(30, 15), new Position(0, 15), new Position(-30, 15)],
+        'square' : [new Position(-15, 15), new Position(-15, -15), new Position(15, -15), new Position(15, 15)],
+        'line' : [new Position(0, -45), new Position(0, -15), new Position(0, 15), new Position(0, 45)]
+    }
 }
 
 async function getCurrentGame(dispatch : Function) : Promise<void> {

@@ -4,18 +4,17 @@ import './TetrisPiece.css';
 // import { createBlockConfig, BlockConfiguration } from '../../tetris_block_moves.ts';
 import { Block } from '../../classes/Block.ts';
 import PositionLimit from '../../types.ts';
-
 import { GameContext } from '../../App.tsx';
 import { Game_Phase } from '../../utilities.ts';
 
 function TetrisPiece({sources, type} : {sources : string[], type : string}) {
     const [gameState, dispatch] = useContext(GameContext);
     // const defaultConfig : BlockConfiguration | null = createBlockConfig(type);
-    const defaultBlock : Block | null = Block.createTetrisBlock(type, gameState['default_start_position'], 0);
+    const defaultBlock : Block | null = Block.createTetrisBlock(type, gameState['default_group_positions'][type], gameState['default_start_position'], 0);
     const tetrisRef = useRef<HTMLDivElement>(null);
     // const [blockConfig, setBlockConfig] = useState(defaultConfig);
     const [tetrisBlock, setTetrisBlock] = useState(defaultBlock);
-    const positionLimit : PositionLimit = {minX: 0, minY: -60, maxX: gameState.board_size.width - 60, maxY: gameState.board_size.height - 120};
+    const positionLimit : PositionLimit = {minX: 0, minY: -30, maxX: gameState.board_size.width - 60, maxY: gameState.board_size.height - 120};
     const velocity : number = 30;
 
     function handleInput(event : React.KeyboardEvent) : void {
@@ -28,11 +27,11 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
         else
             return;
 
-        let hasScored : boolean = false;
-        let crossedFinishLine : boolean = false;
-
         if (newBlock != null)
         {
+            let hasScored : boolean = false;
+            let crossedFinishLine : boolean = false;
+
             switch (event.key) {
                 case 'w':
                     newBlock.position.top -= (newBlock.position.top - velocity < positionLimit.minY) ? 0 : velocity;
@@ -43,9 +42,7 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
                     hasScored = true;
                     break;
                 case 's':
-                    console.log(newBlock.position.top);
                     newBlock.position.top += (newBlock.position.top + velocity > positionLimit.maxY) ? 0 : velocity;
-                    console.log(newBlock.position.top);
                     hasScored = true;
                     break;
                 case 'd':
@@ -53,19 +50,22 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
                     hasScored = true;
                     break;
                 case "r":
-                    newBlock.orientation =
-                    newBlock.orientation === 270 ? 0 : newBlock.orientation + 90;
+                    newBlock.orientation = newBlock.orientation === 270 ? 0 : newBlock.orientation + 90;
                     newBlock.calulateRotation(newBlock.orientation);
+                    break;
+                case "u":
                     break;
                 default:
                     hasScored = false;
                     break;
             }
+
+            crossedFinishLine = newBlock.position.top >= gameState.win_state.win_pos_y ? true : false;
+            dispatch({type : 'CHANGE_SCORE', hasScored : hasScored, crossedFinishLine : crossedFinishLine});
+            setTetrisBlock(newBlock);
         }
 
-        crossedFinishLine = newBlock.position.top >= gameState.win_state.win_pos_y ? true : false;
-        dispatch({type : 'CHANGE_SCORE', hasScored : hasScored, crossedFinishLine : crossedFinishLine});
-        setTetrisBlock(newBlock);
+        return;
     }
 
     useEffect(() => {
