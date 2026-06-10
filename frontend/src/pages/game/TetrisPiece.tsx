@@ -10,11 +10,13 @@ import { Game_Phase } from '../../utilities.ts';
 function TetrisPiece({sources, type} : {sources : string[], type : string}) {
     const [gameState, dispatch] = useContext(GameContext);
     // const defaultConfig : BlockConfiguration | null = createBlockConfig(type);
-    const defaultBlock : Block | null = Block.createTetrisBlock(type, gameState['default_group_positions'][type], gameState['default_start_position'], 0);
+    const defaultBlock : Block | null = Block.createTetrisBlock(type, gameState['default_group_positions'][type], 
+        gameState['default_start_position'], 0);
     const tetrisRef = useRef<HTMLDivElement>(null);
     // const [blockConfig, setBlockConfig] = useState(defaultConfig);
     const [tetrisBlock, setTetrisBlock] = useState(defaultBlock);
-    const positionLimit : PositionLimit = {minX: 0, minY: -30, maxX: gameState.board_size.width - 60, maxY: gameState.board_size.height - 120};
+    const positionLimit : PositionLimit = {minX: -10, minY: -10, maxX: gameState.board_size.width - 10, 
+        maxY: gameState.board_size.height - 10};
     const velocity : number = 30;
 
     function handleInput(event : React.KeyboardEvent) : void {
