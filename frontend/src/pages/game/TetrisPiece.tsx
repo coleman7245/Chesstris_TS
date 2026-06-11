@@ -15,8 +15,8 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
     const tetrisRef = useRef<HTMLDivElement>(null);
     // const [blockConfig, setBlockConfig] = useState(defaultConfig);
     const [tetrisBlock, setTetrisBlock] = useState(defaultBlock);
-    const positionLimit : PositionLimit = {minX: -10, minY: -10, maxX: gameState.board_size.width - 10, 
-        maxY: gameState.board_size.height - 10};
+    const positionLimit : PositionLimit = {minX: 0, minY: 0, maxX: gameState.board_size.width, 
+        maxY: gameState.board_size.height};
     const velocity : number = 30;
 
     function handleInput(event : React.KeyboardEvent) : void {

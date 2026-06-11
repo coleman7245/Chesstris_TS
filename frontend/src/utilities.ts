@@ -84,7 +84,7 @@ const initialGameState : GameState = {
     },
     isPaused : false,
     tetris_pieces : [],
-    default_start_position : new Position(135, 30),
+    default_start_position : new Position(120, 30),
     default_group_positions : {
         't' : [new Position(0, 0), new Position(0, 30), new Position(0, -30), new Position(30, 0)],
         'squiggly' : [new Position(15, -30), new Position(15, 0), new Position(-15, 0), new Position(-15, 30)],

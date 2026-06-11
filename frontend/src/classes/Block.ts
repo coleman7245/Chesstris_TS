@@ -1,5 +1,3 @@
-let once : boolean = false;
-
 import Position from "./Position.ts";
 
 abstract class Block {

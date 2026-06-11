@@ -2,11 +2,6 @@
     position: absolute;
 }
 
-.chesspiece {
-    height: 0px;
-    width: 0px;
-}
-
 .chesspiece > img {
     position: absolute;
     width: 30px;
