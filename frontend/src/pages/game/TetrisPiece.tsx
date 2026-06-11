@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useContext } from 'react';
 
 import './TetrisPiece.css';
-// import { createBlockConfig, BlockConfiguration } from '../../tetris_block_moves.ts';
 import { Block } from '../../classes/Block.ts';
 import { PositionLimit } from '../../types.ts';
 import { GameContext } from '../../App.tsx';

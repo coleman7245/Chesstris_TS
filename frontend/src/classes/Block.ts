@@ -1,39 +1,34 @@
 import Position from "./Position.ts";
+import { CollisionPoints } from "../types.ts";
 
 abstract class Block {
     protected _group_positions : Array<Position>;
     protected _orientation : number;
     protected _position : Position;
+    protected _collision_points : CollisionPoints | null;
 
     protected constructor(groupPositions : Array<Position>, position : Position, orientation : number) {
         this._position = position;
         this._group_positions = groupPositions;
         this._orientation = orientation;
+        this._collision_points = null;
     }
 
-    public get groupPositions() : Array<Position> {
-        return this._group_positions;
-    }
+    public get collisionPoints() : CollisionPoints | null {return this._collision_points;}
+    
+    public set collisionPoints(collisionPoints : CollisionPoints | null) {this._collision_points = collisionPoints;}
 
-    public set groupPositions(groupPositions : Array<Position>) {
-        this._group_positions = groupPositions;
-    }
+    public get groupPositions() : Array<Position> {return this._group_positions;}
 
-    public get orientation() : number {
-        return this._orientation;
-    }
+    public set groupPositions(groupPositions : Array<Position>) {this._group_positions = groupPositions;}
 
-    public set orientation(orientation : number) {
-        this._orientation = orientation;
-    }
+    public get orientation() : number {return this._orientation;}
 
-    public get position() : Position {
-        return this._position;
-    }
+    public set orientation(orientation : number) {this._orientation = orientation;}
 
-    public set position(position : Position) {
-        this._position = position;
-    }
+    public get position() : Position {return this._position;}
+
+    public set position(position : Position) {this._position = position;}
     
     public abstract calculatePositions() : void;
 
@@ -78,13 +73,9 @@ abstract class ReversableBlock extends Block {
         this._reversed = reversed;
     }
 
-    public get reversed() : boolean {
-        return this._reversed;
-    }
+    public get reversed() : boolean {return this._reversed;}
 
-    public set reversed(reversed : boolean) {
-        this._reversed = reversed;
-    }
+    public set reversed(reversed : boolean) {this._reversed = reversed;}
 }
 
 class TBlock extends Block {
