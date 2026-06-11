@@ -35,12 +35,7 @@ abstract class Block {
         this._position = position;
     }
     
-    protected abstract calculatePositions() : void;
-
-    public calulateRotation(orientation : number) : void {
-        this.orientation = orientation;
-        this.calculatePositions();
-    }
+    public abstract calculatePositions() : void;
 
     public abstract copy() : Block;
 

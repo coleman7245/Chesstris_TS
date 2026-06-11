@@ -9,11 +9,9 @@ import { Game_Phase } from '../../utilities.ts';
 
 function TetrisPiece({sources, type} : {sources : string[], type : string}) {
     const [gameState, dispatch] = useContext(GameContext);
-    // const defaultConfig : BlockConfiguration | null = createBlockConfig(type);
     const defaultBlock : Block | null = Block.createTetrisBlock(type, gameState['default_group_positions'][type], 
         gameState['default_start_position'], 0);
     const tetrisRef = useRef<HTMLDivElement>(null);
-    // const [blockConfig, setBlockConfig] = useState(defaultConfig);
     const [tetrisBlock, setTetrisBlock] = useState(defaultBlock);
     const positionLimit : PositionLimit = {minX: 0, minY: 0, maxX: gameState.board_size.width, 
         maxY: gameState.board_size.height};
@@ -53,7 +51,7 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
                     break;
                 case "r":
                     newBlock.orientation = newBlock.orientation === 270 ? 0 : newBlock.orientation + 90;
-                    newBlock.calulateRotation(newBlock.orientation);
+                    newBlock.calculatePositions();
                     break;
                 case "u":
                     break;
