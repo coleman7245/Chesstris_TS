@@ -1,4 +1,4 @@
-class CollisionPoints {
+class Collider {
     private _pixel_size : number;
     private _top : number;
     private _bottom : number;
@@ -34,4 +34,4 @@ class CollisionPoints {
     public set right(right : number) {this._right = right;}
 }
 
-export default CollisionPoints;
+export default Collider;

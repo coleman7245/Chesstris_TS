@@ -1,25 +1,25 @@
 import Position from "./Position.ts";
-import CollisionPoints from "../classes/CollisionPoints.ts";
+import Collider from "./Collider.ts";
 
 class SubBlock {
     private _position : Position;
-    private _collision_points : CollisionPoints | null;
+    private _collider: Collider | null;
 
 
     public constructor(position : Position) {
         this._position = position;
-        this._collision_points = null;
+        this._collider = null;
     }
 
-    public hasCollided(collisionPoints : CollisionPoints) : boolean {
-        if (this._collision_points !== null) {
-            if (this._collision_points.top <= collisionPoints.bottom)
+    public hasCollided(other : Collider) : boolean {
+        if (this._collider !== null) {
+            if (this._collider.top <= other.bottom)
                 return true;
-            if (this._collision_points.bottom >= collisionPoints.top)
+            if (this._collider.bottom >= other.top)
                 return true;
-            if (this._collision_points.left >= collisionPoints.right)
+            if (this._collider.left >= other.right)
                 return true;
-            if (this._collision_points.right <= collisionPoints.left)
+            if (this._collider.right <= other.left)
                 return true;
         }
         
@@ -30,9 +30,9 @@ class SubBlock {
 
     public set position(position : Position) {this._position = position;}
 
-    public get collisionPoints() : CollisionPoints | null {return this._collision_points;}
+    public get collider() : Collider | null {return this._collider;}
 
-    public set collisionPoints(collisionPoints : CollisionPoints | null) {this._collision_points = collisionPoints;} 
+    public set collider(other : Collider | null) {this._collider = other;} 
 }
 
 abstract class Block {
