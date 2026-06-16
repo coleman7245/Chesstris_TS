@@ -17,6 +17,10 @@ class SubBlock {
                 return true;
             if (this._collision_points.bottom >= collisionPoints.top)
                 return true;
+            if (this._collision_points.left >= collisionPoints.right)
+                return true;
+            if (this._collision_points.right <= collisionPoints.left)
+                return true;
         }
         
         return false;
