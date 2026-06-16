@@ -1,22 +1,46 @@
 import Position from "./Position.ts";
-import { CollisionPoints } from "../types.ts";
+import CollisionPoints from "../classes/CollisionPoints.ts";
+
+class SubBlock {
+    private _position : Position;
+    private _collision_points : CollisionPoints | null;
+
+
+    public constructor(position : Position) {
+        this._position = position;
+        this._collision_points = null;
+    }
+
+    public hasCollided(collisionPoints : CollisionPoints) : boolean {
+        if (this._collision_points !== null) {
+            if (this._collision_points.top <= collisionPoints.bottom)
+                return true;
+            if (this._collision_points.bottom >= collisionPoints.top)
+                return true;
+        }
+        
+        return false;
+    }
+
+    public get position() : Position {return this._position;}
+
+    public set position(position : Position) {this._position = position;}
+
+    public get collisionPoints() : CollisionPoints | null {return this._collision_points;}
+
+    public set collisionPoints(collisionPoints : CollisionPoints | null) {this._collision_points = collisionPoints;} 
+}
 
 abstract class Block {
     protected _group_positions : Array<Position>;
     protected _orientation : number;
     protected _position : Position;
-    protected _collision_points : CollisionPoints | null;
 
     protected constructor(groupPositions : Array<Position>, position : Position, orientation : number) {
         this._position = position;
         this._group_positions = groupPositions;
         this._orientation = orientation;
-        this._collision_points = null;
     }
-
-    public get collisionPoints() : CollisionPoints | null {return this._collision_points;}
-    
-    public set collisionPoints(collisionPoints : CollisionPoints | null) {this._collision_points = collisionPoints;}
 
     public get groupPositions() : Array<Position> {return this._group_positions;}
 
@@ -89,7 +113,7 @@ class TBlock extends Block {
                 this._group_positions[0].setPosition(0, 0);
                 this._group_positions[1].setPosition(0, 30);
                 this._group_positions[2].setPosition(0, -30);
-                this._group_positions[3].setPosition(30, 0);;
+                this._group_positions[3].setPosition(30, 0);
                 break;
             case 90:
                 this._group_positions[0].setPosition(0, 0);
@@ -213,21 +237,17 @@ class LBlock extends ReversableBlock {
 
         for (let i = 0; i < this._group_positions.length; i++) {
             if (!this.groupPositions[i].equals(other.groupPositions[i])) {
-                console.log("Group positions are not equal!");
                 isEqual = false;
             }
         }
 
         if (this.orientation !== other.orientation) {
-            console.log("Orientation is not equal!");
             isEqual = false;
         }
         if (!this.position.equals(other.position)) {
-            console.log("Positions are not equal!");
             isEqual = false;    
         }
         if (this.reversed !== other.reversed) {
-            console.log("IsReversed is not equal!");
             isEqual = false;
         }
 

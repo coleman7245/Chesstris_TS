@@ -1,10 +1,3 @@
-type CollisionPoints = {
-  left : number,
-  right : number,
-  top : number,
-  bottom : number
-}
-
 type PositionLimit = {
   minX : number, 
   minY : number, 
@@ -12,4 +5,4 @@ type PositionLimit = {
   maxY : number
 }
 
-export { PositionLimit, CollisionPoints };
+export default PositionLimit;
