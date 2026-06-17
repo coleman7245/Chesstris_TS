@@ -11,7 +11,7 @@ import RulesPage from './pages/rules/RulesPage.tsx';
 import ResultPage from './pages/result/ResultPage.tsx';
 import EditPage from './pages/edit/EditPage.tsx';
 import Login from './pages/login/Login.tsx';
-import Position from './classes/Position.ts';
+import Position from './classes/Coordinates.ts';
 
 import {initialGameState, GameState, Time, Game_Phase, Action } from './utilities.ts';
 import DataHandler from './classes/DataHandler.ts';

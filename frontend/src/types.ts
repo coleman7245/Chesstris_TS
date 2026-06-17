@@ -5,4 +5,11 @@ type PositionLimit = {
   maxY : number
 }
 
-export default PositionLimit;
+type CollisionPoints = {
+  top : number,
+  bottom : number,
+  left : number,
+  right : number
+}
+
+export { PositionLimit, CollisionPoints };

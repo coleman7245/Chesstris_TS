@@ -1,34 +1,37 @@
-import Position from "./Position.ts";
+import Coordinates from "./Coordinates.ts";
 import Collider from "./Collider.ts";
 
 class SubBlock {
-    private _position : Position;
+    private _position : Coordinates;
     private _collider: Collider | null;
 
 
-    public constructor(position : Position) {
+    public constructor(position : Coordinates) {
         this._position = position;
         this._collider = null;
     }
 
-    public hasCollided(other : Collider) : boolean {
-        if (this._collider !== null) {
-            if (this._collider.top <= other.bottom)
-                return true;
-            if (this._collider.bottom >= other.top)
-                return true;
-            if (this._collider.left >= other.right)
-                return true;
-            if (this._collider.right <= other.left)
-                return true;
+    public hasCollided(other : Collider | null) : boolean {
+        if (this._collider !== null && other !== null) {
+            if (this._collider.collisionPoints !== null && other.collisionPoints !== null)
+            {
+                if (this._collider.collisionPoints.top <= other.collisionPoints.bottom)
+                    return true;
+                if (this._collider.collisionPoints.bottom >= other.collisionPoints.top)
+                        return true;
+                if (this._collider.collisionPoints.left >= other.collisionPoints.right)
+                        return true;
+                if (this._collider.collisionPoints.right <= other.collisionPoints.left)
+                    return true;
+            }
         }
         
         return false;
     }
 
-    public get position() : Position {return this._position;}
+    public get position() : Coordinates {return this._position;}
 
-    public set position(position : Position) {this._position = position;}
+    public set position(position : Coordinates) {this._position = position;}
 
     public get collider() : Collider | null {return this._collider;}
 
@@ -36,33 +39,33 @@ class SubBlock {
 }
 
 abstract class Block {
-    protected _group_positions : Array<Position>;
+    protected _group_positions : Array<Coordinates>;
     protected _orientation : number;
-    protected _position : Position;
+    protected _position : Coordinates;
 
-    protected constructor(groupPositions : Array<Position>, position : Position, orientation : number) {
+    protected constructor(groupPositions : Array<Coordinates>, position : Coordinates, orientation : number) {
         this._position = position;
         this._group_positions = groupPositions;
         this._orientation = orientation;
     }
 
-    public get groupPositions() : Array<Position> {return this._group_positions;}
+    public get groupPositions() : Array<Coordinates> {return this._group_positions;}
 
-    public set groupPositions(groupPositions : Array<Position>) {this._group_positions = groupPositions;}
+    public set groupPositions(groupPositions : Array<Coordinates>) {this._group_positions = groupPositions;}
 
     public get orientation() : number {return this._orientation;}
 
     public set orientation(orientation : number) {this._orientation = orientation;}
 
-    public get position() : Position {return this._position;}
+    public get position() : Coordinates {return this._position;}
 
-    public set position(position : Position) {this._position = position;}
+    public set position(position : Coordinates) {this._position = position;}
     
     public abstract calculatePositions() : void;
 
     public abstract copy() : Block;
 
-    public static createTetrisBlock(type : string, groupPositions : Array<Position>, position : Position, orientation : number) : Block | null {
+    public static createTetrisBlock(type : string, groupPositions : Array<Coordinates>, position : Coordinates, orientation : number) : Block | null {
         let newBlock : Block | null = null;
         
         switch (type) {
@@ -96,7 +99,7 @@ abstract class Block {
 abstract class ReversableBlock extends Block {
     protected _reversed : boolean;
 
-    constructor(groupPositions : Array<Position>, position : Position, orientation : number, reversed : boolean) {
+    constructor(groupPositions : Array<Coordinates>, position : Coordinates, orientation : number, reversed : boolean) {
         super(groupPositions, position, orientation);
         this._reversed = reversed;
     }
@@ -107,35 +110,35 @@ abstract class ReversableBlock extends Block {
 }
 
 class TBlock extends Block {
-    constructor(groupPositions : Array<Position>, position : Position, orientation : number) {
+    constructor(groupPositions : Array<Coordinates>, position : Coordinates, orientation : number) {
         super(groupPositions, position, orientation);
     }
 
     public calculatePositions() : void {
         switch (this._orientation) {
             case 0:
-                this._group_positions[0].setPosition(0, 0);
-                this._group_positions[1].setPosition(0, 30);
-                this._group_positions[2].setPosition(0, -30);
-                this._group_positions[3].setPosition(30, 0);
+                this._group_positions[0].setCoordinates(0, 0);
+                this._group_positions[1].setCoordinates(0, 30);
+                this._group_positions[2].setCoordinates(0, -30);
+                this._group_positions[3].setCoordinates(30, 0);
                 break;
             case 90:
-                this._group_positions[0].setPosition(0, 0);
-                this._group_positions[1].setPosition(-30, 0);
-                this._group_positions[2].setPosition(30, 0);
-                this._group_positions[3].setPosition(0, 30);
+                this._group_positions[0].setCoordinates(0, 0);
+                this._group_positions[1].setCoordinates(-30, 0);
+                this._group_positions[2].setCoordinates(30, 0);
+                this._group_positions[3].setCoordinates(0, 30);
                 break;
             case 180:
-                this._group_positions[0].setPosition(0, 0);
-                this._group_positions[1].setPosition(0, -30);
-                this._group_positions[2].setPosition(0, 30);
-                this._group_positions[3].setPosition(-30, 0);
+                this._group_positions[0].setCoordinates(0, 0);
+                this._group_positions[1].setCoordinates(0, -30);
+                this._group_positions[2].setCoordinates(0, 30);
+                this._group_positions[3].setCoordinates(-30, 0);
                 break;
             case 270:
-                this._group_positions[0].setPosition(0, 0);
-                this._group_positions[1].setPosition(30, 0);
-                this._group_positions[2].setPosition(-30, 0);
-                this._group_positions[3].setPosition(0, -30);
+                this._group_positions[0].setCoordinates(0, 0);
+                this._group_positions[1].setCoordinates(30, 0);
+                this._group_positions[2].setCoordinates(-30, 0);
+                this._group_positions[3].setCoordinates(0, -30);
                 break;
             default:
                 break;
@@ -163,7 +166,7 @@ class TBlock extends Block {
 
 class LBlock extends ReversableBlock {
 
-    constructor(groupPositions : Array<Position>, position : Position, orientation : number, reversed : boolean) {
+    constructor(groupPositions : Array<Coordinates>, position : Coordinates, orientation : number, reversed : boolean) {
         super(groupPositions, position, orientation, reversed);
     }
 
@@ -171,28 +174,28 @@ class LBlock extends ReversableBlock {
         if (!this._reversed) {
             switch (this._orientation) {
                 case 0:
-                    this._group_positions[0].setPosition(30, 15);
-                    this._group_positions[1].setPosition(30, -15);
-                    this._group_positions[2].setPosition(0, -15);
-                    this._group_positions[3].setPosition(-30, -15);
+                    this._group_positions[0].setCoordinates(30, 15);
+                    this._group_positions[1].setCoordinates(30, -15);
+                    this._group_positions[2].setCoordinates(0, -15);
+                    this._group_positions[3].setCoordinates(-30, -15);
                     break;
                 case 90:
-                    this._group_positions[0].setPosition(-15, 30);
-                    this._group_positions[1].setPosition(15, 30);
-                    this._group_positions[2].setPosition(15, 0);
-                    this._group_positions[3].setPosition(15, -30);
+                    this._group_positions[0].setCoordinates(-15, 30);
+                    this._group_positions[1].setCoordinates(15, 30);
+                    this._group_positions[2].setCoordinates(15, 0);
+                    this._group_positions[3].setCoordinates(15, -30);
                     break;
                 case 180:
-                    this._group_positions[0].setPosition(-30, -15);
-                    this._group_positions[1].setPosition(-30, 15);
-                    this._group_positions[2].setPosition(0, 15);
-                    this._group_positions[3].setPosition(30, 15);
+                    this._group_positions[0].setCoordinates(-30, -15);
+                    this._group_positions[1].setCoordinates(-30, 15);
+                    this._group_positions[2].setCoordinates(0, 15);
+                    this._group_positions[3].setCoordinates(30, 15);
                     break;
                 case 270:
-                    this._group_positions[0].setPosition(15, -30);
-                    this._group_positions[1].setPosition(-15, -30);
-                    this._group_positions[2].setPosition(-15, 0);
-                    this._group_positions[3].setPosition(-15, 30);
+                    this._group_positions[0].setCoordinates(15, -30);
+                    this._group_positions[1].setCoordinates(-15, -30);
+                    this._group_positions[2].setCoordinates(-15, 0);
+                    this._group_positions[3].setCoordinates(-15, 30);
                     break;
                 default:
                     break;
@@ -201,28 +204,28 @@ class LBlock extends ReversableBlock {
         else {
             switch (this._orientation) {
                 case 0:
-                    this._group_positions[0].setPosition(30, -15);
-                    this._group_positions[1].setPosition(30, 15);
-                    this._group_positions[2].setPosition(0, 15 );
-                    this._group_positions[3].setPosition(-30, 15 );
+                    this._group_positions[0].setCoordinates(30, -15);
+                    this._group_positions[1].setCoordinates(30, 15);
+                    this._group_positions[2].setCoordinates(0, 15 );
+                    this._group_positions[3].setCoordinates(-30, 15 );
                     break;
                 case 90:
-                    this._group_positions[0].setPosition(15, 30);
-                    this._group_positions[1].setPosition(-15, 30);
-                    this._group_positions[2].setPosition(-15, 0);
-                    this._group_positions[3].setPosition(-15, -30);
+                    this._group_positions[0].setCoordinates(15, 30);
+                    this._group_positions[1].setCoordinates(-15, 30);
+                    this._group_positions[2].setCoordinates(-15, 0);
+                    this._group_positions[3].setCoordinates(-15, -30);
                     break;
                 case 180:
-                    this._group_positions[0].setPosition(-30, 15);
-                    this._group_positions[1].setPosition(-30, -15);
-                    this._group_positions[2].setPosition(0, -15);
-                    this._group_positions[3].setPosition(30, -15);
+                    this._group_positions[0].setCoordinates(-30, 15);
+                    this._group_positions[1].setCoordinates(-30, -15);
+                    this._group_positions[2].setCoordinates(0, -15);
+                    this._group_positions[3].setCoordinates(30, -15);
                     break;
                 case 270:
-                    this._group_positions[0].setPosition(-15, -30);
-                    this._group_positions[1].setPosition(15, -30);
-                    this._group_positions[2].setPosition(15, 0);
-                    this._group_positions[3].setPosition(15, 30);
+                    this._group_positions[0].setCoordinates(-15, -30);
+                    this._group_positions[1].setCoordinates(15, -30);
+                    this._group_positions[2].setCoordinates(15, 0);
+                    this._group_positions[3].setCoordinates(15, 30);
                     break;
                 default:
                     break;
@@ -260,7 +263,7 @@ class LBlock extends ReversableBlock {
 }
     
 class SquigglyBlock extends ReversableBlock {
-    constructor(groupPositions : Array<Position>, position : Position, orientation : number, reversed : boolean) {
+    constructor(groupPositions : Array<Coordinates>, position : Coordinates, orientation : number, reversed : boolean) {
         super(groupPositions, position, orientation, reversed);
     }
 
@@ -268,28 +271,28 @@ class SquigglyBlock extends ReversableBlock {
         if (!this._reversed) {
             switch (this._orientation) {
                 case 0:
-                    this._group_positions[0].setPosition(15, -30);
-                    this._group_positions[1].setPosition(15, 0);
-                    this._group_positions[2].setPosition(-15, 0);
-                    this._group_positions[3].setPosition(-15, 30);
+                    this._group_positions[0].setCoordinates(15, -30);
+                    this._group_positions[1].setCoordinates(15, 0);
+                    this._group_positions[2].setCoordinates(-15, 0);
+                    this._group_positions[3].setCoordinates(-15, 30);
                     break;
                 case 90:
-                    this._group_positions[0].setPosition(30, 15);
-                    this._group_positions[1].setPosition(0, 15);
-                    this._group_positions[2].setPosition(0, -15);
-                    this._group_positions[3].setPosition(-30, -15);
+                    this._group_positions[0].setCoordinates(30, 15);
+                    this._group_positions[1].setCoordinates(0, 15);
+                    this._group_positions[2].setCoordinates(0, -15);
+                    this._group_positions[3].setCoordinates(-30, -15);
                     break;
                 case 180:
-                    this._group_positions[0].setPosition(-15, 30);
-                    this._group_positions[1].setPosition(-15, 0);
-                    this._group_positions[2].setPosition(15, 0);
-                    this._group_positions[3].setPosition(15, -30);
+                    this._group_positions[0].setCoordinates(-15, 30);
+                    this._group_positions[1].setCoordinates(-15, 0);
+                    this._group_positions[2].setCoordinates(15, 0);
+                    this._group_positions[3].setCoordinates(15, -30);
                     break;
                 case 270:
-                    this._group_positions[0].setPosition(-30, -15);
-                    this._group_positions[1].setPosition(0, -15);
-                    this._group_positions[2].setPosition(0, 15);
-                    this._group_positions[3].setPosition(30, 15);
+                    this._group_positions[0].setCoordinates(-30, -15);
+                    this._group_positions[1].setCoordinates(0, -15);
+                    this._group_positions[2].setCoordinates(0, 15);
+                    this._group_positions[3].setCoordinates(30, 15);
                     break;
                 default:
                     break;
@@ -298,28 +301,28 @@ class SquigglyBlock extends ReversableBlock {
         else {
             switch (this._orientation) {
                 case 0:
-                    this._group_positions[0].setPosition(15, 30);
-                    this._group_positions[1].setPosition(15, 0);
-                    this._group_positions[2].setPosition(-15, 0);
-                    this._group_positions[3].setPosition(-15, -30);
+                    this._group_positions[0].setCoordinates(15, 30);
+                    this._group_positions[1].setCoordinates(15, 0);
+                    this._group_positions[2].setCoordinates(-15, 0);
+                    this._group_positions[3].setCoordinates(-15, -30);
                     break;
                 case 90:
-                    this._group_positions[0].setPosition(-30, 15);
-                    this._group_positions[1].setPosition(0, 15);
-                    this._group_positions[2].setPosition(0, -15);
-                    this._group_positions[3].setPosition(30, -15);
+                    this._group_positions[0].setCoordinates(-30, 15);
+                    this._group_positions[1].setCoordinates(0, 15);
+                    this._group_positions[2].setCoordinates(0, -15);
+                    this._group_positions[3].setCoordinates(30, -15);
                     break;
                 case 180:
-                    this._group_positions[0].setPosition(-15, -30);
-                    this._group_positions[1].setPosition(-15, 0);
-                    this._group_positions[2].setPosition(15, 0);
-                    this._group_positions[3].setPosition(15, 30);
+                    this._group_positions[0].setCoordinates(-15, -30);
+                    this._group_positions[1].setCoordinates(-15, 0);
+                    this._group_positions[2].setCoordinates(15, 0);
+                    this._group_positions[3].setCoordinates(15, 30);
                     break;
                 case 270:
-                    this._group_positions[0].setPosition(30, -15);
-                    this._group_positions[1].setPosition(0, -15);
-                    this._group_positions[2].setPosition(0, 15);
-                    this._group_positions[3].setPosition(-30, 15);
+                    this._group_positions[0].setCoordinates(30, -15);
+                    this._group_positions[1].setCoordinates(0, -15);
+                    this._group_positions[2].setCoordinates(0, 15);
+                    this._group_positions[3].setCoordinates(-30, 15);
                     break;
                 default:
                     break;
@@ -335,35 +338,35 @@ class SquigglyBlock extends ReversableBlock {
 }
 
 class SquareBlock extends Block {
-    constructor(groupPositions : Array<Position>, position : Position, orientation : number) {
+    constructor(groupPositions : Array<Coordinates>, position : Coordinates, orientation : number) {
         super(groupPositions, position, orientation);
     }
 
     public calculatePositions(): void {
         switch (this._orientation) {
             case 0:
-                this._group_positions[0].setPosition(-15, 15);
-                this._group_positions[1].setPosition(-15, -15);
-                this._group_positions[2].setPosition(15, -15);
-                this._group_positions[3].setPosition(15, 15);
+                this._group_positions[0].setCoordinates(-15, 15);
+                this._group_positions[1].setCoordinates(-15, -15);
+                this._group_positions[2].setCoordinates(15, -15);
+                this._group_positions[3].setCoordinates(15, 15);
                 break;
             case 90:
-                this._group_positions[0].setPosition(-15, -15);
-                this._group_positions[1].setPosition(15, -15);
-                this._group_positions[2].setPosition(15, 15);
-                this._group_positions[3].setPosition(-15, 15);
+                this._group_positions[0].setCoordinates(-15, -15);
+                this._group_positions[1].setCoordinates(15, -15);
+                this._group_positions[2].setCoordinates(15, 15);
+                this._group_positions[3].setCoordinates(-15, 15);
                 break;
             case 180:
-                this._group_positions[0].setPosition(15, -15);
-                this._group_positions[1].setPosition(15, 15);
-                this._group_positions[2].setPosition(-15, 15);
-                this._group_positions[3].setPosition(-15, -15);
+                this._group_positions[0].setCoordinates(15, -15);
+                this._group_positions[1].setCoordinates(15, 15);
+                this._group_positions[2].setCoordinates(-15, 15);
+                this._group_positions[3].setCoordinates(-15, -15);
                 break;
             case 270:
-                this._group_positions[0].setPosition(15, 15);
-                this._group_positions[1].setPosition(-15, 15);
-                this._group_positions[2].setPosition(-15, -15);
-                this._group_positions[3].setPosition(15, -15);
+                this._group_positions[0].setCoordinates(15, 15);
+                this._group_positions[1].setCoordinates(-15, 15);
+                this._group_positions[2].setCoordinates(-15, -15);
+                this._group_positions[3].setCoordinates(15, -15);
                 break;
             default:
                 break;
@@ -378,35 +381,35 @@ class SquareBlock extends Block {
 }
 
 class LineBlock extends Block {
-    constructor(groupPositions : Array<Position>, position : Position, orientation : number) {
+    constructor(groupPositions : Array<Coordinates>, position : Coordinates, orientation : number) {
         super(groupPositions, position, orientation);
     }
 
     public calculatePositions(): void {
         switch (this._orientation) {
             case 0:
-                this._group_positions[0].setPosition(0, -45);
-                this._group_positions[1].setPosition(0, -15);
-                this._group_positions[2].setPosition(0, 15);
-                this._group_positions[3].setPosition(0, 45);
+                this._group_positions[0].setCoordinates(0, -45);
+                this._group_positions[1].setCoordinates(0, -15);
+                this._group_positions[2].setCoordinates(0, 15);
+                this._group_positions[3].setCoordinates(0, 45);
                 break;
             case 90:
-                this._group_positions[0].setPosition(45, 0);
-                this._group_positions[1].setPosition(15, 0);
-                this._group_positions[2].setPosition(-15, 0);
-                this._group_positions[3].setPosition(-45, 0);
+                this._group_positions[0].setCoordinates(45, 0);
+                this._group_positions[1].setCoordinates(15, 0);
+                this._group_positions[2].setCoordinates(-15, 0);
+                this._group_positions[3].setCoordinates(-45, 0);
                 break;
             case 180:
-                this._group_positions[0].setPosition(0, 45);
-                this._group_positions[1].setPosition(0, 15);
-                this._group_positions[2].setPosition(0, -15);
-                this._group_positions[3].setPosition(0, -45);
+                this._group_positions[0].setCoordinates(0, 45);
+                this._group_positions[1].setCoordinates(0, 15);
+                this._group_positions[2].setCoordinates(0, -15);
+                this._group_positions[3].setCoordinates(0, -45);
                 break;
             case 270:
-                this._group_positions[0].setPosition(-45, 0);
-                this._group_positions[1].setPosition(-15, 0);
-                this._group_positions[2].setPosition(15, 0);
-                this._group_positions[3].setPosition(45, 0);
+                this._group_positions[0].setCoordinates(-45, 0);
+                this._group_positions[1].setCoordinates(-15, 0);
+                this._group_positions[2].setCoordinates(15, 0);
+                this._group_positions[3].setCoordinates(45, 0);
                 break;
             default:
                 break;

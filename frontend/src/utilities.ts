@@ -1,5 +1,5 @@
 import Player from './classes/Player.ts';
-import Position from './classes/Position.ts';
+import Position from './classes/Coordinates.ts';
 
 type Score = {
     score : number,

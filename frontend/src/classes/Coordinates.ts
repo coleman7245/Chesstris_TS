@@ -1,4 +1,4 @@
-class Position {
+class Coordinates {
     private _top : number;
     private _left : number;
 
@@ -23,14 +23,14 @@ class Position {
         this._top = top;
     }
 
-    public equals(other : Position) : boolean {
+    public equals(other : Coordinates) : boolean {
         return (this.top === other.top && this.left === other.left);
     } 
 
-    public setPosition(top : number, left : number) {
+    public setCoordinates(top : number, left : number) {
         this._top = top;
         this._left = left;
     }
 }
 
-export default Position;
+export default Coordinates;
