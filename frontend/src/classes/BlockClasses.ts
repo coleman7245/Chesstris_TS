@@ -6,7 +6,6 @@ class SubBlock {
     private _position : Vector2;
     private _collider: Collider;
 
-
     public constructor(position : Vector2, pixelSize : Vector2) {
         this._position = position;
         this._pixel_size = pixelSize;

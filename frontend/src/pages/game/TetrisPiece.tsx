@@ -26,7 +26,7 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
         else
             return;
 
-        if (newBlock != null)
+        if (newBlock !== null)
         {
             let hasScored : boolean = false;
             let crossedFinishLine : boolean = false;

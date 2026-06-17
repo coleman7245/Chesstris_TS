@@ -18,11 +18,19 @@ class Collider {
 
     public set collisionPoints(collisionPoints : CollisionPoints) {this._collisionPoints = collisionPoints;}
 
-    public calculateCollisionPoints(update : Vector2) : void {
-        this._collisionPoints.top = update.top;
-        this._collisionPoints.bottom = this._collisionPoints.top + this._pixel_size.top;
-        this._collisionPoints.left = update.left;
-        this._collisionPoints.right = this._collisionPoints.left + this._pixel_size.left;
+    public calculateCollisionPoints(update : Vector2 | Collider) : void {
+        if (update instanceof Vector2) {
+            this._collisionPoints.top = update.top;
+            this._collisionPoints.bottom = this._collisionPoints.top + this._pixel_size.top;
+            this._collisionPoints.left = update.left;
+            this._collisionPoints.right = this._collisionPoints.left + this._pixel_size.left;
+        }
+        else {
+            this._collisionPoints.top = update.collisionPoints.top;
+            this._collisionPoints.bottom = this._collisionPoints.top + this._pixel_size.top;
+            this._collisionPoints.left = update.collisionPoints.left;
+            this._collisionPoints.right = this._collisionPoints.left + this._pixel_size.left;
+        }
     }
 }
 
