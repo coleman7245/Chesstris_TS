@@ -1,4 +1,4 @@
-class Coordinates {
+class Vector2 {
     private _top : number;
     private _left : number;
 
@@ -23,14 +23,14 @@ class Coordinates {
         this._top = top;
     }
 
-    public equals(other : Coordinates) : boolean {
+    public equals(other : Vector2) : boolean {
         return (this.top === other.top && this.left === other.left);
     } 
 
-    public setCoordinates(top : number, left : number) {
+    public setVector2(top : number, left : number) {
         this._top = top;
         this._left = left;
     }
 }
 
-export default Coordinates;
+export default Vector2;

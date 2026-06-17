@@ -77,39 +77,39 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
         style={{left: `${(tetrisBlock) ? tetrisBlock.position.left : 0}px`, top: `${(tetrisBlock) ? tetrisBlock.position.top : 0}px`}}
         tabIndex={0} onKeyDown={(e) => handleInput(e)}>
             <div className='chesspiece' id='main' style={{
-                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[0].top : 0}px`, 
-                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[0].left : 0}px`
+                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[0].position.top : 0}px`, 
+                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[0].position.left : 0}px`
                 }}>
                     <img src={sources[0]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[0].top : 0}px`, 
-                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[0].left : 0}px`
+                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[0].position.top : 0}px`, 
+                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[0].position.left : 0}px`
                 }} /> 
             </div>
             <div className='chesspiece' id='first' style={{
-                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[1].top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[1].left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[1].position.top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[1].position.left : 0}px`,
                 }}>
                     <img src={sources[1]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[1].top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[1].left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[1].position.top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[1].position.left : 0}px`,
                 }} />  
             </div>
             <div className='chesspiece' id='second' style={{
-                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[2].top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[2].left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[2].position.top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[2].position.left : 0}px`,
                 }}>
                     <img src={sources[2]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[2].top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[2].left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[2].position.top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[2].position.left : 0}px`,
                 }} />  
             </div>
             <div className='chesspiece' id='third' style={{
-                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[3].top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[3].left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[3].position.top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[3].position.left : 0}px`,
                 }}>
                     <img src={sources[3]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.groupPositions[3].top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.groupPositions[3].left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[3].position.top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[3].position.left : 0}px`,
                 }} />  
             </div>
         </div>

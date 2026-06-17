@@ -1,71 +1,87 @@
-import Coordinates from "./Coordinates.ts";
+import Vector2 from "./Vector2.ts";
 import Collider from "./Collider.ts";
 
 class SubBlock {
-    private _position : Coordinates;
-    private _collider: Collider | null;
+    private _pixel_size : Vector2;
+    private _position : Vector2;
+    private _collider: Collider;
 
 
-    public constructor(position : Coordinates) {
+    public constructor(position : Vector2, pixelSize : Vector2) {
         this._position = position;
-        this._collider = null;
+        this._pixel_size = pixelSize;
+        this._collider = new Collider(pixelSize);
     }
 
-    public hasCollided(other : Collider | null) : boolean {
-        if (this._collider !== null && other !== null) {
-            if (this._collider.collisionPoints !== null && other.collisionPoints !== null)
-            {
-                if (this._collider.collisionPoints.top <= other.collisionPoints.bottom)
-                    return true;
-                if (this._collider.collisionPoints.bottom >= other.collisionPoints.top)
-                        return true;
-                if (this._collider.collisionPoints.left >= other.collisionPoints.right)
-                        return true;
-                if (this._collider.collisionPoints.right <= other.collisionPoints.left)
-                    return true;
-            }
-        }
+    public hasCollided(other : Collider) : boolean {
+        if (this._collider.collisionPoints.top <= other.collisionPoints.bottom)
+            return true;
+        if (this._collider.collisionPoints.bottom >= other.collisionPoints.top)
+            return true;
+        if (this._collider.collisionPoints.left >= other.collisionPoints.right)
+            return true;
+        if (this._collider.collisionPoints.right <= other.collisionPoints.left)
+            return true;
         
         return false;
     }
 
-    public get position() : Coordinates {return this._position;}
+    public get pixelSize() : Vector2 {return this._pixel_size;}
+    
+    public set pixelSize(pixelSize : Vector2) {this._pixel_size = pixelSize;}
 
-    public set position(position : Coordinates) {this._position = position;}
+    public get position() : Vector2 {return this._position;}
 
-    public get collider() : Collider | null {return this._collider;}
+    public set position(position : Vector2) {this._position = position;}
 
-    public set collider(other : Collider | null) {this._collider = other;} 
+    public get collider() : Collider {return this._collider;}
+
+    public set collider(other : Collider) {this._collider = other;} 
 }
 
 abstract class Block {
-    protected _group_positions : Array<Coordinates>;
+    protected _subblocks : Array<SubBlock>;
     protected _orientation : number;
-    protected _position : Coordinates;
+    protected _position : Vector2;
 
-    protected constructor(groupPositions : Array<Coordinates>, position : Coordinates, orientation : number) {
+    protected constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number) {
         this._position = position;
-        this._group_positions = groupPositions;
+        this._subblocks = new Array<SubBlock>(
+            new SubBlock(groupPositions[0], new Vector2(30, 30)), 
+            new SubBlock(groupPositions[1], new Vector2(30, 30)),
+            new SubBlock(groupPositions[2], new Vector2(30, 30)),
+            new SubBlock(groupPositions[3], new Vector2(30, 30))
+        );
         this._orientation = orientation;
     }
 
-    public get groupPositions() : Array<Coordinates> {return this._group_positions;}
+    public get subBlocks() : Array<SubBlock> {return this._subblocks;}
 
-    public set groupPositions(groupPositions : Array<Coordinates>) {this._group_positions = groupPositions;}
+    public set subBlocks(subBlocks : Array<SubBlock>) {this._subblocks = subBlocks;}
 
     public get orientation() : number {return this._orientation;}
 
     public set orientation(orientation : number) {this._orientation = orientation;}
 
-    public get position() : Coordinates {return this._position;}
+    public get position() : Vector2 {return this._position;}
 
-    public set position(position : Coordinates) {this._position = position;}
+    public set position(position : Vector2) {this._position = position;}
     
     public abstract calculatePositions() : void;
 
+    public getSubblockPositions() : Array<Vector2> {
+        let groupPositions = new Array<Vector2>(this._subblocks.length);
+
+        for (let i = 0; i < this._subblocks.length; i++) {
+            groupPositions[i] = this._subblocks[i].position;
+        }
+
+        return groupPositions;
+    }
+
     public abstract copy() : Block;
 
-    public static createTetrisBlock(type : string, groupPositions : Array<Coordinates>, position : Coordinates, orientation : number) : Block | null {
+    public static createTetrisBlock(type : string, groupPositions : Array<Vector2>, position : Vector2, orientation : number) : Block | null {
         let newBlock : Block | null = null;
         
         switch (type) {
@@ -99,7 +115,7 @@ abstract class Block {
 abstract class ReversableBlock extends Block {
     protected _reversed : boolean;
 
-    constructor(groupPositions : Array<Coordinates>, position : Coordinates, orientation : number, reversed : boolean) {
+    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, reversed : boolean) {
         super(groupPositions, position, orientation);
         this._reversed = reversed;
     }
@@ -110,35 +126,35 @@ abstract class ReversableBlock extends Block {
 }
 
 class TBlock extends Block {
-    constructor(groupPositions : Array<Coordinates>, position : Coordinates, orientation : number) {
+    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number) {
         super(groupPositions, position, orientation);
     }
 
     public calculatePositions() : void {
         switch (this._orientation) {
             case 0:
-                this._group_positions[0].setCoordinates(0, 0);
-                this._group_positions[1].setCoordinates(0, 30);
-                this._group_positions[2].setCoordinates(0, -30);
-                this._group_positions[3].setCoordinates(30, 0);
+                this._subblocks[0].position = new Vector2(0, 0);
+                this._subblocks[1].position = new Vector2(0, 30);
+                this._subblocks[2].position = new Vector2(0, -30);
+                this._subblocks[3].position = new Vector2(30, 0);
                 break;
             case 90:
-                this._group_positions[0].setCoordinates(0, 0);
-                this._group_positions[1].setCoordinates(-30, 0);
-                this._group_positions[2].setCoordinates(30, 0);
-                this._group_positions[3].setCoordinates(0, 30);
+                this._subblocks[0].position = new Vector2(0, 0);
+                this._subblocks[1].position = new Vector2(-30, 0);
+                this._subblocks[2].position = new Vector2(30, 0);
+                this._subblocks[3].position = new Vector2(0, 30);
                 break;
             case 180:
-                this._group_positions[0].setCoordinates(0, 0);
-                this._group_positions[1].setCoordinates(0, -30);
-                this._group_positions[2].setCoordinates(0, 30);
-                this._group_positions[3].setCoordinates(-30, 0);
+                this._subblocks[0].position = new Vector2(0, 0);
+                this._subblocks[1].position = new Vector2(0, -30);
+                this._subblocks[2].position = new Vector2(0, 30);
+                this._subblocks[3].position = new Vector2(-30, 0);
                 break;
             case 270:
-                this._group_positions[0].setCoordinates(0, 0);
-                this._group_positions[1].setCoordinates(30, 0);
-                this._group_positions[2].setCoordinates(-30, 0);
-                this._group_positions[3].setCoordinates(0, -30);
+                this._subblocks[0].position = new Vector2(0, 0);
+                this._subblocks[1].position = new Vector2(30, 0);
+                this._subblocks[2].position = new Vector2(-30, 0);
+                this._subblocks[3].position = new Vector2(0, -30);
                 break;
             default:
                 break;
@@ -146,14 +162,14 @@ class TBlock extends Block {
     }
 
     public copy() : Block {
-        let copy = new TBlock(this._group_positions, this._position, this._orientation);
+        let copy = new TBlock(this.getSubblockPositions(), this._position, this._orientation);
 
         return copy;
     }
 
     public equals(other : TBlock) : boolean {
-        for (let i = 0; i < this._group_positions.length; i++) {
-            if (!this.groupPositions[i].equals(other.groupPositions[i]))
+        for (let i = 0; i < this._subblocks.length; i++) {
+            if (!this.subBlocks[i].position.equals(other.subBlocks[i].position))
                 return false;
         }
 
@@ -166,7 +182,7 @@ class TBlock extends Block {
 
 class LBlock extends ReversableBlock {
 
-    constructor(groupPositions : Array<Coordinates>, position : Coordinates, orientation : number, reversed : boolean) {
+    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, reversed : boolean) {
         super(groupPositions, position, orientation, reversed);
     }
 
@@ -174,28 +190,28 @@ class LBlock extends ReversableBlock {
         if (!this._reversed) {
             switch (this._orientation) {
                 case 0:
-                    this._group_positions[0].setCoordinates(30, 15);
-                    this._group_positions[1].setCoordinates(30, -15);
-                    this._group_positions[2].setCoordinates(0, -15);
-                    this._group_positions[3].setCoordinates(-30, -15);
+                    this._subblocks[0].position = new Vector2(30, 15);
+                    this._subblocks[1].position = new Vector2(30, -15);
+                    this._subblocks[2].position = new Vector2(0, -15);
+                    this._subblocks[3].position = new Vector2(-30, -15);
                     break;
                 case 90:
-                    this._group_positions[0].setCoordinates(-15, 30);
-                    this._group_positions[1].setCoordinates(15, 30);
-                    this._group_positions[2].setCoordinates(15, 0);
-                    this._group_positions[3].setCoordinates(15, -30);
+                    this._subblocks[0].position = new Vector2(-15, 30);
+                    this._subblocks[1].position = new Vector2(15, 30);
+                    this._subblocks[2].position = new Vector2(15, 0);
+                    this._subblocks[3].position = new Vector2(15, -30);
                     break;
                 case 180:
-                    this._group_positions[0].setCoordinates(-30, -15);
-                    this._group_positions[1].setCoordinates(-30, 15);
-                    this._group_positions[2].setCoordinates(0, 15);
-                    this._group_positions[3].setCoordinates(30, 15);
+                    this._subblocks[0].position = new Vector2(-30, -15);
+                    this._subblocks[1].position = new Vector2(-30, 15);
+                    this._subblocks[2].position = new Vector2(0, 15);
+                    this._subblocks[3].position = new Vector2(30, 15);
                     break;
                 case 270:
-                    this._group_positions[0].setCoordinates(15, -30);
-                    this._group_positions[1].setCoordinates(-15, -30);
-                    this._group_positions[2].setCoordinates(-15, 0);
-                    this._group_positions[3].setCoordinates(-15, 30);
+                    this._subblocks[0].position = new Vector2(15, -30);
+                    this._subblocks[1].position = new Vector2(-15, -30);
+                    this._subblocks[2].position = new Vector2(-15, 0);
+                    this._subblocks[3].position = new Vector2(-15, 30);
                     break;
                 default:
                     break;
@@ -204,28 +220,28 @@ class LBlock extends ReversableBlock {
         else {
             switch (this._orientation) {
                 case 0:
-                    this._group_positions[0].setCoordinates(30, -15);
-                    this._group_positions[1].setCoordinates(30, 15);
-                    this._group_positions[2].setCoordinates(0, 15 );
-                    this._group_positions[3].setCoordinates(-30, 15 );
+                    this._subblocks[0].position = new Vector2(30, -15);
+                    this._subblocks[1].position = new Vector2(30, 15);
+                    this._subblocks[2].position = new Vector2(0, 15 );
+                    this._subblocks[3].position = new Vector2(-30, 15 );
                     break;
                 case 90:
-                    this._group_positions[0].setCoordinates(15, 30);
-                    this._group_positions[1].setCoordinates(-15, 30);
-                    this._group_positions[2].setCoordinates(-15, 0);
-                    this._group_positions[3].setCoordinates(-15, -30);
+                    this._subblocks[0].position = new Vector2(15, 30);
+                    this._subblocks[1].position = new Vector2(-15, 30);
+                    this._subblocks[2].position = new Vector2(-15, 0);
+                    this._subblocks[3].position = new Vector2(-15, -30);
                     break;
                 case 180:
-                    this._group_positions[0].setCoordinates(-30, 15);
-                    this._group_positions[1].setCoordinates(-30, -15);
-                    this._group_positions[2].setCoordinates(0, -15);
-                    this._group_positions[3].setCoordinates(30, -15);
+                    this._subblocks[0].position = new Vector2(-30, 15);
+                    this._subblocks[1].position = new Vector2(-30, -15);
+                    this._subblocks[2].position = new Vector2(0, -15);
+                    this._subblocks[3].position = new Vector2(30, -15);
                     break;
                 case 270:
-                    this._group_positions[0].setCoordinates(-15, -30);
-                    this._group_positions[1].setCoordinates(15, -30);
-                    this._group_positions[2].setCoordinates(15, 0);
-                    this._group_positions[3].setCoordinates(15, 30);
+                    this._subblocks[0].position = new Vector2(-15, -30);
+                    this._subblocks[1].position = new Vector2(15, -30);
+                    this._subblocks[2].position = new Vector2(15, 0);
+                    this._subblocks[3].position = new Vector2(15, 30);
                     break;
                 default:
                     break;
@@ -234,7 +250,7 @@ class LBlock extends ReversableBlock {
     }
 
     public copy() : LBlock {
-        let copy : LBlock = new LBlock(this._group_positions, this._position, this._orientation, this._reversed);
+        let copy : LBlock = new LBlock(this.getSubblockPositions(), this._position, this._orientation, this._reversed);
 
         return copy;
     }
@@ -242,8 +258,8 @@ class LBlock extends ReversableBlock {
     public equals(other : LBlock) : boolean {
         let isEqual : boolean = true;
 
-        for (let i = 0; i < this._group_positions.length; i++) {
-            if (!this.groupPositions[i].equals(other.groupPositions[i])) {
+        for (let i = 0; i < this._subblocks.length; i++) {
+            if (!this.subBlocks[i].position.equals(other.subBlocks[i].position)) {
                 isEqual = false;
             }
         }
@@ -263,7 +279,7 @@ class LBlock extends ReversableBlock {
 }
     
 class SquigglyBlock extends ReversableBlock {
-    constructor(groupPositions : Array<Coordinates>, position : Coordinates, orientation : number, reversed : boolean) {
+    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, reversed : boolean) {
         super(groupPositions, position, orientation, reversed);
     }
 
@@ -271,28 +287,28 @@ class SquigglyBlock extends ReversableBlock {
         if (!this._reversed) {
             switch (this._orientation) {
                 case 0:
-                    this._group_positions[0].setCoordinates(15, -30);
-                    this._group_positions[1].setCoordinates(15, 0);
-                    this._group_positions[2].setCoordinates(-15, 0);
-                    this._group_positions[3].setCoordinates(-15, 30);
+                    this._subblocks[0].position = new Vector2(15, -30);
+                    this._subblocks[1].position = new Vector2(15, 0);
+                    this._subblocks[2].position = new Vector2(-15, 0);
+                    this._subblocks[3].position = new Vector2(-15, 30);
                     break;
                 case 90:
-                    this._group_positions[0].setCoordinates(30, 15);
-                    this._group_positions[1].setCoordinates(0, 15);
-                    this._group_positions[2].setCoordinates(0, -15);
-                    this._group_positions[3].setCoordinates(-30, -15);
+                    this._subblocks[0].position = new Vector2(30, 15);
+                    this._subblocks[1].position = new Vector2(0, 15);
+                    this._subblocks[2].position = new Vector2(0, -15);
+                    this._subblocks[3].position = new Vector2(-30, -15);
                     break;
                 case 180:
-                    this._group_positions[0].setCoordinates(-15, 30);
-                    this._group_positions[1].setCoordinates(-15, 0);
-                    this._group_positions[2].setCoordinates(15, 0);
-                    this._group_positions[3].setCoordinates(15, -30);
+                    this._subblocks[0].position = new Vector2(-15, 30);
+                    this._subblocks[1].position = new Vector2(-15, 0);
+                    this._subblocks[2].position = new Vector2(15, 0);
+                    this._subblocks[3].position = new Vector2(15, -30);
                     break;
                 case 270:
-                    this._group_positions[0].setCoordinates(-30, -15);
-                    this._group_positions[1].setCoordinates(0, -15);
-                    this._group_positions[2].setCoordinates(0, 15);
-                    this._group_positions[3].setCoordinates(30, 15);
+                    this._subblocks[0].position = new Vector2(-30, -15);
+                    this._subblocks[1].position = new Vector2(0, -15);
+                    this._subblocks[2].position = new Vector2(0, 15);
+                    this._subblocks[3].position = new Vector2(30, 15);
                     break;
                 default:
                     break;
@@ -301,28 +317,28 @@ class SquigglyBlock extends ReversableBlock {
         else {
             switch (this._orientation) {
                 case 0:
-                    this._group_positions[0].setCoordinates(15, 30);
-                    this._group_positions[1].setCoordinates(15, 0);
-                    this._group_positions[2].setCoordinates(-15, 0);
-                    this._group_positions[3].setCoordinates(-15, -30);
+                    this._subblocks[0].position = new Vector2(15, 30);
+                    this._subblocks[1].position = new Vector2(15, 0);
+                    this._subblocks[2].position = new Vector2(-15, 0);
+                    this._subblocks[3].position = new Vector2(-15, -30);
                     break;
                 case 90:
-                    this._group_positions[0].setCoordinates(-30, 15);
-                    this._group_positions[1].setCoordinates(0, 15);
-                    this._group_positions[2].setCoordinates(0, -15);
-                    this._group_positions[3].setCoordinates(30, -15);
+                    this._subblocks[0].position = new Vector2(-30, 15);
+                    this._subblocks[1].position = new Vector2(0, 15);
+                    this._subblocks[2].position = new Vector2(0, -15);
+                    this._subblocks[3].position = new Vector2(30, -15);
                     break;
                 case 180:
-                    this._group_positions[0].setCoordinates(-15, -30);
-                    this._group_positions[1].setCoordinates(-15, 0);
-                    this._group_positions[2].setCoordinates(15, 0);
-                    this._group_positions[3].setCoordinates(15, 30);
+                    this._subblocks[0].position = new Vector2(-15, -30);
+                    this._subblocks[1].position = new Vector2(-15, 0);
+                    this._subblocks[2].position = new Vector2(15, 0);
+                    this._subblocks[3].position = new Vector2(15, 30);
                     break;
                 case 270:
-                    this._group_positions[0].setCoordinates(30, -15);
-                    this._group_positions[1].setCoordinates(0, -15);
-                    this._group_positions[2].setCoordinates(0, 15);
-                    this._group_positions[3].setCoordinates(-30, 15);
+                    this._subblocks[0].position = new Vector2(30, -15);
+                    this._subblocks[1].position = new Vector2(0, -15);
+                    this._subblocks[2].position = new Vector2(0, 15);
+                    this._subblocks[3].position = new Vector2(-30, 15);
                     break;
                 default:
                     break;
@@ -331,42 +347,42 @@ class SquigglyBlock extends ReversableBlock {
     }
 
     public copy() : Block {
-        let copy = new SquigglyBlock(this._group_positions, this._position, this._orientation, this._reversed);
+        let copy = new SquigglyBlock(this.getSubblockPositions(), this._position, this._orientation, this._reversed);
 
         return copy;
     }
 }
 
 class SquareBlock extends Block {
-    constructor(groupPositions : Array<Coordinates>, position : Coordinates, orientation : number) {
+    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number) {
         super(groupPositions, position, orientation);
     }
 
     public calculatePositions(): void {
         switch (this._orientation) {
             case 0:
-                this._group_positions[0].setCoordinates(-15, 15);
-                this._group_positions[1].setCoordinates(-15, -15);
-                this._group_positions[2].setCoordinates(15, -15);
-                this._group_positions[3].setCoordinates(15, 15);
+                this._subblocks[0].position = new Vector2(-15, 15);
+                this._subblocks[1].position = new Vector2(-15, -15);
+                this._subblocks[2].position = new Vector2(15, -15);
+                this._subblocks[3].position = new Vector2(15, 15);
                 break;
             case 90:
-                this._group_positions[0].setCoordinates(-15, -15);
-                this._group_positions[1].setCoordinates(15, -15);
-                this._group_positions[2].setCoordinates(15, 15);
-                this._group_positions[3].setCoordinates(-15, 15);
+                this._subblocks[0].position = new Vector2(-15, -15);
+                this._subblocks[1].position = new Vector2(15, -15);
+                this._subblocks[2].position = new Vector2(15, 15);
+                this._subblocks[3].position = new Vector2(-15, 15);
                 break;
             case 180:
-                this._group_positions[0].setCoordinates(15, -15);
-                this._group_positions[1].setCoordinates(15, 15);
-                this._group_positions[2].setCoordinates(-15, 15);
-                this._group_positions[3].setCoordinates(-15, -15);
+                this._subblocks[0].position = new Vector2(15, -15);
+                this._subblocks[1].position = new Vector2(15, 15);
+                this._subblocks[2].position = new Vector2(-15, 15);
+                this._subblocks[3].position = new Vector2(-15, -15);
                 break;
             case 270:
-                this._group_positions[0].setCoordinates(15, 15);
-                this._group_positions[1].setCoordinates(-15, 15);
-                this._group_positions[2].setCoordinates(-15, -15);
-                this._group_positions[3].setCoordinates(15, -15);
+                this._subblocks[0].position = new Vector2(15, 15);
+                this._subblocks[1].position = new Vector2(-15, 15);
+                this._subblocks[2].position = new Vector2(-15, -15);
+                this._subblocks[3].position = new Vector2(15, -15);
                 break;
             default:
                 break;
@@ -374,42 +390,42 @@ class SquareBlock extends Block {
     }
 
     public copy() : Block {
-        let copy = new SquareBlock(this._group_positions, this._position, this._orientation);
+        let copy = new SquareBlock(this.getSubblockPositions(), this._position, this._orientation);
 
         return copy;
     }
 }
 
 class LineBlock extends Block {
-    constructor(groupPositions : Array<Coordinates>, position : Coordinates, orientation : number) {
+    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number) {
         super(groupPositions, position, orientation);
     }
 
     public calculatePositions(): void {
         switch (this._orientation) {
             case 0:
-                this._group_positions[0].setCoordinates(0, -45);
-                this._group_positions[1].setCoordinates(0, -15);
-                this._group_positions[2].setCoordinates(0, 15);
-                this._group_positions[3].setCoordinates(0, 45);
+                this._subblocks[0].position = new Vector2(0, -45);
+                this._subblocks[1].position = new Vector2(0, -15);
+                this._subblocks[2].position = new Vector2(0, 15);
+                this._subblocks[3].position = new Vector2(0, 45);
                 break;
             case 90:
-                this._group_positions[0].setCoordinates(45, 0);
-                this._group_positions[1].setCoordinates(15, 0);
-                this._group_positions[2].setCoordinates(-15, 0);
-                this._group_positions[3].setCoordinates(-45, 0);
+                this._subblocks[0].position = new Vector2(45, 0);
+                this._subblocks[1].position = new Vector2(15, 0);
+                this._subblocks[2].position = new Vector2(-15, 0);
+                this._subblocks[3].position = new Vector2(-45, 0);
                 break;
             case 180:
-                this._group_positions[0].setCoordinates(0, 45);
-                this._group_positions[1].setCoordinates(0, 15);
-                this._group_positions[2].setCoordinates(0, -15);
-                this._group_positions[3].setCoordinates(0, -45);
+                this._subblocks[0].position = new Vector2(0, 45);
+                this._subblocks[1].position = new Vector2(0, 15);
+                this._subblocks[2].position = new Vector2(0, -15);
+                this._subblocks[3].position = new Vector2(0, -45);
                 break;
             case 270:
-                this._group_positions[0].setCoordinates(-45, 0);
-                this._group_positions[1].setCoordinates(-15, 0);
-                this._group_positions[2].setCoordinates(15, 0);
-                this._group_positions[3].setCoordinates(45, 0);
+                this._subblocks[0].position = new Vector2(-45, 0);
+                this._subblocks[1].position = new Vector2(-15, 0);
+                this._subblocks[2].position = new Vector2(15, 0);
+                this._subblocks[3].position = new Vector2(45, 0);
                 break;
             default:
                 break;
@@ -417,7 +433,7 @@ class LineBlock extends Block {
     }
 
     public copy() : Block {
-        let copy = new LineBlock(this._group_positions, this._position, this._orientation);
+        let copy = new LineBlock(this.getSubblockPositions(), this._position, this._orientation);
 
         return copy;
     }

@@ -1,22 +1,29 @@
 import { CollisionPoints } from "../types.ts";
-import Coordinates from '../classes/Coordinates.ts';
+import Vector2 from './Vector2.ts';
 
 class Collider {
-    private _pixel_size : Coordinates;
-    private _collisionPoints : CollisionPoints | null;
+    private _pixel_size : Vector2;
+    private _collisionPoints : CollisionPoints;
 
-    public constructor(pixelSize : Coordinates) {
+    public constructor(pixelSize : Vector2) {
         this._pixel_size = pixelSize;
-        this._collisionPoints = null;
+        this._collisionPoints = {top : 0, bottom : 0, left : 0, right : 0};
     }
 
-    public get pixelSize() : Coordinates {return this._pixel_size;}
+    public get pixelSize() : Vector2 {return this._pixel_size;}
 
-    public set pixelSize(pixelSize : Coordinates) {this._pixel_size = pixelSize;}
+    public set pixelSize(pixelSize : Vector2) {this._pixel_size = pixelSize;}
 
-    public get collisionPoints() : CollisionPoints | null {return this._collisionPoints;}
+    public get collisionPoints() : CollisionPoints {return this._collisionPoints;}
 
     public set collisionPoints(collisionPoints : CollisionPoints) {this._collisionPoints = collisionPoints;}
+
+    public calculateCollisionPoints(update : Vector2) : void {
+        this._collisionPoints.top = update.top;
+        this._collisionPoints.bottom = this._collisionPoints.top + this._pixel_size.top;
+        this._collisionPoints.left = update.left;
+        this._collisionPoints.right = this._collisionPoints.left + this._pixel_size.left;
+    }
 }
 
 export default Collider;
