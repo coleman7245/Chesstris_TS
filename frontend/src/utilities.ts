@@ -1,5 +1,5 @@
 import Player from './classes/Player.ts';
-import Position from './classes/Vector2.ts';
+import Vector2 from './classes/Vector2.ts';
 
 type Score = {
     score : number,
@@ -15,13 +15,13 @@ type Action = {
 }
 
 type DefaultGroupPositions = {
-    t : Array<Position>,
-    squiggly : Array<Position>,
-    reverse_squiggly : Array<Position>,
-    l : Array<Position>,
-    reverse_l : Array<Position>,
-    square : Array<Position>,
-    line : Array<Position>
+    t : Array<Vector2>,
+    squiggly : Array<Vector2>,
+    reverse_squiggly : Array<Vector2>,
+    l : Array<Vector2>,
+    reverse_l : Array<Vector2>,
+    square : Array<Vector2>,
+    line : Array<Vector2>
 }
 
 type GameState = {
@@ -35,7 +35,7 @@ type GameState = {
     win_state : WinState,
     isPaused : boolean,
     tetris_pieces : Array<number>,
-    default_start_position : Position,
+    default_start_position : Vector2,
     default_group_positions : DefaultGroupPositions
 }
 
@@ -84,15 +84,15 @@ const initialGameState : GameState = {
     },
     isPaused : false,
     tetris_pieces : [],
-    default_start_position : new Position(120, 30),
+    default_start_position : new Vector2(120, 30),
     default_group_positions : {
-        't' : [new Position(0, 0), new Position(0, 30), new Position(0, -30), new Position(30, 0)],
-        'squiggly' : [new Position(15, -30), new Position(15, 0), new Position(-15, 0), new Position(-15, 30)],
-        'reverse_squiggly' : [new Position(15, 30), new Position(15, 0), new Position(-15, 0), new Position(-15, -30)],
-        'l' : [new Position(30, 15), new Position(30, -15), new Position(0, -15), new Position(-30, -15)],
-        'reverse_l' : [new Position(30, -15), new Position(30, 15), new Position(0, 15), new Position(-30, 15)],
-        'square' : [new Position(-15, 15), new Position(-15, -15), new Position(15, -15), new Position(15, 15)],
-        'line' : [new Position(0, -45), new Position(0, -15), new Position(0, 15), new Position(0, 45)]
+        't' : [new Vector2(0, 0), new Vector2(0, 30), new Vector2(0, -30), new Vector2(30, 0)],
+        'squiggly' : [new Vector2(15, -30), new Vector2(15, 0), new Vector2(-15, 0), new Vector2(-15, 30)],
+        'reverse_squiggly' : [new Vector2(15, 30), new Vector2(15, 0), new Vector2(-15, 0), new Vector2(-15, -30)],
+        'l' : [new Vector2(30, 15), new Vector2(30, -15), new Vector2(0, -15), new Vector2(-30, -15)],
+        'reverse_l' : [new Vector2(30, -15), new Vector2(30, 15), new Vector2(0, 15), new Vector2(-30, 15)],
+        'square' : [new Vector2(-15, 15), new Vector2(-15, -15), new Vector2(15, -15), new Vector2(15, 15)],
+        'line' : [new Vector2(0, -45), new Vector2(0, -15), new Vector2(0, 15), new Vector2(0, 45)]
     }
 }
 
