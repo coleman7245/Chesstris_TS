@@ -12,19 +12,6 @@ class SubBlock {
         this._collider = new Collider(pixelSize);
     }
 
-    public hasCollided(other : Collider) : boolean {
-        if (this._collider.collisionPoints.top <= other.collisionPoints.bottom)
-            return true;
-        if (this._collider.collisionPoints.bottom >= other.collisionPoints.top)
-            return true;
-        if (this._collider.collisionPoints.left >= other.collisionPoints.right)
-            return true;
-        if (this._collider.collisionPoints.right <= other.collisionPoints.left)
-            return true;
-        
-        return false;
-    }
-
     public get pixelSize() : Vector2 {return this._pixel_size;}
     
     public set pixelSize(pixelSize : Vector2) {this._pixel_size = pixelSize;}

@@ -32,6 +32,21 @@ class Collider {
             this._collisionPoints.right = this._collisionPoints.left + this._pixel_size.left;
         }
     }
+
+    public hasCollided(other : Collider) : boolean {
+        this.calculateCollisionPoints(other);
+
+        if (this._collisionPoints.top <= other.collisionPoints.bottom)
+            return true;
+        if (this._collisionPoints.bottom >= other.collisionPoints.top)
+            return true;
+        if (this._collisionPoints.left >= other.collisionPoints.right)
+            return true;
+        if (this._collisionPoints.right <= other.collisionPoints.left)
+            return true;
+        
+        return false;
+    }
 }
 
 export default Collider;
