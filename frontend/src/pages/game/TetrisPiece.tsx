@@ -5,15 +5,16 @@ import { Block } from '../../classes/BlockClasses.ts';
 import { PositionLimit } from '../../types.ts';
 import { GameContext } from '../../App.tsx';
 import { Game_Phase } from '../../utilities.ts';
+import Vector2 from '../../classes/Vector2.ts';
 
 function TetrisPiece({sources, type} : {sources : string[], type : string}) {
     const [gameState, dispatch] = useContext(GameContext);
     const defaultBlock : Block | null = Block.createTetrisBlock(type, gameState['default_group_positions'][type], 
-        gameState['default_start_position'], 0);
+        gameState['default_start_position'], 0, new Vector2(30, 30));
     const tetrisRef = useRef<HTMLDivElement>(null);
     const [tetrisBlock, setTetrisBlock] = useState(defaultBlock);
-    const positionLimit : PositionLimit = {minX: 0, minY: 0, maxX: gameState.board_size.width, 
-        maxY: gameState.board_size.height};
+    const positionLimit : PositionLimit = {minX: 0, minY: 0, maxX: gameState.board_size.pixelSize.left, 
+        maxY: gameState.board_size.pixelSize.top};
     const velocity : number = 30;
 
     function handleInput(event : React.KeyboardEvent) : void {

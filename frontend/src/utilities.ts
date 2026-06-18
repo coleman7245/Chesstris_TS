@@ -1,5 +1,6 @@
 import Player from './classes/Player.ts';
 import Vector2 from './classes/Vector2.ts';
+import Collider from './classes/Collider.ts';
 
 type Score = {
     score : number,
@@ -29,7 +30,7 @@ type GameState = {
     startTime : number,
     finishTime : Time, 
     score : number,
-    board_size : Dimensions,
+    board_size : Collider,
     current_phase : Game_Phase,
     crossed_finish_line : boolean,
     win_state : WinState,
@@ -50,11 +51,6 @@ type Time = {
     seconds : number
 }
 
-type Dimensions = {
-    width : number,
-    height : number
-}
-
 type State = {
 
 }
@@ -72,10 +68,7 @@ const initialGameState : GameState = {
     startTime : Date.now(),
     finishTime : {hours : 0, minutes: 0, seconds: 0}, 
     score : 0,
-    board_size : {
-        width: 360,
-        height: 600
-    },
+    board_size : new Collider(new Vector2(600, 360)),
     current_phase : Game_Phase.PLAYING,
     crossed_finish_line : false,
     win_state : {
@@ -84,7 +77,7 @@ const initialGameState : GameState = {
     },
     isPaused : false,
     tetris_pieces : [],
-    default_start_position : new Vector2(120, 30),
+    default_start_position : new Vector2(30, 120),
     default_group_positions : {
         't' : [new Vector2(0, 0), new Vector2(0, 30), new Vector2(0, -30), new Vector2(30, 0)],
         'squiggly' : [new Vector2(15, -30), new Vector2(15, 0), new Vector2(-15, 0), new Vector2(-15, 30)],
