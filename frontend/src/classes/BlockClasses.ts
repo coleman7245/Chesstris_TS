@@ -26,20 +26,26 @@ class SubBlock {
 }
 
 abstract class Block {
+    protected _pixel_size : Vector2;
     protected _subblocks : Array<SubBlock>;
     protected _orientation : number;
     protected _position : Vector2;
 
-    protected constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number) {
+    protected constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, pixelSize : Vector2) {
+        this._pixel_size = pixelSize;
         this._position = position;
         this._subblocks = new Array<SubBlock>(
-            new SubBlock(groupPositions[0], new Vector2(30, 30)), 
-            new SubBlock(groupPositions[1], new Vector2(30, 30)),
-            new SubBlock(groupPositions[2], new Vector2(30, 30)),
-            new SubBlock(groupPositions[3], new Vector2(30, 30))
+            new SubBlock(groupPositions[0], pixelSize), 
+            new SubBlock(groupPositions[1], pixelSize),
+            new SubBlock(groupPositions[2], pixelSize),
+            new SubBlock(groupPositions[3], pixelSize)
         );
         this._orientation = orientation;
     }
+
+    public get pixelSize() : Vector2 {return this._pixel_size;}
+    
+    public set pixelSize(pixelSize : Vector2) {this._pixel_size = pixelSize;}
 
     public get subBlocks() : Array<SubBlock> {return this._subblocks;}
 
@@ -67,30 +73,31 @@ abstract class Block {
 
     public abstract copy() : Block;
 
-    public static createTetrisBlock(type : string, groupPositions : Array<Vector2>, position : Vector2, orientation : number) : Block | null {
+    public static createTetrisBlock(type : string, groupPositions : Array<Vector2>, position : Vector2, orientation : number, 
+    pixelSize : Vector2) : Block | null {
         let newBlock : Block | null = null;
         
         switch (type) {
             case 'square':
-                newBlock = new SquareBlock(groupPositions, position, orientation);
+                newBlock = new SquareBlock(groupPositions, position, orientation, pixelSize);
                 return newBlock;
             case 't':
-                newBlock = new TBlock(groupPositions, position, orientation);
+                newBlock = new TBlock(groupPositions, position, orientation, pixelSize);
                 return newBlock;
             case 'l':
-                newBlock = new LBlock(groupPositions, position, orientation, false);
+                newBlock = new LBlock(groupPositions, position, orientation, false, pixelSize);
                 return newBlock;
             case 'reverse_l':
-                newBlock = new LBlock(groupPositions, position, orientation, true);
+                newBlock = new LBlock(groupPositions, position, orientation, true, pixelSize);
                 return newBlock;
             case 'squiggly':
-                newBlock = new SquigglyBlock(groupPositions, position, orientation, false);
+                newBlock = new SquigglyBlock(groupPositions, position, orientation, false, pixelSize);
                 return newBlock;
             case 'reverse_squiggly':
-                newBlock = new SquigglyBlock(groupPositions, position, orientation, true);
+                newBlock = new SquigglyBlock(groupPositions, position, orientation, true, pixelSize);
                 return newBlock;
             case 'line':
-                newBlock = new LineBlock(groupPositions, position, orientation);
+                newBlock = new LineBlock(groupPositions, position, orientation, pixelSize);
                 return newBlock;
             default:
                 return newBlock;
@@ -101,8 +108,9 @@ abstract class Block {
 abstract class ReversableBlock extends Block {
     protected _reversed : boolean;
 
-    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, reversed : boolean) {
-        super(groupPositions, position, orientation);
+    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, reversed : boolean, 
+    pixelSize : Vector2) {
+        super(groupPositions, position, orientation, pixelSize);
         this._reversed = reversed;
     }
 
@@ -112,8 +120,8 @@ abstract class ReversableBlock extends Block {
 }
 
 class TBlock extends Block {
-    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number) {
-        super(groupPositions, position, orientation);
+    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, pixelSize : Vector2) {
+        super(groupPositions, position, orientation, pixelSize);
     }
 
     public calculatePositions() : void {
@@ -148,7 +156,7 @@ class TBlock extends Block {
     }
 
     public copy() : Block {
-        let copy = new TBlock(this.getSubblockPositions(), this._position, this._orientation);
+        let copy = new TBlock(this.getSubblockPositions(), this._position, this._orientation, this._pixel_size);
 
         return copy;
     }
@@ -168,8 +176,9 @@ class TBlock extends Block {
 
 class LBlock extends ReversableBlock {
 
-    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, reversed : boolean) {
-        super(groupPositions, position, orientation, reversed);
+    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, reversed : boolean, 
+    pixelSize : Vector2) {
+        super(groupPositions, position, orientation, reversed, pixelSize);
     }
 
     public calculatePositions(): void {
@@ -236,7 +245,8 @@ class LBlock extends ReversableBlock {
     }
 
     public copy() : LBlock {
-        let copy : LBlock = new LBlock(this.getSubblockPositions(), this._position, this._orientation, this._reversed);
+        let copy : LBlock = new LBlock(this.getSubblockPositions(), this._position, this._orientation, this._reversed, 
+        this._pixel_size);
 
         return copy;
     }
@@ -265,8 +275,9 @@ class LBlock extends ReversableBlock {
 }
     
 class SquigglyBlock extends ReversableBlock {
-    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, reversed : boolean) {
-        super(groupPositions, position, orientation, reversed);
+    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, reversed : boolean, 
+    pixelSize : Vector2) {
+        super(groupPositions, position, orientation, reversed, pixelSize);
     }
 
     public calculatePositions(): void {
@@ -333,15 +344,16 @@ class SquigglyBlock extends ReversableBlock {
     }
 
     public copy() : Block {
-        let copy = new SquigglyBlock(this.getSubblockPositions(), this._position, this._orientation, this._reversed);
+        let copy = new SquigglyBlock(this.getSubblockPositions(), this._position, this._orientation, this._reversed, 
+        this._pixel_size);
 
         return copy;
     }
 }
 
 class SquareBlock extends Block {
-    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number) {
-        super(groupPositions, position, orientation);
+    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, pixelSize : Vector2) {
+        super(groupPositions, position, orientation, pixelSize);
     }
 
     public calculatePositions(): void {
@@ -376,15 +388,16 @@ class SquareBlock extends Block {
     }
 
     public copy() : Block {
-        let copy = new SquareBlock(this.getSubblockPositions(), this._position, this._orientation);
+        let copy = new SquareBlock(this.getSubblockPositions(), this._position, this._orientation, this._pixel_size);
 
         return copy;
     }
 }
 
 class LineBlock extends Block {
-    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number) {
-        super(groupPositions, position, orientation);
+    constructor(groupPositions : Array<Vector2>, position : Vector2, 
+    orientation : number, pixelSize : Vector2) {
+        super(groupPositions, position, orientation, pixelSize);
     }
 
     public calculatePositions(): void {
@@ -419,7 +432,7 @@ class LineBlock extends Block {
     }
 
     public copy() : Block {
-        let copy = new LineBlock(this.getSubblockPositions(), this._position, this._orientation);
+        let copy = new LineBlock(this.getSubblockPositions(), this._position, this._orientation, this._pixel_size);
 
         return copy;
     }
