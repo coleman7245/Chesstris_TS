@@ -4,12 +4,14 @@ import Collider from "./Collider.ts";
 class SubBlock {
     private _pixel_size : Vector2;
     private _position : Vector2;
+    private _parent_position : Vector2;
     private _collider: Collider;
 
-    public constructor(position : Vector2, pixelSize : Vector2) {
+    public constructor(position : Vector2, parentPosition : Vector2, pixelSize : Vector2) {
         this._position = position;
+        this._parent_position = parentPosition;
         this._pixel_size = pixelSize;
-        this._collider = new Collider(pixelSize);
+        this._collider = new Collider(pixelSize, );
     }
 
     public get pixelSize() : Vector2 {return this._pixel_size;}
@@ -19,6 +21,10 @@ class SubBlock {
     public get position() : Vector2 {return this._position;}
 
     public set position(position : Vector2) {this._position = position;}
+
+    public get parentPosition() : Vector2 {return this._position;}
+
+    public set parentPosition(position : Vector2) {this._position = position;}
 
     public get collider() : Collider {return this._collider;}
 

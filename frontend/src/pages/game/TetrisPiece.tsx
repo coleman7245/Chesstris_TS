@@ -13,8 +13,8 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
         gameState['default_start_position'], 0, new Vector2(30, 30));
     const tetrisRef = useRef<HTMLDivElement>(null);
     const [tetrisBlock, setTetrisBlock] = useState(defaultBlock);
-    const positionLimit : PositionLimit = {minX: 0, minY: 0, maxX: gameState.board_size.pixelSize.left, 
-        maxY: gameState.board_size.pixelSize.top};
+    const positionLimit : PositionLimit = {minX: 0, minY: 0, maxX: gameState.board_size.left, 
+        maxY: gameState.board_size.top};
     const velocity : number = 30;
 
     function handleInput(event : React.KeyboardEvent) : void {
@@ -60,7 +60,15 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
                     break;
             }
 
-            crossedFinishLine = newBlock.position.top >= gameState.win_state.win_pos_y ? true : false;
+            for (let subBlock of newBlock.subBlocks) {
+                if (subBlock.collider.hasCollided(gameState['board_size'], newBlock.position, 'board')) {
+                    console.log("Has collided!");
+                    newBlock.position = tetrisBlock.position;
+                    break;
+                }
+            }
+
+            // crossedFinishLine = newBlock.position.top >= gameState.win_state.win_pos_y ? true : false;
             dispatch({type : 'CHANGE_SCORE', hasScored : hasScored, crossedFinishLine : crossedFinishLine});
             setTetrisBlock(newBlock);
         }
