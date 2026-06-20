@@ -4,14 +4,14 @@ import Collider from "./Collider.ts";
 class SubBlock {
     private _pixel_size : Vector2;
     private _position : Vector2;
-    private _parent_position : Vector2;
+    private _global_position : Vector2;
     private _collider: Collider;
 
-    public constructor(position : Vector2, parentPosition : Vector2, pixelSize : Vector2) {
+    public constructor(position : Vector2, globalPosition : Vector2, pixelSize : Vector2) {
         this._position = position;
-        this._parent_position = parentPosition;
+        this._global_position = globalPosition;
         this._pixel_size = pixelSize;
-        this._collider = new Collider(pixelSize, );
+        this._collider = new Collider(pixelSize, position, globalPosition);
     }
 
     public get pixelSize() : Vector2 {return this._pixel_size;}
@@ -22,9 +22,9 @@ class SubBlock {
 
     public set position(position : Vector2) {this._position = position;}
 
-    public get parentPosition() : Vector2 {return this._position;}
+    public get globalPosition() : Vector2 {return this._position;}
 
-    public set parentPosition(position : Vector2) {this._position = position;}
+    public set globalPosition(position : Vector2) {this._position = position;}
 
     public get collider() : Collider {return this._collider;}
 
@@ -41,10 +41,10 @@ abstract class Block {
         this._pixel_size = pixelSize;
         this._position = position;
         this._subblocks = new Array<SubBlock>(
-            new SubBlock(groupPositions[0], pixelSize), 
-            new SubBlock(groupPositions[1], pixelSize),
-            new SubBlock(groupPositions[2], pixelSize),
-            new SubBlock(groupPositions[3], pixelSize)
+            new SubBlock(groupPositions[0], position, pixelSize), 
+            new SubBlock(groupPositions[1], position, pixelSize),
+            new SubBlock(groupPositions[2], position, pixelSize),
+            new SubBlock(groupPositions[3], position, pixelSize)
         );
         this._orientation = orientation;
     }

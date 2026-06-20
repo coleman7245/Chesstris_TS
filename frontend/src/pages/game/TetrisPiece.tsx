@@ -6,6 +6,7 @@ import { PositionLimit } from '../../types.ts';
 import { GameContext } from '../../App.tsx';
 import { Game_Phase } from '../../utilities.ts';
 import Vector2 from '../../classes/Vector2.ts';
+import Collider from '../../classes/Collider.ts';
 
 function TetrisPiece({sources, type} : {sources : string[], type : string}) {
     const [gameState, dispatch] = useContext(GameContext);
@@ -60,8 +61,10 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
                     break;
             }
 
+            let gameBoardCollider = new Collider(gameState['board_size'], new Vector2(0, 0), new Vector2(0, 0));
+
             for (let subBlock of newBlock.subBlocks) {
-                if (subBlock.collider.hasCollided(gameState['board_size'], newBlock.position, 'board')) {
+                if (subBlock.collider.hasCollided(gameBoardCollider, 'board')) {
                     console.log("Has collided!");
                     newBlock.position = tetrisBlock.position;
                     break;
@@ -72,8 +75,6 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
             dispatch({type : 'CHANGE_SCORE', hasScored : hasScored, crossedFinishLine : crossedFinishLine});
             setTetrisBlock(newBlock);
         }
-
-        return;
     }
 
     useEffect(() => {
