@@ -23,6 +23,12 @@ class Vector2 {
         this._top = top;
     }
 
+    public copy() : Vector2 {
+        let copy : Vector2 = new Vector2(this._top, this._left);
+
+        return copy;
+    }
+
     public equals(other : Vector2) : boolean {
         return (this.top === other.top && this.left === other.left);
     } 

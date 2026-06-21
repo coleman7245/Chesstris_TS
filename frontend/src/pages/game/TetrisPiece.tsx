@@ -65,8 +65,7 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
 
             for (let subBlock of newBlock.subBlocks) {
                 if (subBlock.collider.hasCollided(gameBoardCollider, 'board')) {
-                    console.log("Has collided!");
-                    newBlock.position = tetrisBlock.position;
+                    newBlock.position.setVector2(tetrisBlock.position.top, tetrisBlock.position.left);
                     break;
                 }
             }
