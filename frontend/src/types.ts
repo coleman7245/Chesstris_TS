@@ -12,4 +12,16 @@ type CollisionPoints = {
   right : number
 }
 
-export { PositionLimit, CollisionPoints };
+type CollisionDirection = {
+  top : boolean,
+  bottom : boolean,
+  left : boolean,
+  right : boolean
+}
+
+type CollisionInfo = {
+  points : CollisionPoints,
+  direction : CollisionDirection
+}
+
+export { PositionLimit, CollisionInfo };
