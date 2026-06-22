@@ -47,7 +47,9 @@ class Collider {
         other.calculateCollisionPoints();
 
         if (type === 'block') {
-            if (this._collisionInfo.points.top < other._collisionInfo.points.bottom)
+            if (this._collisionInfo.points.top < other._collisionInfo.points.bottom && 
+                (this._collisionInfo.points.left >= other._collisionInfo.points.left && 
+                    this._collisionInfo.points.right <= other._collisionInfo.points.right))
                 return true;
             if (this._collisionInfo.points.bottom > other._collisionInfo.points.top)
                 return true;
