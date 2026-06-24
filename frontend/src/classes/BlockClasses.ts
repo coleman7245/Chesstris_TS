@@ -2,21 +2,21 @@ import Vector2 from "./Vector2.ts";
 import Collider from "./Collider.ts";
 
 class SubBlock {
-    private _pixel_size : Vector2;
+    private _size : Vector2;
     private _position : Vector2;
     private _global_position : Vector2;
     private _collider: Collider;
 
-    public constructor(position : Vector2, globalPosition : Vector2, pixelSize : Vector2) {
+    public constructor(position : Vector2, globalPosition : Vector2, size : Vector2) {
         this._position = position.copy();
         this._global_position = globalPosition.copy();
-        this._pixel_size = pixelSize.copy();
-        this._collider = new Collider(pixelSize, position, globalPosition);
+        this._size = size.copy();
+        this._collider = new Collider(size, position, globalPosition);
     }
 
-    public get pixelSize() : Vector2 {return this._pixel_size;}
+    public get size() : Vector2 {return this._size;}
     
-    public set pixelSize(pixelSize : Vector2) {this._pixel_size = pixelSize.copy();}
+    public set size(size : Vector2) {this._size = size.copy();}
 
     public get position() : Vector2 {return this._position;}
 
@@ -30,30 +30,30 @@ class SubBlock {
 
     public set collider(other : Collider) {this._collider = other.copy();}
     
-    public copy() : SubBlock {return new SubBlock(this._position, this._global_position, this._pixel_size);}
+    public copy() : SubBlock {return new SubBlock(this._position, this._global_position, this._size);}
 }
 
 abstract class Block {
-    protected _pixel_size : Vector2;
+    protected _size : Vector2;
     protected _subblocks : Array<SubBlock>;
     protected _orientation : number;
     protected _position : Vector2;
 
-    protected constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, pixelSize : Vector2) {
-        this._pixel_size = pixelSize.copy();
+    protected constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, size : Vector2) {
+        this._size = size.copy();
         this._position = position.copy();
         this._subblocks = new Array<SubBlock>(
-            new SubBlock(groupPositions[0], position, pixelSize), 
-            new SubBlock(groupPositions[1], position, pixelSize),
-            new SubBlock(groupPositions[2], position, pixelSize),
-            new SubBlock(groupPositions[3], position, pixelSize)
+            new SubBlock(groupPositions[0], position, size), 
+            new SubBlock(groupPositions[1], position, size),
+            new SubBlock(groupPositions[2], position, size),
+            new SubBlock(groupPositions[3], position, size)
         );
         this._orientation = orientation;
     }
 
-    public get pixelSize() : Vector2 {return this._pixel_size;}
+    public get size() : Vector2 {return this._size;}
     
-    public set pixelSize(pixelSize : Vector2) {this._pixel_size = pixelSize.copy();}
+    public set size(size : Vector2) {this._size = size.copy();}
 
     public get subBlocks() : Array<SubBlock> {return this._subblocks;}
 
@@ -82,30 +82,30 @@ abstract class Block {
     public abstract copy() : Block;
 
     public static createTetrisBlock(type : string, groupPositions : Array<Vector2>, position : Vector2, orientation : number, 
-    pixelSize : Vector2) : Block | null {
+    size : Vector2) : Block | null {
         let newBlock : Block | null = null;
         
         switch (type) {
             case 'square':
-                newBlock = new SquareBlock(groupPositions, position, orientation, pixelSize);
+                newBlock = new SquareBlock(groupPositions, position, orientation, size);
                 return newBlock;
             case 't':
-                newBlock = new TBlock(groupPositions, position, orientation, pixelSize);
+                newBlock = new TBlock(groupPositions, position, orientation, size);
                 return newBlock;
             case 'l':
-                newBlock = new LBlock(groupPositions, position, orientation, false, pixelSize);
+                newBlock = new LBlock(groupPositions, position, orientation, false, size);
                 return newBlock;
             case 'reverse_l':
-                newBlock = new LBlock(groupPositions, position, orientation, true, pixelSize);
+                newBlock = new LBlock(groupPositions, position, orientation, true, size);
                 return newBlock;
             case 'squiggly':
-                newBlock = new SquigglyBlock(groupPositions, position, orientation, false, pixelSize);
+                newBlock = new SquigglyBlock(groupPositions, position, orientation, false, size);
                 return newBlock;
             case 'reverse_squiggly':
-                newBlock = new SquigglyBlock(groupPositions, position, orientation, true, pixelSize);
+                newBlock = new SquigglyBlock(groupPositions, position, orientation, true, size);
                 return newBlock;
             case 'line':
-                newBlock = new LineBlock(groupPositions, position, orientation, pixelSize);
+                newBlock = new LineBlock(groupPositions, position, orientation, size);
                 return newBlock;
             default:
                 return newBlock;
@@ -117,8 +117,8 @@ abstract class ReversableBlock extends Block {
     protected _reversed : boolean;
 
     constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, reversed : boolean, 
-    pixelSize : Vector2) {
-        super(groupPositions, position, orientation, pixelSize);
+    size : Vector2) {
+        super(groupPositions, position, orientation, size);
         this._reversed = reversed;
     }
 
@@ -128,8 +128,8 @@ abstract class ReversableBlock extends Block {
 }
 
 class TBlock extends Block {
-    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, pixelSize : Vector2) {
-        super(groupPositions, position, orientation, pixelSize);
+    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, size : Vector2) {
+        super(groupPositions, position, orientation, size);
     }
 
     public calculatePositions() : void {
@@ -163,7 +163,7 @@ class TBlock extends Block {
         }
     }
 
-    public copy() : Block {return new TBlock(this.getSubblockPositions(), this._position, this._orientation, this._pixel_size);}
+    public copy() : Block {return new TBlock(this.getSubblockPositions(), this._position, this._orientation, this._size);}
 
     public equals(other : TBlock) : boolean {
         for (let i = 0; i < this._subblocks.length; i++) {
@@ -181,8 +181,8 @@ class TBlock extends Block {
 class LBlock extends ReversableBlock {
 
     constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, reversed : boolean, 
-    pixelSize : Vector2) {
-        super(groupPositions, position, orientation, reversed, pixelSize);
+    size : Vector2) {
+        super(groupPositions, position, orientation, reversed, size);
     }
 
     public calculatePositions(): void {
@@ -249,7 +249,7 @@ class LBlock extends ReversableBlock {
     }
 
     public copy() : LBlock {return new LBlock(this.getSubblockPositions(), this._position, this._orientation, this._reversed, 
-        this._pixel_size);}
+        this._size);}
 
     public equals(other : LBlock) : boolean {
         let isEqual : boolean = true;
@@ -276,8 +276,8 @@ class LBlock extends ReversableBlock {
     
 class SquigglyBlock extends ReversableBlock {
     constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, reversed : boolean, 
-    pixelSize : Vector2) {
-        super(groupPositions, position, orientation, reversed, pixelSize);
+    size : Vector2) {
+        super(groupPositions, position, orientation, reversed, size);
     }
 
     public calculatePositions(): void {
@@ -344,12 +344,12 @@ class SquigglyBlock extends ReversableBlock {
     }
 
     public copy() : Block {return new SquigglyBlock(this.getSubblockPositions(), this._position, this._orientation, this._reversed, 
-        this._pixel_size);}
+        this._size);}
 }
 
 class SquareBlock extends Block {
-    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, pixelSize : Vector2) {
-        super(groupPositions, position, orientation, pixelSize);
+    constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, size : Vector2) {
+        super(groupPositions, position, orientation, size);
     }
 
     public calculatePositions(): void {
@@ -384,7 +384,7 @@ class SquareBlock extends Block {
     }
 
     public copy() : Block {
-        let copy = new SquareBlock(this.getSubblockPositions(), this._position, this._orientation, this._pixel_size);
+        let copy = new SquareBlock(this.getSubblockPositions(), this._position, this._orientation, this._size);
 
         return copy;
     }
@@ -392,8 +392,8 @@ class SquareBlock extends Block {
 
 class LineBlock extends Block {
     constructor(groupPositions : Array<Vector2>, position : Vector2, 
-    orientation : number, pixelSize : Vector2) {
-        super(groupPositions, position, orientation, pixelSize);
+    orientation : number, size : Vector2) {
+        super(groupPositions, position, orientation, size);
     }
 
     public calculatePositions(): void {
@@ -427,7 +427,7 @@ class LineBlock extends Block {
         }
     }
 
-    public copy() : Block {return new LineBlock(this.getSubblockPositions(), this._position, this._orientation, this._pixel_size);}
+    public copy() : Block {return new LineBlock(this.getSubblockPositions(), this._position, this._orientation, this._size);}
 }
 
 export { Block, TBlock, LBlock, SquigglyBlock, SquareBlock, LineBlock };
