@@ -7,21 +7,13 @@ class Vector2 {
         this._left = left;
     }
 
-    public get left () : number {
-        return this._left;
-    }
+    public get left () : number {return this._left;}
 
-    public get top() : number {
-        return this._top;
-    }
+    public get top() : number {return this._top;}
 
-    public set left(left : number) {
-        this._left = left;
-    }
+    public set left(left : number) {this._left = left;}
 
-    public set top(top : number) {
-        this._top = top;
-    }
+    public set top(top : number) {this._top = top;}
 
     public add(b : Vector2) : Vector2 {return new Vector2(this._top + b.top, this.left + b.left);}
 
