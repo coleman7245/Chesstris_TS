@@ -20,6 +20,8 @@ class Vector2 {
     public copy() : Vector2 {return new Vector2(this._top, this._left);}
 
     public equals(other : Vector2) : boolean {return (this.top === other.top && this.left === other.left);}
+
+    public magnitude() : number {return Math.sqrt(Math.pow(this._top, 2) + Math.pow(this._left, 2));}
     
     public scale(scalar : number) : Vector2 {return new Vector2(this._top * scalar, this._left * scalar);}
 
