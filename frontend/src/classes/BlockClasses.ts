@@ -1,18 +1,21 @@
 import Vector2 from "./Vector2.ts";
-import Collider from "./Collider.ts";
 
 class SubBlock {
+    private _center : Vector2;
     private _size : Vector2;
     private _position : Vector2;
     private _global_position : Vector2;
-    private _collider: Collider;
 
     public constructor(position : Vector2, globalPosition : Vector2, size : Vector2) {
+        this._center = position.add(globalPosition);
         this._position = position.copy();
         this._global_position = globalPosition.copy();
         this._size = size.copy();
-        this._collider = new Collider(size, position, globalPosition);
     }
+
+    public get center() : Vector2 {return this._center;}
+    
+    public set center(center : Vector2) {this._center = center.copy();}
 
     public get size() : Vector2 {return this._size;}
     
@@ -25,10 +28,6 @@ class SubBlock {
     public get globalPosition() : Vector2 {return this._global_position;}
 
     public set globalPosition(globalPosition : Vector2) {this._global_position = globalPosition.copy();}
-
-    public get collider() : Collider {return this._collider;}
-
-    public set collider(other : Collider) {this._collider = other.copy();}
     
     public copy() : SubBlock {return new SubBlock(this._position, this._global_position, this._size);}
 }
@@ -430,4 +429,4 @@ class LineBlock extends Block {
     public copy() : Block {return new LineBlock(this.getSubblockPositions(), this._position, this._orientation, this._size);}
 }
 
-export { Block, TBlock, LBlock, SquigglyBlock, SquareBlock, LineBlock };
+export { SubBlock, Block, TBlock, LBlock, SquigglyBlock, SquareBlock, LineBlock };
