@@ -25,15 +25,9 @@ class Vector2 {
 
     public add(b : Vector2) : Vector2 {return new Vector2(this._top + b.top, this.left + b.left);}
 
-    public copy() : Vector2 {
-        let copy : Vector2 = new Vector2(this._top, this._left);
+    public copy() : Vector2 {return new Vector2(this._top, this._left);}
 
-        return copy;
-    }
-
-    public equals(other : Vector2) : boolean {
-        return (this.top === other.top && this.left === other.left);
-    }
+    public equals(other : Vector2) : boolean {return (this.top === other.top && this.left === other.left);}
     
     public scale(scalar : number) : Vector2 {return new Vector2(this._top * scalar, this._left * scalar);}
 
