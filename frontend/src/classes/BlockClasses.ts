@@ -1,51 +1,20 @@
 import Vector2 from "./Vector2.ts";
-
-class SubBlock {
-    private _center : Vector2;
-    private _size : Vector2;
-    private _position : Vector2;
-    private _global_position : Vector2;
-
-    public constructor(position : Vector2, globalPosition : Vector2, size : Vector2) {
-        this._center = position.add(globalPosition);
-        this._position = position.copy();
-        this._global_position = globalPosition;
-        this._size = size.copy();
-    }
-
-    public get center() : Vector2 {return this._center;}
-    
-    public set center(center : Vector2) {this._center = center.copy();}
-
-    public get size() : Vector2 {return this._size;}
-    
-    public set size(size : Vector2) {this._size = size.copy();}
-
-    public get position() : Vector2 {return this._position;}
-
-    public set position(position : Vector2) {this._position = position.copy();}
-
-    public get globalPosition() : Vector2 {return this._global_position;}
-
-    public set globalPosition(globalPosition : Vector2) {this._global_position = globalPosition.copy();}
-    
-    public copy() : SubBlock {return new SubBlock(this._position, this._global_position, this._size);}
-}
+import Collider from "./Collider.ts";
 
 abstract class Block {
     protected _size : Vector2;
-    protected _subblocks : Array<SubBlock>;
+    protected _colliders : Array<Collider>;
     protected _orientation : number;
     protected _position : Vector2;
 
     protected constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, size : Vector2) {
         this._size = size.copy();
         this._position = position.copy();
-        this._subblocks = new Array<SubBlock>(
-            new SubBlock(groupPositions[0], position, size), 
-            new SubBlock(groupPositions[1], position, size),
-            new SubBlock(groupPositions[2], position, size),
-            new SubBlock(groupPositions[3], position, size)
+        this._colliders = new Array<Collider>(
+            new Collider(groupPositions[0], position, size), 
+            new Collider(groupPositions[1], position, size),
+            new Collider(groupPositions[2], position, size),
+            new Collider(groupPositions[3], position, size)
         );
         this._orientation = orientation;
     }
@@ -54,9 +23,9 @@ abstract class Block {
     
     public set size(size : Vector2) {this._size = size.copy();}
 
-    public get subBlocks() : Array<SubBlock> {return this._subblocks;}
+    public get colliders() : Array<Collider> {return this._colliders;}
 
-    public set subBlocks(subBlocks : Array<SubBlock>) {this._subblocks = Array.from(subBlocks, (sb) => sb.copy());}
+    public set colliders(colliders : Array<Collider>) {this._colliders = Array.from(colliders, (sb) => sb.copy());}
 
     public get orientation() : number {return this._orientation;}
 
@@ -68,11 +37,11 @@ abstract class Block {
     
     public abstract calculatePositions() : void;
 
-    public getSubblockPositions() : Array<Vector2> {
-        let groupPositions = new Array<Vector2>(this._subblocks.length);
+    public getColliderPositions() : Array<Vector2> {
+        let groupPositions = new Array<Vector2>(this._colliders.length);
 
-        for (let i = 0; i < this._subblocks.length; i++) {
-            groupPositions[i] = this._subblocks[i].position;
+        for (let i = 0; i < this._colliders.length; i++) {
+            groupPositions[i] = this._colliders[i].position;
         }
 
         return groupPositions;
@@ -134,39 +103,39 @@ class TBlock extends Block {
     public calculatePositions() : void {
         switch (this._orientation) {
             case 0:
-                this._subblocks[0].position = new Vector2(0, 0);
-                this._subblocks[1].position = new Vector2(0, 30);
-                this._subblocks[2].position = new Vector2(0, -30);
-                this._subblocks[3].position = new Vector2(30, 0);
+                this._colliders[0].position = new Vector2(0, 0);
+                this._colliders[1].position = new Vector2(0, 30);
+                this._colliders[2].position = new Vector2(0, -30);
+                this._colliders[3].position = new Vector2(30, 0);
                 break;
             case 90:
-                this._subblocks[0].position = new Vector2(0, 0);
-                this._subblocks[1].position = new Vector2(-30, 0);
-                this._subblocks[2].position = new Vector2(30, 0);
-                this._subblocks[3].position = new Vector2(0, 30);
+                this._colliders[0].position = new Vector2(0, 0);
+                this._colliders[1].position = new Vector2(-30, 0);
+                this._colliders[2].position = new Vector2(30, 0);
+                this._colliders[3].position = new Vector2(0, 30);
                 break;
             case 180:
-                this._subblocks[0].position = new Vector2(0, 0);
-                this._subblocks[1].position = new Vector2(0, -30);
-                this._subblocks[2].position = new Vector2(0, 30);
-                this._subblocks[3].position = new Vector2(-30, 0);
+                this._colliders[0].position = new Vector2(0, 0);
+                this._colliders[1].position = new Vector2(0, -30);
+                this._colliders[2].position = new Vector2(0, 30);
+                this._colliders[3].position = new Vector2(-30, 0);
                 break;
             case 270:
-                this._subblocks[0].position = new Vector2(0, 0);
-                this._subblocks[1].position = new Vector2(30, 0);
-                this._subblocks[2].position = new Vector2(-30, 0);
-                this._subblocks[3].position = new Vector2(0, -30);
+                this._colliders[0].position = new Vector2(0, 0);
+                this._colliders[1].position = new Vector2(30, 0);
+                this._colliders[2].position = new Vector2(-30, 0);
+                this._colliders[3].position = new Vector2(0, -30);
                 break;
             default:
                 break;
         }
     }
 
-    public copy() : Block {return new TBlock(this.getSubblockPositions(), this._position, this._orientation, this._size);}
+    public copy() : Block {return new TBlock(this.getColliderPositions(), this._position, this._orientation, this._size);}
 
     public equals(other : TBlock) : boolean {
-        for (let i = 0; i < this._subblocks.length; i++) {
-            if (!this.subBlocks[i].position.equals(other.subBlocks[i].position))
+        for (let i = 0; i < this._colliders.length; i++) {
+            if (!this._colliders[i].position.equals(other.colliders[i].position))
                 return false;
         }
 
@@ -188,28 +157,28 @@ class LBlock extends ReversableBlock {
         if (!this._reversed) {
             switch (this._orientation) {
                 case 0:
-                    this._subblocks[0].position = new Vector2(30, 15);
-                    this._subblocks[1].position = new Vector2(30, -15);
-                    this._subblocks[2].position = new Vector2(0, -15);
-                    this._subblocks[3].position = new Vector2(-30, -15);
+                    this._colliders[0].position = new Vector2(30, 15);
+                    this._colliders[1].position = new Vector2(30, -15);
+                    this._colliders[2].position = new Vector2(0, -15);
+                    this._colliders[3].position = new Vector2(-30, -15);
                     break;
                 case 90:
-                    this._subblocks[0].position = new Vector2(-15, 30);
-                    this._subblocks[1].position = new Vector2(15, 30);
-                    this._subblocks[2].position = new Vector2(15, 0);
-                    this._subblocks[3].position = new Vector2(15, -30);
+                    this._colliders[0].position = new Vector2(-15, 30);
+                    this._colliders[1].position = new Vector2(15, 30);
+                    this._colliders[2].position = new Vector2(15, 0);
+                    this._colliders[3].position = new Vector2(15, -30);
                     break;
                 case 180:
-                    this._subblocks[0].position = new Vector2(-30, -15);
-                    this._subblocks[1].position = new Vector2(-30, 15);
-                    this._subblocks[2].position = new Vector2(0, 15);
-                    this._subblocks[3].position = new Vector2(30, 15);
+                    this._colliders[0].position = new Vector2(-30, -15);
+                    this._colliders[1].position = new Vector2(-30, 15);
+                    this._colliders[2].position = new Vector2(0, 15);
+                    this._colliders[3].position = new Vector2(30, 15);
                     break;
                 case 270:
-                    this._subblocks[0].position = new Vector2(15, -30);
-                    this._subblocks[1].position = new Vector2(-15, -30);
-                    this._subblocks[2].position = new Vector2(-15, 0);
-                    this._subblocks[3].position = new Vector2(-15, 30);
+                    this._colliders[0].position = new Vector2(15, -30);
+                    this._colliders[1].position = new Vector2(-15, -30);
+                    this._colliders[2].position = new Vector2(-15, 0);
+                    this._colliders[3].position = new Vector2(-15, 30);
                     break;
                 default:
                     break;
@@ -218,28 +187,28 @@ class LBlock extends ReversableBlock {
         else {
             switch (this._orientation) {
                 case 0:
-                    this._subblocks[0].position = new Vector2(30, -15);
-                    this._subblocks[1].position = new Vector2(30, 15);
-                    this._subblocks[2].position = new Vector2(0, 15 );
-                    this._subblocks[3].position = new Vector2(-30, 15 );
+                    this._colliders[0].position = new Vector2(30, -15);
+                    this._colliders[1].position = new Vector2(30, 15);
+                    this._colliders[2].position = new Vector2(0, 15 );
+                    this._colliders[3].position = new Vector2(-30, 15 );
                     break;
                 case 90:
-                    this._subblocks[0].position = new Vector2(15, 30);
-                    this._subblocks[1].position = new Vector2(-15, 30);
-                    this._subblocks[2].position = new Vector2(-15, 0);
-                    this._subblocks[3].position = new Vector2(-15, -30);
+                    this._colliders[0].position = new Vector2(15, 30);
+                    this._colliders[1].position = new Vector2(-15, 30);
+                    this._colliders[2].position = new Vector2(-15, 0);
+                    this._colliders[3].position = new Vector2(-15, -30);
                     break;
                 case 180:
-                    this._subblocks[0].position = new Vector2(-30, 15);
-                    this._subblocks[1].position = new Vector2(-30, -15);
-                    this._subblocks[2].position = new Vector2(0, -15);
-                    this._subblocks[3].position = new Vector2(30, -15);
+                    this._colliders[0].position = new Vector2(-30, 15);
+                    this._colliders[1].position = new Vector2(-30, -15);
+                    this._colliders[2].position = new Vector2(0, -15);
+                    this._colliders[3].position = new Vector2(30, -15);
                     break;
                 case 270:
-                    this._subblocks[0].position = new Vector2(-15, -30);
-                    this._subblocks[1].position = new Vector2(15, -30);
-                    this._subblocks[2].position = new Vector2(15, 0);
-                    this._subblocks[3].position = new Vector2(15, 30);
+                    this._colliders[0].position = new Vector2(-15, -30);
+                    this._colliders[1].position = new Vector2(15, -30);
+                    this._colliders[2].position = new Vector2(15, 0);
+                    this._colliders[3].position = new Vector2(15, 30);
                     break;
                 default:
                     break;
@@ -247,14 +216,14 @@ class LBlock extends ReversableBlock {
         }
     }
 
-    public copy() : LBlock {return new LBlock(this.getSubblockPositions(), this._position, this._orientation, this._reversed, 
+    public copy() : LBlock {return new LBlock(this.getColliderPositions(), this._position, this._orientation, this._reversed, 
         this._size);}
 
     public equals(other : LBlock) : boolean {
         let isEqual : boolean = true;
 
-        for (let i = 0; i < this._subblocks.length; i++) {
-            if (!this.subBlocks[i].position.equals(other.subBlocks[i].position)) {
+        for (let i = 0; i < this._colliders.length; i++) {
+            if (!this._colliders[i].position.equals(other.colliders[i].position)) {
                 isEqual = false;
             }
         }
@@ -283,28 +252,28 @@ class SquigglyBlock extends ReversableBlock {
         if (!this._reversed) {
             switch (this._orientation) {
                 case 0:
-                    this._subblocks[0].position = new Vector2(15, -30);
-                    this._subblocks[1].position = new Vector2(15, 0);
-                    this._subblocks[2].position = new Vector2(-15, 0);
-                    this._subblocks[3].position = new Vector2(-15, 30);
+                    this._colliders[0].position = new Vector2(15, -30);
+                    this._colliders[1].position = new Vector2(15, 0);
+                    this._colliders[2].position = new Vector2(-15, 0);
+                    this._colliders[3].position = new Vector2(-15, 30);
                     break;
                 case 90:
-                    this._subblocks[0].position = new Vector2(30, 15);
-                    this._subblocks[1].position = new Vector2(0, 15);
-                    this._subblocks[2].position = new Vector2(0, -15);
-                    this._subblocks[3].position = new Vector2(-30, -15);
+                    this._colliders[0].position = new Vector2(30, 15);
+                    this._colliders[1].position = new Vector2(0, 15);
+                    this._colliders[2].position = new Vector2(0, -15);
+                    this._colliders[3].position = new Vector2(-30, -15);
                     break;
                 case 180:
-                    this._subblocks[0].position = new Vector2(-15, 30);
-                    this._subblocks[1].position = new Vector2(-15, 0);
-                    this._subblocks[2].position = new Vector2(15, 0);
-                    this._subblocks[3].position = new Vector2(15, -30);
+                    this._colliders[0].position = new Vector2(-15, 30);
+                    this._colliders[1].position = new Vector2(-15, 0);
+                    this._colliders[2].position = new Vector2(15, 0);
+                    this._colliders[3].position = new Vector2(15, -30);
                     break;
                 case 270:
-                    this._subblocks[0].position = new Vector2(-30, -15);
-                    this._subblocks[1].position = new Vector2(0, -15);
-                    this._subblocks[2].position = new Vector2(0, 15);
-                    this._subblocks[3].position = new Vector2(30, 15);
+                    this._colliders[0].position = new Vector2(-30, -15);
+                    this._colliders[1].position = new Vector2(0, -15);
+                    this._colliders[2].position = new Vector2(0, 15);
+                    this._colliders[3].position = new Vector2(30, 15);
                     break;
                 default:
                     break;
@@ -313,28 +282,28 @@ class SquigglyBlock extends ReversableBlock {
         else {
             switch (this._orientation) {
                 case 0:
-                    this._subblocks[0].position = new Vector2(15, 30);
-                    this._subblocks[1].position = new Vector2(15, 0);
-                    this._subblocks[2].position = new Vector2(-15, 0);
-                    this._subblocks[3].position = new Vector2(-15, -30);
+                    this._colliders[0].position = new Vector2(15, 30);
+                    this._colliders[1].position = new Vector2(15, 0);
+                    this._colliders[2].position = new Vector2(-15, 0);
+                    this._colliders[3].position = new Vector2(-15, -30);
                     break;
                 case 90:
-                    this._subblocks[0].position = new Vector2(-30, 15);
-                    this._subblocks[1].position = new Vector2(0, 15);
-                    this._subblocks[2].position = new Vector2(0, -15);
-                    this._subblocks[3].position = new Vector2(30, -15);
+                    this._colliders[0].position = new Vector2(-30, 15);
+                    this._colliders[1].position = new Vector2(0, 15);
+                    this._colliders[2].position = new Vector2(0, -15);
+                    this._colliders[3].position = new Vector2(30, -15);
                     break;
                 case 180:
-                    this._subblocks[0].position = new Vector2(-15, -30);
-                    this._subblocks[1].position = new Vector2(-15, 0);
-                    this._subblocks[2].position = new Vector2(15, 0);
-                    this._subblocks[3].position = new Vector2(15, 30);
+                    this._colliders[0].position = new Vector2(-15, -30);
+                    this._colliders[1].position = new Vector2(-15, 0);
+                    this._colliders[2].position = new Vector2(15, 0);
+                    this._colliders[3].position = new Vector2(15, 30);
                     break;
                 case 270:
-                    this._subblocks[0].position = new Vector2(30, -15);
-                    this._subblocks[1].position = new Vector2(0, -15);
-                    this._subblocks[2].position = new Vector2(0, 15);
-                    this._subblocks[3].position = new Vector2(-30, 15);
+                    this._colliders[0].position = new Vector2(30, -15);
+                    this._colliders[1].position = new Vector2(0, -15);
+                    this._colliders[2].position = new Vector2(0, 15);
+                    this._colliders[3].position = new Vector2(-30, 15);
                     break;
                 default:
                     break;
@@ -342,7 +311,7 @@ class SquigglyBlock extends ReversableBlock {
         }
     }
 
-    public copy() : Block {return new SquigglyBlock(this.getSubblockPositions(), this._position, this._orientation, this._reversed, 
+    public copy() : Block {return new SquigglyBlock(this.getColliderPositions(), this._position, this._orientation, this._reversed, 
         this._size);}
 }
 
@@ -354,28 +323,28 @@ class SquareBlock extends Block {
     public calculatePositions(): void {
         switch (this._orientation) {
             case 0:
-                this._subblocks[0].position = new Vector2(-15, 15);
-                this._subblocks[1].position = new Vector2(-15, -15);
-                this._subblocks[2].position = new Vector2(15, -15);
-                this._subblocks[3].position = new Vector2(15, 15);
+                this._colliders[0].position = new Vector2(-15, 15);
+                this._colliders[1].position = new Vector2(-15, -15);
+                this._colliders[2].position = new Vector2(15, -15);
+                this._colliders[3].position = new Vector2(15, 15);
                 break;
             case 90:
-                this._subblocks[0].position = new Vector2(-15, -15);
-                this._subblocks[1].position = new Vector2(15, -15);
-                this._subblocks[2].position = new Vector2(15, 15);
-                this._subblocks[3].position = new Vector2(-15, 15);
+                this._colliders[0].position = new Vector2(-15, -15);
+                this._colliders[1].position = new Vector2(15, -15);
+                this._colliders[2].position = new Vector2(15, 15);
+                this._colliders[3].position = new Vector2(-15, 15);
                 break;
             case 180:
-                this._subblocks[0].position = new Vector2(15, -15);
-                this._subblocks[1].position = new Vector2(15, 15);
-                this._subblocks[2].position = new Vector2(-15, 15);
-                this._subblocks[3].position = new Vector2(-15, -15);
+                this._colliders[0].position = new Vector2(15, -15);
+                this._colliders[1].position = new Vector2(15, 15);
+                this._colliders[2].position = new Vector2(-15, 15);
+                this._colliders[3].position = new Vector2(-15, -15);
                 break;
             case 270:
-                this._subblocks[0].position = new Vector2(15, 15);
-                this._subblocks[1].position = new Vector2(-15, 15);
-                this._subblocks[2].position = new Vector2(-15, -15);
-                this._subblocks[3].position = new Vector2(15, -15);
+                this._colliders[0].position = new Vector2(15, 15);
+                this._colliders[1].position = new Vector2(-15, 15);
+                this._colliders[2].position = new Vector2(-15, -15);
+                this._colliders[3].position = new Vector2(15, -15);
                 break;
             default:
                 break;
@@ -383,7 +352,7 @@ class SquareBlock extends Block {
     }
 
     public copy() : Block {
-        let copy = new SquareBlock(this.getSubblockPositions(), this._position, this._orientation, this._size);
+        let copy = new SquareBlock(this.getColliderPositions(), this._position, this._orientation, this._size);
 
         return copy;
     }
@@ -398,35 +367,35 @@ class LineBlock extends Block {
     public calculatePositions(): void {
         switch (this._orientation) {
             case 0:
-                this._subblocks[0].position = new Vector2(0, -45);
-                this._subblocks[1].position = new Vector2(0, -15);
-                this._subblocks[2].position = new Vector2(0, 15);
-                this._subblocks[3].position = new Vector2(0, 45);
+                this._colliders[0].position = new Vector2(0, -45);
+                this._colliders[1].position = new Vector2(0, -15);
+                this._colliders[2].position = new Vector2(0, 15);
+                this._colliders[3].position = new Vector2(0, 45);
                 break;
             case 90:
-                this._subblocks[0].position = new Vector2(45, 0);
-                this._subblocks[1].position = new Vector2(15, 0);
-                this._subblocks[2].position = new Vector2(-15, 0);
-                this._subblocks[3].position = new Vector2(-45, 0);
+                this._colliders[0].position = new Vector2(45, 0);
+                this._colliders[1].position = new Vector2(15, 0);
+                this._colliders[2].position = new Vector2(-15, 0);
+                this._colliders[3].position = new Vector2(-45, 0);
                 break;
             case 180:
-                this._subblocks[0].position = new Vector2(0, 45);
-                this._subblocks[1].position = new Vector2(0, 15);
-                this._subblocks[2].position = new Vector2(0, -15);
-                this._subblocks[3].position = new Vector2(0, -45);
+                this._colliders[0].position = new Vector2(0, 45);
+                this._colliders[1].position = new Vector2(0, 15);
+                this._colliders[2].position = new Vector2(0, -15);
+                this._colliders[3].position = new Vector2(0, -45);
                 break;
             case 270:
-                this._subblocks[0].position = new Vector2(-45, 0);
-                this._subblocks[1].position = new Vector2(-15, 0);
-                this._subblocks[2].position = new Vector2(15, 0);
-                this._subblocks[3].position = new Vector2(45, 0);
+                this._colliders[0].position = new Vector2(-45, 0);
+                this._colliders[1].position = new Vector2(-15, 0);
+                this._colliders[2].position = new Vector2(15, 0);
+                this._colliders[3].position = new Vector2(45, 0);
                 break;
             default:
                 break;
         }
     }
 
-    public copy() : Block {return new LineBlock(this.getSubblockPositions(), this._position, this._orientation, this._size);}
+    public copy() : Block {return new LineBlock(this.getColliderPositions(), this._position, this._orientation, this._size);}
 }
 
-export { SubBlock, Block, TBlock, LBlock, SquigglyBlock, SquareBlock, LineBlock };
+export { Block, TBlock, LBlock, SquigglyBlock, SquareBlock, LineBlock };

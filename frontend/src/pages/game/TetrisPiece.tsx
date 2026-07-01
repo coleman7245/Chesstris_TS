@@ -61,10 +61,10 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
                     break;
             }
 
-            let gameBoardCollider = new Collider(gameState['board_size'], new Vector2(0, 0), new Vector2(0, 0));
+            let gameBoardCollider = new Collider(new Vector2(0, 0), new Vector2(0, 0), gameState['board_size']);
 
-            for (let subBlock of newBlock.subBlocks) {
-                if (subBlock.collider.hasCollided(gameBoardCollider, 'board')) {
+            for (let collider of newBlock.colliders) {
+                if (collider.hasCollided(gameBoardCollider, 'board')) {
                     newBlock.position.setVector2(tetrisBlock.position.top, tetrisBlock.position.left);
                     break;
                 }
@@ -86,39 +86,39 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
         style={{left: `${(tetrisBlock) ? tetrisBlock.position.left : 0}px`, top: `${(tetrisBlock) ? tetrisBlock.position.top : 0}px`}}
         tabIndex={0} onKeyDown={(e) => handleInput(e)}>
             <div className='chesspiece' id='main' style={{
-                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[0].position.top : 0}px`, 
-                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[0].position.left : 0}px`
+                top: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.top : 0}px`, 
+                left: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.left : 0}px`
                 }}>
                     <img src={sources[0]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[0].position.top : 0}px`, 
-                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[0].position.left : 0}px`
+                top: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.top : 0}px`, 
+                left: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.left : 0}px`
                 }} /> 
             </div>
             <div className='chesspiece' id='first' style={{
-                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[1].position.top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[1].position.left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.colliders[1].position.top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.colliders[1].position.left : 0}px`,
                 }}>
                     <img src={sources[1]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[1].position.top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[1].position.left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.colliders[1].position.top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.colliders[1].position.left : 0}px`,
                 }} />  
             </div>
             <div className='chesspiece' id='second' style={{
-                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[2].position.top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[2].position.left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.colliders[2].position.top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.colliders[2].position.left : 0}px`,
                 }}>
                     <img src={sources[2]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[2].position.top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[2].position.left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.colliders[2].position.top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.colliders[2].position.left : 0}px`,
                 }} />  
             </div>
             <div className='chesspiece' id='third' style={{
-                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[3].position.top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[3].position.left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.colliders[3].position.top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.colliders[3].position.left : 0}px`,
                 }}>
                     <img src={sources[3]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.subBlocks[3].position.top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.subBlocks[3].position.left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.colliders[3].position.top : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.colliders[3].position.left : 0}px`,
                 }} />  
             </div>
         </div>
