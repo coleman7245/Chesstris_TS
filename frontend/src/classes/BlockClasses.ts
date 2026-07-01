@@ -9,7 +9,7 @@ class SubBlock {
     public constructor(position : Vector2, globalPosition : Vector2, size : Vector2) {
         this._center = position.add(globalPosition);
         this._position = position.copy();
-        this._global_position = globalPosition.copy();
+        this._global_position = globalPosition;
         this._size = size.copy();
     }
 
