@@ -35,19 +35,23 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
 
             switch (event.key) {
                 case 'w':
-                    newBlock.position.top -= (newBlock.position.top - velocity < positionLimit.minY) ? 0 : velocity;
+                    if (newBlock.position.top > positionLimit.minY)
+                        newBlock.move(new Vector2(-velocity, 0));
                     hasScored = true;
                     break;
                 case 'a':
-                    newBlock.position.left -= (newBlock.position.left - velocity < positionLimit.minX) ? 0 : velocity;
+                    if (newBlock.position.left > positionLimit.minX)
+                        newBlock.move(new Vector2(0, -velocity));
                     hasScored = true;
                     break;
                 case 's':
-                    newBlock.position.top += (newBlock.position.top + velocity > positionLimit.maxY) ? 0 : velocity;
+                    if (newBlock.position.top < positionLimit.maxY)
+                        newBlock.move(new Vector2(velocity, 0));
                     hasScored = true;
                     break;
                 case 'd':
-                    newBlock.position.left += (newBlock.position.left + velocity > positionLimit.maxX) ? 0 : velocity;
+                    if (newBlock.position.left < positionLimit.maxX)
+                        newBlock.move(new Vector2(0, velocity));
                     hasScored = true;
                     break;
                 case "r":

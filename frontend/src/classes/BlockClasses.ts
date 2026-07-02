@@ -79,6 +79,10 @@ abstract class Block {
                 return newBlock;
         }
     }
+
+    public move(velocity : Vector2) : void {
+        this._position = this._position.add(velocity);
+    }
 }
 
 abstract class ReversableBlock extends Block {
