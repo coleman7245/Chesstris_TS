@@ -80,8 +80,18 @@ abstract class Block {
         }
     }
 
-    public move(velocity : Vector2) : void {
-        this._position = this._position.add(velocity);
+    public move(velocity : Vector2 | number, direction : string | null) : void {
+        if (velocity instanceof Vector2)
+            this._position = this._position.add(velocity);
+        else if (direction === 'top')
+            this._position.top += velocity;
+        else
+            this._position.left += velocity;
+    }
+
+    public rotate() : void {
+        this._orientation = this._orientation === 270 ? 0 : this._orientation + 90;
+        this.calculatePositions();
     }
 }
 
