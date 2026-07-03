@@ -8,7 +8,7 @@ import { Game_Phase } from '../../utilities.ts';
 import Vector2 from '../../classes/Vector2.ts';
 import Collider from '../../classes/Collider.ts';
 
-function TetrisPiece({sources, type} : {sources : string[], type : string}) {
+function TetrisPiece({sources, type, gameBoardCollider} : {sources : string[], type : string, gameBoardCollider : Collider}) {
     const [gameState, dispatch] = useContext(GameContext);
     const defaultBlock : Block | null = Block.createTetrisBlock(type, gameState['default_group_positions'][type], 
         gameState['default_start_position'], 0, new Vector2(30, 30));
@@ -63,8 +63,6 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
                     hasScored = false;
                     break;
             }
-
-            let gameBoardCollider = new Collider(new Vector2(0, 0), new Vector2(0, 0), gameState['board_size']);
 
             for (let collider of newBlock.colliders) {
                 if (collider.hasCollided(gameBoardCollider, 'board')) {
