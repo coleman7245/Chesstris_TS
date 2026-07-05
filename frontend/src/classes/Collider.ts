@@ -47,6 +47,7 @@ class Collider {
     public copy() : Collider {return new Collider(this._position, this._global_position, this._size);}
 
     public hasCollided(other : Collider, type : string) : boolean {
+        let collisionDetected : boolean = false;
         this.calculateCollisionPoints();
         other.calculateCollisionPoints();
 
@@ -54,24 +55,30 @@ class Collider {
             if (this._collisionInfo.points.top < other._collisionInfo.points.bottom && 
                 (this._collisionInfo.points.left <= other._collisionInfo.points.right || 
                     this._collisionInfo.points.right >= other._collisionInfo.points.left))
-                return true;
+                collisionDetected = true;
             if (this._collisionInfo.points.bottom > other._collisionInfo.points.top)
-                return true;
+                collisionDetected = true;
             if (this._collisionInfo.points.left > other._collisionInfo.points.right)
-                return true;
+                collisionDetected = true;
             if (this._collisionInfo.points.right < other._collisionInfo.points.left)
-                return true;
+                collisionDetected = true;
         }
         else {
-            if (this._collisionInfo.points.bottom > other._collisionInfo.points.bottom)
-                return true;
-            if (this._collisionInfo.points.left < other._collisionInfo.points.left) 
-                return true;
-            if (this._collisionInfo.points.right > other._collisionInfo.points.right)
-                return true;
+            if (this._collisionInfo.points.bottom > other._collisionInfo.points.bottom) {
+                this._collisionInfo.direction.bottom = true;
+                collisionDetected = true;
+            }
+            if (this._collisionInfo.points.left < other._collisionInfo.points.left) {
+                this._collisionInfo.direction.left = true;
+                collisionDetected = true;
+            }
+            if (this._collisionInfo.points.right > other._collisionInfo.points.right) {
+                this._collisionInfo.direction.right = true;
+                collisionDetected = true;
+            }
         }
         
-        return false;
+        return collisionDetected;
     }
 }
 
