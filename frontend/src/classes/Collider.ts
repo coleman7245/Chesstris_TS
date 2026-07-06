@@ -80,6 +80,13 @@ class Collider {
         
         return collisionDetected;
     }
+
+    public resetCollisionDirection() : void {
+        this._collisionInfo.direction.top = false;
+        this._collisionInfo.direction.bottom = false;
+        this._collisionInfo.direction.left = false;
+        this._collisionInfo.direction.right = false;
+    }
 }
 
 export default Collider;

@@ -66,8 +66,7 @@ function TetrisPiece({sources, type, gameBoardCollider} : {sources : string[], t
 
             for (let collider of newBlock.colliders) {
                 if (collider.hasCollided(gameBoardCollider, 'board')) {
-                    if (collider.collisionInfo.direction.bottom)
-                        newBlock.move(gameBoardCollider.position.top - collider.position.top, 'top');
+                    newBlock.correctCollision(collider, gameBoardCollider);
                     break;
                 }
             }

@@ -49,6 +49,18 @@ abstract class Block {
 
     public abstract copy() : Block;
 
+    public correctCollision(collider : Collider, other : Collider) : void {
+        if (collider.collisionInfo.direction.top)
+            this.move(other.collisionInfo.points.top - collider.collisionInfo.points.top, 'top');
+        if (collider.collisionInfo.direction.bottom) 
+            this.move(other.collisionInfo.points.bottom - collider.collisionInfo.points.bottom, 'top');
+        if (collider.collisionInfo.direction.left) 
+            this.move(other.collisionInfo.points.left - collider.collisionInfo.points.left, 'left');
+        if (collider.collisionInfo.direction.right) 
+            this.move(other.collisionInfo.points.right - collider.collisionInfo.points.right, 'left');
+        collider.resetCollisionDirection();
+    }
+
     public static createTetrisBlock(type : string, groupPositions : Array<Vector2>, position : Vector2, orientation : number, 
     size : Vector2) : Block | null {
         let newBlock : Block | null = null;
