@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useContext } from 'react';
 
 import './TetrisPiece.css';
-import { Block } from '../../classes/BlockClasses.ts';
+import { Block, LineBlock } from '../../classes/BlockClasses.ts';
 import { PositionLimit } from '../../types.ts';
 import { GameContext } from '../../App.tsx';
 import { Game_Phase } from '../../utilities.ts';
@@ -12,6 +12,9 @@ function TetrisPiece({sources, type, gameBoardCollider} : {sources : string[], t
     const [gameState, dispatch] = useContext(GameContext);
     const defaultBlock : Block | null = Block.createTetrisBlock(type, gameState['default_group_positions'][type], 
         gameState['default_start_position'], 0, new Vector2(30, 30));
+    // Note: Commented lines below are for testing purposes.
+    // const defaultBlock : Block | null = new LineBlock(gameState['default_group_positions']['line'], gameState['default_start_position'], 0, 
+    //     new Vector2(30, 30));
     const tetrisRef = useRef<HTMLDivElement>(null);
     const [tetrisBlock, setTetrisBlock] = useState(defaultBlock);
     const positionLimit : PositionLimit = {minX: 0, minY: 0, maxX: gameState.board_size.left, 
@@ -68,7 +71,6 @@ function TetrisPiece({sources, type, gameBoardCollider} : {sources : string[], t
             for (let collider of newBlock.colliders) {
                 if (collider.hasCollided(gameBoardCollider, 'board')) {
                     newBlock.correctCollision(collider, gameBoardCollider);
-                    break;
                 }
             }
 
@@ -79,9 +81,13 @@ function TetrisPiece({sources, type, gameBoardCollider} : {sources : string[], t
     }
 
     useEffect(() => {
-        if (gameState.current_phase !== Game_Phase.PAUSED && tetrisRef !== null && tetrisRef.current !== null)
-            tetrisRef.current.focus();
-    }, [gameState.current_phase]);
+        if (tetrisBlock !== null && tetrisRef !== null && tetrisRef.current !== null) {
+            if (gameState.current_phase !== Game_Phase.PAUSED || tetrisBlock.isControlled)
+                tetrisRef.current.focus();
+            if (tetrisBlock !== null && !tetrisBlock.isControlled)
+                tetrisRef.current.blur();
+        }
+    }, [gameState.current_phase, tetrisBlock, tetrisRef]);
 
     return (
         <div className='tetris-piece' ref={tetrisRef} autoFocus

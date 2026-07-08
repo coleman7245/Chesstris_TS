@@ -6,6 +6,7 @@ abstract class Block {
     protected _colliders : Array<Collider>;
     protected _orientation : number;
     protected _position : Vector2;
+    protected _isControlled : boolean;
 
     protected constructor(groupPositions : Array<Vector2>, position : Vector2, orientation : number, size : Vector2) {
         this._size = size.copy();
@@ -17,6 +18,7 @@ abstract class Block {
             new Collider(groupPositions[3], position, size)
         );
         this._orientation = orientation;
+        this._isControlled = true;
     }
 
     public get size() : Vector2 {return this._size;}
@@ -26,6 +28,10 @@ abstract class Block {
     public get colliders() : Array<Collider> {return this._colliders;}
 
     public set colliders(colliders : Array<Collider>) {this._colliders = Array.from(colliders, (sb) => sb.copy());}
+
+    public get isControlled() : boolean {return this._isControlled;}
+    
+    public set isControlled(isControlled : boolean) {this._isControlled = isControlled;}
 
     public get orientation() : number {return this._orientation;}
 

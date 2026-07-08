@@ -14,7 +14,8 @@ class Collider {
         this._size = size.copy();
         this._center = this._position.add(globalPosition).add(size.scale(-.05));
         this._collisionInfo = {
-            points : {top : 0, bottom : 0, left : 0, right : 0},
+            points : {top : globalPosition.top, bottom : globalPosition.top + size.top, 
+                left : globalPosition.left, right : globalPosition.left},
             direction : {top : false, bottom : false, left : false, right : false}
         };
     }
