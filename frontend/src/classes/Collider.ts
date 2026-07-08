@@ -10,7 +10,7 @@ class Collider {
 
     public constructor(position : Vector2, globalPosition : Vector2, size : Vector2) {
         this._position = position.copy();
-        this._global_position = globalPosition;
+        this._global_position = globalPosition.copy();
         this._size = size.copy();
         this._center = this._position.add(globalPosition).add(size.scale(-.05));
         this._collisionInfo = {
@@ -28,6 +28,8 @@ class Collider {
     public set collisionInfo(collisionInfo : CollisionInfo) {this._collisionInfo = collisionInfo;}
 
     public get globalPosition() : Vector2 {return this._global_position;}
+
+    public set globalPosition(globalPosition : Vector2) {this._global_position = globalPosition;}
 
     public get position() : Vector2 {return this._position;}
 

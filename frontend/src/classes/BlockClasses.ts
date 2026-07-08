@@ -92,6 +92,18 @@ abstract class Block {
         }
     }
 
+    public hasCollided(other : Collider, type : string) : boolean {
+        let hasCollided : boolean = false;
+
+        for (let collider of this._colliders) {
+            if (collider.hasCollided(other, type)) {
+                hasCollided = true;
+            }
+        }
+
+        return hasCollided;
+    }
+
     public move(velocity : Vector2 | number, direction : string | null) : void {
         if (velocity instanceof Vector2)
             this._position = this._position.add(velocity);
@@ -99,6 +111,10 @@ abstract class Block {
             this._position.top += velocity;
         else
             this._position.left += velocity;
+
+        for (let collider of this._colliders) {
+            collider.globalPosition = this._position;
+        }
     }
 
     public rotate() : void {

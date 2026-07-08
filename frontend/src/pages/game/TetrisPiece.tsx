@@ -34,24 +34,25 @@ function TetrisPiece({sources, type, gameBoardCollider} : {sources : string[], t
             let crossedFinishLine : boolean = false;
 
             switch (event.key) {
-                case 'w':
-                    if (newBlock.position.top > positionLimit.minY)
-                        newBlock.move(-velocity, 'top');
-                    hasScored = true;
-                    break;
                 case 'a':
-                    if (newBlock.position.left > positionLimit.minX)
+                    if (newBlock.position.left - velocity > positionLimit.minX)
                         newBlock.move(-velocity, 'left');
+                    else
+                        newBlock.move(0 - newBlock.position.left, 'left');
                     hasScored = true;
                     break;
                 case 's':
-                    if (newBlock.position.top < positionLimit.maxY)
+                    if (newBlock.position.top + velocity <= positionLimit.maxY)
                         newBlock.move(velocity, 'top');
+                    else
+                        newBlock.move(gameState['board_size'].top - newBlock.position.top, 'top');
                     hasScored = true;
                     break;
                 case 'd':
-                    if (newBlock.position.left < positionLimit.maxX)
+                    if (newBlock.position.left + velocity < positionLimit.maxX)
                         newBlock.move(velocity, 'left');
+                    else
+                        newBlock.move(gameState['board_size'].left - newBlock.position.left, 'left');
                     hasScored = true;
                     break;
                 case "r":
@@ -85,7 +86,7 @@ function TetrisPiece({sources, type, gameBoardCollider} : {sources : string[], t
     return (
         <div className='tetris-piece' ref={tetrisRef} autoFocus
         style={{left: `${(tetrisBlock) ? tetrisBlock.position.left : 0}px`, top: `${(tetrisBlock) ? tetrisBlock.position.top : 0}px`}}
-        tabIndex={0} onKeyDown={(e) => handleInput(e)}>
+        tabIndex={0} onKeyDown={(e) => {handleInput(e)}}>
             <div className='chesspiece' id='main' style={{
                 top: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.top : 0}px`, 
                 left: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.left : 0}px`
