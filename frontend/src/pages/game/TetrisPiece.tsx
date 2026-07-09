@@ -49,8 +49,6 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
                 case "r":
                     newBlock.rotate();
                     break;
-                case "u":
-                    break;
                 default:
                     hasScored = false;
                     break;
