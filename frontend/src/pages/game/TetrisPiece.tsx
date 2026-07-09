@@ -70,6 +70,8 @@ function TetrisPiece({sources, type, gameBoardCollider} : {sources : string[], t
 
             for (let collider of newBlock.colliders) {
                 if (collider.hasCollided(gameBoardCollider, 'board')) {
+                    if (collider.collisionInfo.direction.bottom)
+                        newBlock.isControlled = false;
                     newBlock.correctCollision(collider, gameBoardCollider);
                 }
             }
