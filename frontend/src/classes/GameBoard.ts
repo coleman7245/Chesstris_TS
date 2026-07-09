@@ -7,7 +7,7 @@ class GameBoard {
 
     constructor(size : Vector2) {
         this._size = size;
-        this._collider = new Collider(new Vector2(0, 0), new Vector2(0, 0), size);
+        this._collider = new Collider('board', new Vector2(0, 0), new Vector2(0, 0), size);
     }
 
     public get collider() : Collider {return this._collider;}

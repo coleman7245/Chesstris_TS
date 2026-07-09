@@ -69,7 +69,7 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
             }
 
             for (let collider of newBlock.colliders) {
-                if (collider.hasCollided(gameBoard.collider, 'board')) {
+                if (collider.hasCollided(gameBoard.collider)) {
                     if (collider.collisionInfo.direction.bottom)
                         newBlock.isControlled = false;
                     newBlock.correctCollision(collider, gameBoard.collider);

@@ -12,10 +12,10 @@ abstract class Block {
         this._size = size.copy();
         this._position = position.copy();
         this._colliders = new Array<Collider>(
-            new Collider(groupPositions[0], position, size), 
-            new Collider(groupPositions[1], position, size),
-            new Collider(groupPositions[2], position, size),
-            new Collider(groupPositions[3], position, size)
+            new Collider('block', groupPositions[0], position, size), 
+            new Collider('block', groupPositions[1], position, size),
+            new Collider('block', groupPositions[2], position, size),
+            new Collider('block', groupPositions[3], position, size)
         );
         this._orientation = orientation;
         this._isControlled = true;
@@ -98,11 +98,11 @@ abstract class Block {
         }
     }
 
-    public hasCollided(other : Collider, type : string) : boolean {
+    public hasCollided(other : Collider) : boolean {
         let hasCollided : boolean = false;
 
         for (let collider of this._colliders) {
-            if (collider.hasCollided(other, type)) {
+            if (collider.hasCollided(other)) {
                 hasCollided = true;
             }
         }

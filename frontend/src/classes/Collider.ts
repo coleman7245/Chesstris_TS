@@ -2,13 +2,15 @@ import { CollisionInfo } from "../types.ts";
 import Vector2 from './Vector2.ts';
 
 class Collider {
+    private _type : string;
     private _center : Vector2;
     private _size : Vector2;
     private _position : Vector2;
     private _global_position : Vector2;
     private _collisionInfo : CollisionInfo;
 
-    public constructor(position : Vector2, globalPosition : Vector2, size : Vector2) {
+    public constructor(type : string, position : Vector2, globalPosition : Vector2, size : Vector2) {
+        this._type = type;
         this._position = position.copy();
         this._global_position = globalPosition.copy();
         this._size = size.copy();
@@ -19,6 +21,10 @@ class Collider {
             direction : {top : false, bottom : false, left : false, right : false}
         };
     }
+
+    public get type() : string {return this._type;}
+
+    public set type(type : string) {this._type = type;}
 
     public get center() : Vector2 {return this._center;}
 
@@ -47,14 +53,14 @@ class Collider {
         this._collisionInfo.points.right = this._collisionInfo.points.left + this._size.left;
     }
 
-    public copy() : Collider {return new Collider(this._position, this._global_position, this._size);}
+    public copy() : Collider {return new Collider(this._type, this._position, this._global_position, this._size);}
 
-    public hasCollided(other : Collider, type : string) : boolean {
+    public hasCollided(other : Collider) : boolean {
         let collisionDetected : boolean = false;
         this.calculateCollisionPoints();
         other.calculateCollisionPoints();
 
-        if (type === 'block') {
+        if (other.type === 'block') {
             if (this._collisionInfo.points.top < other._collisionInfo.points.bottom && 
                 (this._collisionInfo.points.left <= other._collisionInfo.points.right || 
                     this._collisionInfo.points.right >= other._collisionInfo.points.left))
