@@ -5,8 +5,7 @@ import './Board.css';
 import { chess_piece_images, ChessPieceImages, tetris_block_types } from '../../utilities.ts';
 import { GameContext } from '../../App.tsx';
 import { TetrisPiece } from './TetrisPiece.tsx';
-import Collider from '../../classes/Collider.ts';
-import Vector2 from '../../classes/Vector2.ts';
+import GameBoard from '../../classes/GameBoard.ts';
 
 function getRandomChessPiece(chessPieceImages : ChessPieceImages) : string {
     let objectLength : number = Object.keys(chessPieceImages).length;
@@ -25,17 +24,17 @@ function getRandomChessPieces(chessPieceImages : ChessPieceImages) : Array<strin
     return source_images;
 }
 
-function createRandomTetrisPiece(tetrisBlockTypes : Array<string>, sources : Array<string>, gameBoardCollider : Collider) {
+function createRandomTetrisPiece(tetrisBlockTypes : Array<string>, sources : Array<string>, gameBoard : GameBoard) {
     let randomIndex : number = Math.floor(Math.random() * tetrisBlockTypes.length);
     let type : string = tetrisBlockTypes[randomIndex];
 
-    return <TetrisPiece sources={sources} type={type} gameBoardCollider={gameBoardCollider}  />;
+    return <TetrisPiece sources={sources} type={type} gameBoard={gameBoard}  />;
 }
 
 function Board() {
     const [gameState] = useContext(GameContext);
     const [sources] = useState(getRandomChessPieces(chess_piece_images));
-    const gameBoardCollider = new Collider(new Vector2(0, 0), new Vector2(0, 0), gameState['board_size']);
+    const gameBoardCollider = new GameBoard(gameState['board_size']);
 
     return (
         <div className='board'>

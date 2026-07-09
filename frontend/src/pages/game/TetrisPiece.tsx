@@ -6,9 +6,9 @@ import { PositionLimit } from '../../types.ts';
 import { GameContext } from '../../App.tsx';
 import { Game_Phase } from '../../utilities.ts';
 import Vector2 from '../../classes/Vector2.ts';
-import Collider from '../../classes/Collider.ts';
+import GameBoard from '../../classes/GameBoard.ts';
 
-function TetrisPiece({sources, type, gameBoardCollider} : {sources : string[], type : string, gameBoardCollider : Collider}) {
+function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : string, gameBoard : GameBoard}) {
     const [gameState, dispatch] = useContext(GameContext);
     const defaultBlock : Block | null = Block.createTetrisBlock(type, gameState['default_group_positions'][type], 
         gameState['default_start_position'], 0, new Vector2(30, 30));
@@ -69,10 +69,10 @@ function TetrisPiece({sources, type, gameBoardCollider} : {sources : string[], t
             }
 
             for (let collider of newBlock.colliders) {
-                if (collider.hasCollided(gameBoardCollider, 'board')) {
+                if (collider.hasCollided(gameBoard.collider, 'board')) {
                     if (collider.collisionInfo.direction.bottom)
                         newBlock.isControlled = false;
-                    newBlock.correctCollision(collider, gameBoardCollider);
+                    newBlock.correctCollision(collider, gameBoard.collider);
                 }
             }
 
