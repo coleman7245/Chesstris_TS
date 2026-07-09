@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useContext } from 'react';
 
 import './TetrisPiece.css';
 import { Block } from '../../classes/BlockClasses.ts';
-import { PositionLimit } from '../../types.ts';
 import { GameContext } from '../../App.tsx';
 import { Game_Phase } from '../../utilities.ts';
 import Vector2 from '../../classes/Vector2.ts';
@@ -17,8 +16,6 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
     //     new Vector2(30, 30));
     const tetrisRef = useRef<HTMLDivElement>(null);
     const [tetrisBlock, setTetrisBlock] = useState(defaultBlock);
-    const positionLimit : PositionLimit = {minX: 0, minY: 0, maxX: gameState.board_size.left, 
-        maxY: gameState.board_size.top};
     const velocity : number = 30;
 
     function handleInput(event : React.KeyboardEvent) : void {
@@ -38,24 +35,15 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
 
             switch (event.key) {
                 case 'a':
-                    if (newBlock.position.left - velocity > positionLimit.minX)
-                        newBlock.move(-velocity, 'left');
-                    else
-                        newBlock.move(0 - newBlock.position.left, 'left');
+                    newBlock.move(-velocity, 'left');
                     hasScored = true;
                     break;
                 case 's':
-                    if (newBlock.position.top + velocity <= positionLimit.maxY)
-                        newBlock.move(velocity, 'top');
-                    else
-                        newBlock.move(gameState['board_size'].top - newBlock.position.top, 'top');
+                    newBlock.move(velocity, 'top');
                     hasScored = true;
                     break;
                 case 'd':
-                    if (newBlock.position.left + velocity < positionLimit.maxX)
-                        newBlock.move(velocity, 'left');
-                    else
-                        newBlock.move(gameState['board_size'].left - newBlock.position.left, 'left');
+                    newBlock.move(velocity, 'left');
                     hasScored = true;
                     break;
                 case "r":
