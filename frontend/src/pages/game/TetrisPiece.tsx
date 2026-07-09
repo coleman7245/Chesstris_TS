@@ -28,7 +28,7 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
         else
             return;
 
-        if (newBlock !== null)
+        if (newBlock !== null && newBlock.isControlled)
         {
             let hasScored : boolean = false;
             let crossedFinishLine : boolean = false;
