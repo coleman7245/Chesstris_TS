@@ -19,6 +19,9 @@ abstract class Block {
         );
         this._orientation = orientation;
         this._isControlled = true;
+
+        if (this.findLeftMostPoint() % 30 !== 0)
+            this.move(-15, 'left');
     }
 
     public get size() : Vector2 {return this._size;}
