@@ -12,8 +12,8 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
     const defaultBlock : Block | null = Block.createTetrisBlock(type, gameState['default_group_positions'][type], 
         gameState['default_start_position'], 0, new Vector2(30, 30));
     // Note: Commented lines below are for testing purposes.
-    // const defaultBlock : Block | null = new LineBlock(gameState['default_group_positions']['line'], gameState['default_start_position'], 0, 
-    //     new Vector2(30, 30));
+    // const defaultBlock : Block | null = new LBlock(gameState['default_group_positions']['reverse_l'], gameState['default_start_position'], 
+    //     0, true, new Vector2(30, 30));
     const tetrisRef = useRef<HTMLDivElement>(null);
     const [tetrisBlock, setTetrisBlock] = useState(defaultBlock);
     const velocity : number = 30;

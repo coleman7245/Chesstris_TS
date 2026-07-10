@@ -98,16 +98,17 @@ abstract class Block {
         }
     }
 
-    public hasCollided(other : Collider) : boolean {
-        let hasCollided : boolean = false;
+    public findLeftMostPoint() : number {
+        let leftMostPoint : number = 1000;
 
         for (let collider of this._colliders) {
-            if (collider.hasCollided(other)) {
-                hasCollided = true;
-            }
+            collider.calculateCollisionPoints();
+
+            if (collider.collisionInfo.points.left < leftMostPoint)
+                leftMostPoint = collider.collisionInfo.points.left;
         }
 
-        return hasCollided;
+        return leftMostPoint;
     }
 
     public move(velocity : Vector2 | number, direction : string | null) : void {
@@ -126,6 +127,9 @@ abstract class Block {
     public rotate() : void {
         this._orientation = this._orientation === 270 ? 0 : this._orientation + 90;
         this.calculatePositions();
+
+        if (this.findLeftMostPoint() % 30 !== 0)
+            this.move(-15, 'left');
     }
 }
 
