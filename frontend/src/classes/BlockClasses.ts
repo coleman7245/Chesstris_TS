@@ -131,8 +131,12 @@ abstract class Block {
         this._orientation = this._orientation === 270 ? 0 : this._orientation + 90;
         this.calculatePositions();
 
-        if (this.findLeftMostPoint() % 30 !== 0)
-            this.move(-15, 'left');
+        if (this.findLeftMostPoint() % 30 !== 0) {
+            if (this._orientation === 180 || this._orientation === 0)
+                this.move(-15, 'left');
+            else 
+                this.move(15, 'left');
+        }
     }
 }
 
