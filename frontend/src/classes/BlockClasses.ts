@@ -12,10 +12,10 @@ abstract class Block {
         this._size = size.copy();
         this._position = position.copy();
         this._colliders = new Array<Collider>(
-            new Collider('block', groupPositions[0], position, size), 
-            new Collider('block', groupPositions[1], position, size),
-            new Collider('block', groupPositions[2], position, size),
-            new Collider('block', groupPositions[3], position, size)
+            new Collider('block', groupPositions[0].copy(), position.copy(), size.copy()), 
+            new Collider('block', groupPositions[1].copy(), position.copy(), size.copy()),
+            new Collider('block', groupPositions[2].copy(), position.copy(), size.copy()),
+            new Collider('block', groupPositions[3].copy(), position.copy(), size.copy())
         );
         this._orientation = orientation;
         this._isControlled = true;

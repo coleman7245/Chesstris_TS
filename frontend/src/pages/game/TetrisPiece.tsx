@@ -17,6 +17,7 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
     const tetrisRef = useRef<HTMLDivElement>(null);
     const [tetrisBlock, setTetrisBlock] = useState(defaultBlock);
     const velocity : number = 30;
+    let count : number = 0;
 
     function handleInput(event : React.KeyboardEvent) : void {
         event.preventDefault();
@@ -72,15 +73,29 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
         if (tetrisBlock !== null && tetrisRef !== null && tetrisRef.current !== null) {
             if (gameState.current_phase !== Game_Phase.PAUSED || tetrisBlock.isControlled)
                 tetrisRef.current.focus();
+
             if (!tetrisBlock.isControlled)
                 tetrisRef.current.blur();
+
+            if (count % 2 === 0) 
+                tetrisBlock.move(30, 'top');
+            else 
+                count++;
+
+            for (let collider of tetrisBlock.colliders) {
+                if (collider.hasCollided(gameBoard.collider)) {
+                    if (collider.collisionInfo.direction.bottom)
+                        tetrisBlock.isControlled = false;
+                    tetrisBlock.correctCollision(collider, gameBoard.collider);
+                }
+            }
         }
-    }, [gameState.current_phase, tetrisBlock, tetrisRef]);
+    });
 
     return (
         <div className='tetris-piece' ref={tetrisRef} autoFocus
         style={{left: `${(tetrisBlock) ? tetrisBlock.position.left : 0}px`, top: `${(tetrisBlock) ? tetrisBlock.position.top : 0}px`}}
-        tabIndex={0} onKeyDown={(e) => {handleInput(e)}}>
+        tabIndex={0} onKeyDown={(e) => {handleInput(e);}}>
             <div className='chesspiece' id='main' style={{
                 top: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.top : 0}px`, 
                 left: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.left : 0}px`
