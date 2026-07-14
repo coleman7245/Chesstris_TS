@@ -18,6 +18,7 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
     const [tetrisBlock, setTetrisBlock] = useState(defaultBlock);
     const velocity : number = 30;
     let count : number = 0;
+    const startRan = useRef<boolean>(false);
 
     function handleInput(event : React.KeyboardEvent) : void {
         event.preventDefault();
@@ -70,26 +71,30 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
     }
 
     useEffect(() => {
-        if (tetrisBlock !== null && tetrisRef !== null && tetrisRef.current !== null) {
-            if (gameState.current_phase !== Game_Phase.PAUSED || tetrisBlock.isControlled)
-                tetrisRef.current.focus();
+        if (startRan.current) {
+            if (tetrisBlock !== null && tetrisRef !== null && tetrisRef.current !== null) {
+                if (gameState.current_phase !== Game_Phase.PAUSED || tetrisBlock.isControlled)
+                    tetrisRef.current.focus();
 
-            if (!tetrisBlock.isControlled)
-                tetrisRef.current.blur();
+                if (!tetrisBlock.isControlled)
+                    tetrisRef.current.blur();
 
-            if (count % 2 === 0) 
-                tetrisBlock.move(30, 'top');
-            else 
-                count++;
+                if (count % 2 === 0) 
+                    tetrisBlock.move(30, 'top');
+                else 
+                    count++;
 
-            for (let collider of tetrisBlock.colliders) {
-                if (collider.hasCollided(gameBoard.collider)) {
-                    if (collider.collisionInfo.direction.bottom)
-                        tetrisBlock.isControlled = false;
-                    tetrisBlock.correctCollision(collider, gameBoard.collider);
+                for (let collider of tetrisBlock.colliders) {
+                    if (collider.hasCollided(gameBoard.collider)) {
+                        if (collider.collisionInfo.direction.bottom)
+                            tetrisBlock.isControlled = false;
+                        tetrisBlock.correctCollision(collider, gameBoard.collider);
+                    }
                 }
             }
         }
+
+        return () => {startRan.current = true};
     });
 
     return (
