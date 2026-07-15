@@ -17,8 +17,6 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
     const tetrisRef = useRef<HTMLDivElement>(null);
     const [tetrisBlock, setTetrisBlock] = useState(defaultBlock);
     const velocity : number = 30;
-    let count : number = 0;
-    const startRan = useRef<boolean>(false);
 
     function handleInput(event : React.KeyboardEvent) : void {
         event.preventDefault();
@@ -71,7 +69,7 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
     }
 
     useEffect(() => {
-        if (startRan.current) {
+        const id : NodeJS.Timeout = setInterval(() => {
             if (tetrisBlock !== null && tetrisRef !== null && tetrisRef.current !== null) {
                 if (gameState.current_phase !== Game_Phase.PAUSED || tetrisBlock.isControlled)
                     tetrisRef.current.focus();
@@ -79,10 +77,7 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
                 if (!tetrisBlock.isControlled)
                     tetrisRef.current.blur();
 
-                if (count % 2 === 0) 
-                    tetrisBlock.move(30, 'top');
-                else 
-                    count++;
+                tetrisBlock.move(30, 'top');
 
                 for (let collider of tetrisBlock.colliders) {
                     if (collider.hasCollided(gameBoard.collider)) {
@@ -92,9 +87,9 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
                     }
                 }
             }
-        }
+        }, 750);
 
-        return () => {startRan.current = true};
+        return () => clearInterval(id);
     });
 
     return (
