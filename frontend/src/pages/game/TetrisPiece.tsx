@@ -96,7 +96,7 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
         <div className='tetris-piece' ref={tetrisRef} autoFocus
         style={{left: `${(tetrisBlock) ? tetrisBlock.position.left : 0}px`, top: `${(tetrisBlock) ? tetrisBlock.position.top : 0}px`,
         transition: '0.1s'}}
-        tabIndex={0} onKeyDown={(e) => {handleInput(e);}}>
+        tabIndex={0} onKeyDown={(e : React.KeyboardEvent) => {handleInput(e);}}>
             <div className='chesspiece' id='main' style={{
                 top: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.top : 0}px`, 
                 left: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.left : 0}px`
