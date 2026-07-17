@@ -89,7 +89,7 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
             }
         }, 750);
 
-        return () => clearInterval(id);
+         return () => clearInterval(id);
     });
 
     return (
