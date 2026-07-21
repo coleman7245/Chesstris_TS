@@ -1,8 +1,8 @@
 .board {
+    overflow: hidden;
     border: 10px solid white;
     outline: 10px solid black;
     position: relative;
-    overflow: hidden;
     background-color: grey;
     width: 360px;
     height: 600px;
