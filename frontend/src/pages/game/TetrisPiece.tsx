@@ -28,8 +28,7 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
         else
             return;
 
-        if (newBlock !== null && newBlock.isControlled)
-        {
+        if (newBlock !== null && newBlock.isControlled) {
             let hasScored : boolean = false;
             let crossedFinishLine : boolean = false;
 
@@ -70,6 +69,7 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
 
     useEffect(() => {
         const id : NodeJS.Timeout = setInterval(() => {
+            
             if (tetrisBlock !== null && tetrisRef !== null && tetrisRef.current !== null) {
                 if (gameState.current_phase !== Game_Phase.PAUSED || tetrisBlock.isControlled)
                     tetrisRef.current.focus();
