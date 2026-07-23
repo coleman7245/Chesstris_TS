@@ -31,12 +31,3 @@
     background-color: black;
     border: 5px solid white;
 }
-
-.formpage {
-    border-bottom: 10px double black;
-    border-right: 10px double black;
-    border-left: 10px double black;
-    border-radius: 10px;
-    height: 800px;
-    width: 1487px;
-}

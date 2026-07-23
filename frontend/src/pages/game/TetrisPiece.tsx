@@ -1,11 +1,22 @@
 import { useState, useRef, useEffect, useContext } from 'react';
+import { styled } from 'styled-components';
 
-import './TetrisPiece.css';
 import { Block } from '../../classes/BlockClasses.ts';
 import { GameContext } from '../../App.tsx';
 import { Game_Phase } from '../../utilities.ts';
 import Vector2 from '../../classes/Vector2.ts';
 import GameBoard from '../../classes/GameBoard.ts';
+
+const StyledChessImage = styled.img`
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+`;
+
+const StyledTetrisPiece = styled.div`
+    position: absolute;
+`;
 
 function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : string, gameBoard : GameBoard}) {
     const [gameState, dispatch] = useContext(GameContext);
@@ -93,46 +104,30 @@ function TetrisPiece({sources, type, gameBoard} : {sources : string[], type : st
     });
 
     return (
-        <div className='tetris-piece' ref={tetrisRef} autoFocus
+        <StyledTetrisPiece ref={tetrisRef} autoFocus
         style={{left: `${(tetrisBlock) ? tetrisBlock.position.left : 0}px`, top: `${(tetrisBlock) ? tetrisBlock.position.top : 0}px`}}
         tabIndex={0} onKeyDown={(e : React.KeyboardEvent) => {handleInput(e);}}>
-            <div className='chesspiece' id='main' style={{
+            <StyledChessImage id='main' src={sources[0]} style={{
                 top: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.top : 0}px`, 
                 left: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.left : 0}px`
                 }}>
-                    <img src={sources[0]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.top : 0}px`, 
-                left: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.left : 0}px`
-                }} /> 
-            </div>
-            <div className='chesspiece' id='first' style={{
+            </StyledChessImage>
+            <StyledChessImage id='first' src={sources[1]} style={{
                 top: `${(tetrisBlock) ? tetrisBlock.colliders[1].position.top : 0}px`,
                 left: `${(tetrisBlock) ? tetrisBlock.colliders[1].position.left : 0}px`,
-                }}>
-                    <img src={sources[1]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.colliders[1].position.top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.colliders[1].position.left : 0}px`,
-                }} />  
-            </div>
-            <div className='chesspiece' id='second' style={{
+                }}>  
+            </StyledChessImage>
+            <StyledChessImage id='second' src={sources[2]} style={{
                 top: `${(tetrisBlock) ? tetrisBlock.colliders[2].position.top : 0}px`,
                 left: `${(tetrisBlock) ? tetrisBlock.colliders[2].position.left : 0}px`,
-                }}>
-                    <img src={sources[2]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.colliders[2].position.top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.colliders[2].position.left : 0}px`,
-                }} />  
-            </div>
-            <div className='chesspiece' id='third' style={{
+                }}>  
+            </StyledChessImage>
+            <StyledChessImage id='third' src={sources[3]} style={{
                 top: `${(tetrisBlock) ? tetrisBlock.colliders[3].position.top : 0}px`,
                 left: `${(tetrisBlock) ? tetrisBlock.colliders[3].position.left : 0}px`,
-                }}>
-                    <img src={sources[3]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.colliders[3].position.top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.colliders[3].position.left : 0}px`,
-                }} />  
-            </div>
-        </div>
+                }}>  
+            </StyledChessImage>
+        </StyledTetrisPiece>
     )
 }
 
