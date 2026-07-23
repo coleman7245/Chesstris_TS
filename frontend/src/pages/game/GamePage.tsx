@@ -1,5 +1,6 @@
 import { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 import './GamePage.css';
 
@@ -9,6 +10,17 @@ import GameInfo from './GameInfo.tsx';
 
 import { Game_Phase } from '../../utilities.ts';
 import { GameContext } from '../../App.tsx';
+
+const StyledGamePage = styled.div`
+    position: absolute;
+    margin-top: 3%;
+    margin-left: 60%;
+    font-size: 50px;
+    border: 10px double black;
+    padding: 2%;
+    top: -10px;
+    left: -300px;
+`;
 
 function GamePage() {
     const [gameState, dispatch] = useContext(GameContext);
