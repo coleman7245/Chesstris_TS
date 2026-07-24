@@ -42,16 +42,16 @@ function createRandomTetrisPiece(tetrisBlockTypes : Array<string>, sources : Arr
     return <TetrisPiece sources={sources} type={type} stage={stage}  />;
 }
 
-function Board() {
+function Stage() {
     const [gameState] = useContext(GameContext);
     const [sources] = useState(getRandomChessPieces(chess_piece_images));
-    const gameBoardCollider = new Stage(gameState['stage_size']);
+    const gameBoardCollider : Stage = new Stage(gameState['stage_size']);
 
     return (
-        <StyledStage className='stage'>
+        <StyledStage>
             {createRandomTetrisPiece(tetris_block_types, sources, gameBoardCollider)}
         </StyledStage>
     )
 }
 
-export default Board;
+export default Stage;

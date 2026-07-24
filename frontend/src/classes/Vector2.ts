@@ -1,37 +1,37 @@
 class Vector2 {
-    private _top : number;
-    private _left : number;
+    private _x : number;
+    private _y : number;
 
-    public constructor(top : number, left : number) {
-        this._top = top;
-        this._left = left;
+    public constructor(x : number, y : number) {
+        this._x = x;
+        this._y = y;
     }
 
-    public get left () : number {return this._left;}
+    public get y () : number {return this._y;}
 
-    public get top() : number {return this._top;}
+    public get x() : number {return this._x;}
 
-    public set left(left : number) {this._left = left;}
+    public set y(y : number) {this._y = y;}
 
-    public set top(top : number) {this._top = top;}
+    public set x(x : number) {this._x = x;}
 
-    public add(b : Vector2) : Vector2 {return new Vector2(this._top + b.top, this.left + b.left);}
+    public add(b : Vector2) : Vector2 {return new Vector2(this._x + b.x, this.y + b.y);}
 
-    public copy() : Vector2 {return new Vector2(this._top, this._left);}
+    public copy() : Vector2 {return new Vector2(this._x, this._y);}
 
     public distance(b : Vector2) : number {return this.subtract(b).magnitude();}
 
-    public equals(other : Vector2) : boolean {return (this.top === other.top && this.left === other.left);}
+    public equals(other : Vector2) : boolean {return (this.x === other.x && this.y === other.y);}
 
-    public magnitude() : number {return Math.sqrt((this._top * this._top) + (this._left * this._left));}
+    public magnitude() : number {return Math.sqrt((this._x * this._x) + (this._y * this._y));}
     
-    public scale(scalar : number) : Vector2 {return new Vector2(this._top * scalar, this._left * scalar);}
+    public scale(scalar : number) : Vector2 {return new Vector2(this._x * scalar, this._y * scalar);}
 
     public subtract(b : Vector2) : Vector2 {return this.add(b.scale(-1));}
 
-    public setVector2(top : number, left : number) {
-        this._top = top;
-        this._left = left;
+    public setVector2(x : number, y : number) {
+        this._x = x;
+        this._y = y;
     }
 }
 

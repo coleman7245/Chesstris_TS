@@ -16,8 +16,8 @@ class Collider {
         this._size = size.copy();
         this._center = this._position.add(globalPosition).add(size.scale(-.05));
         this._collisionInfo = {
-            points : {top : globalPosition.top, bottom : globalPosition.top + size.top, 
-                left : globalPosition.left, right : globalPosition.left},
+            points : {top : globalPosition.y, bottom : globalPosition.y + size.y, 
+                left : globalPosition.x, right : globalPosition.x + size.x},
             direction : {top : false, bottom : false, left : false, right : false}
         };
     }
@@ -47,10 +47,10 @@ class Collider {
     public set size(size : Vector2) {this._size = size.copy();}
 
     public calculateCollisionPoints() : void {
-        this._collisionInfo.points.top = this._position.top + this._global_position.top;
-        this._collisionInfo.points.bottom = this._collisionInfo.points.top + this._size.top;
-        this._collisionInfo.points.left = this._position.left + this._global_position.left;
-        this._collisionInfo.points.right = this._collisionInfo.points.left + this._size.left;
+        this._collisionInfo.points.top = this._position.y + this._global_position.y;
+        this._collisionInfo.points.bottom = this._collisionInfo.points.top + this._size.y;
+        this._collisionInfo.points.left = this._position.x + this._global_position.x;
+        this._collisionInfo.points.right = this._collisionInfo.points.left + this._size.x;
     }
 
     public copy() : Collider {return new Collider(this._type, this._position, this._global_position, this._size);}

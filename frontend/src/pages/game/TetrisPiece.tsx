@@ -45,15 +45,15 @@ function TetrisPiece({sources, type, stage} : {sources : string[], type : string
 
             switch (event.key) {
                 case 'a':
-                    newBlock.move(-velocity, 'left');
+                    newBlock.move(-velocity, 'x');
                     hasScored = true;
                     break;
                 case 's':
-                    newBlock.move(velocity, 'top');
+                    newBlock.move(velocity, 'y');
                     hasScored = true;
                     break;
                 case 'd':
-                    newBlock.move(velocity, 'left');
+                    newBlock.move(velocity, 'x');
                     hasScored = true;
                     break;
                 case "r":
@@ -88,7 +88,7 @@ function TetrisPiece({sources, type, stage} : {sources : string[], type : string
                 if (!tetrisBlock.isControlled)
                     tetrisRef.current.blur();
 
-                tetrisBlock.move(30, 'top');
+                tetrisBlock.move(30, 'y');
 
                 for (let collider of tetrisBlock.colliders) {
                     if (collider.hasCollided(stage.collider)) {
@@ -105,26 +105,26 @@ function TetrisPiece({sources, type, stage} : {sources : string[], type : string
 
     return (
         <StyledTetrisPiece ref={tetrisRef} autoFocus
-        style={{left: `${(tetrisBlock) ? tetrisBlock.position.left : 0}px`, top: `${(tetrisBlock) ? tetrisBlock.position.top : 0}px`}}
+        style={{left: `${(tetrisBlock) ? tetrisBlock.position.x : 0}px`, top: `${(tetrisBlock) ? tetrisBlock.position.y : 0}px`}}
         tabIndex={0} onKeyDown={(e : React.KeyboardEvent) => {handleInput(e);}}>
             <StyledChessImage id='main' src={sources[0]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.top : 0}px`, 
-                left: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.left : 0}px`
+                top: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.y : 0}px`, 
+                left: `${(tetrisBlock) ? tetrisBlock.colliders[0].position.x : 0}px`
                 }}>
             </StyledChessImage>
             <StyledChessImage id='first' src={sources[1]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.colliders[1].position.top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.colliders[1].position.left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.colliders[1].position.y : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.colliders[1].position.x : 0}px`,
                 }}>  
             </StyledChessImage>
             <StyledChessImage id='second' src={sources[2]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.colliders[2].position.top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.colliders[2].position.left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.colliders[2].position.y : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.colliders[2].position.x : 0}px`,
                 }}>  
             </StyledChessImage>
             <StyledChessImage id='third' src={sources[3]} style={{
-                top: `${(tetrisBlock) ? tetrisBlock.colliders[3].position.top : 0}px`,
-                left: `${(tetrisBlock) ? tetrisBlock.colliders[3].position.left : 0}px`,
+                top: `${(tetrisBlock) ? tetrisBlock.colliders[3].position.y : 0}px`,
+                left: `${(tetrisBlock) ? tetrisBlock.colliders[3].position.x : 0}px`,
                 }}>  
             </StyledChessImage>
         </StyledTetrisPiece>

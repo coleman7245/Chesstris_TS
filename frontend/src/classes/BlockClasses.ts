@@ -21,7 +21,7 @@ abstract class Block {
         this._isControlled = true;
 
         if (this.findLeftMostPoint() % 30 !== 0)
-            this.move(-15, 'left');
+            this.move(-15, 'x');
     }
 
     public get size() : Vector2 {return this._size;}
@@ -60,13 +60,13 @@ abstract class Block {
 
     public correctCollision(collider : Collider, other : Collider) : void {
         if (collider.collisionInfo.direction.top)
-            this.move(other.collisionInfo.points.top - collider.collisionInfo.points.top, 'top');
+            this.move(other.collisionInfo.points.top - collider.collisionInfo.points.top, 'y');
         if (collider.collisionInfo.direction.bottom) 
-            this.move(other.collisionInfo.points.bottom - collider.collisionInfo.points.bottom, 'top');
+            this.move(other.collisionInfo.points.bottom - collider.collisionInfo.points.bottom, 'y');
         if (collider.collisionInfo.direction.left) 
-            this.move(other.collisionInfo.points.left - collider.collisionInfo.points.left, 'left');
+            this.move(other.collisionInfo.points.left - collider.collisionInfo.points.left, 'x');
         if (collider.collisionInfo.direction.right) 
-            this.move(other.collisionInfo.points.right - collider.collisionInfo.points.right, 'left');
+            this.move(other.collisionInfo.points.right - collider.collisionInfo.points.right, 'x');
         collider.resetCollisionDirection();
     }
 
@@ -102,25 +102,25 @@ abstract class Block {
     }
 
     public findLeftMostPoint() : number {
-        let leftMostPoint : number = 1000;
+        let xMostPoint : number = 1000;
 
         for (let collider of this._colliders) {
             collider.calculateCollisionPoints();
 
-            if (collider.collisionInfo.points.left < leftMostPoint)
-                leftMostPoint = collider.collisionInfo.points.left;
+            if (collider.collisionInfo.points.left < xMostPoint)
+                xMostPoint = collider.collisionInfo.points.left;
         }
 
-        return leftMostPoint;
+        return xMostPoint;
     }
 
     public move(velocity : Vector2 | number, direction : string | null) : void {
         if (velocity instanceof Vector2)
             this._position = this._position.add(velocity);
-        else if (direction === 'top')
-            this._position.top += velocity;
+        else if (direction === 'y')
+            this._position.y += velocity;
         else
-            this._position.left += velocity;
+            this._position.x += velocity;
 
         for (let collider of this._colliders) {
             collider.globalPosition = this._position;
@@ -133,9 +133,9 @@ abstract class Block {
 
         if (this.findLeftMostPoint() % 30 !== 0) {
             if (this._orientation === 180 || this._orientation === 0)
-                this.move(-15, 'left');
+                this.move(-15, 'x');
             else 
-                this.move(15, 'left');
+                this.move(15, 'x');
         }
     }
 }
@@ -163,27 +163,27 @@ class TBlock extends Block {
         switch (this._orientation) {
             case 0:
                 this._colliders[0].position = new Vector2(0, 0);
-                this._colliders[1].position = new Vector2(0, 30);
-                this._colliders[2].position = new Vector2(0, -30);
-                this._colliders[3].position = new Vector2(30, 0);
+                this._colliders[1].position = new Vector2(30, 0);
+                this._colliders[2].position = new Vector2(-30, 0);
+                this._colliders[3].position = new Vector2(0, 30);
                 break;
             case 90:
                 this._colliders[0].position = new Vector2(0, 0);
-                this._colliders[1].position = new Vector2(-30, 0);
-                this._colliders[2].position = new Vector2(30, 0);
-                this._colliders[3].position = new Vector2(0, 30);
+                this._colliders[1].position = new Vector2(0, -30);
+                this._colliders[2].position = new Vector2(0, 30);
+                this._colliders[3].position = new Vector2(30, 0);
                 break;
             case 180:
                 this._colliders[0].position = new Vector2(0, 0);
-                this._colliders[1].position = new Vector2(0, -30);
-                this._colliders[2].position = new Vector2(0, 30);
-                this._colliders[3].position = new Vector2(-30, 0);
+                this._colliders[1].position = new Vector2(-30, 0);
+                this._colliders[2].position = new Vector2(30, 0);
+                this._colliders[3].position = new Vector2(0, -30);
                 break;
             case 270:
                 this._colliders[0].position = new Vector2(0, 0);
-                this._colliders[1].position = new Vector2(30, 0);
-                this._colliders[2].position = new Vector2(-30, 0);
-                this._colliders[3].position = new Vector2(0, -30);
+                this._colliders[1].position = new Vector2(0, 30);
+                this._colliders[2].position = new Vector2(0, -30);
+                this._colliders[3].position = new Vector2(-30, 0);
                 break;
             default:
                 break;
@@ -216,28 +216,28 @@ class LBlock extends ReversableBlock {
         if (!this._reversed) {
             switch (this._orientation) {
                 case 0:
-                    this._colliders[0].position = new Vector2(30, 15);
-                    this._colliders[1].position = new Vector2(30, -15);
-                    this._colliders[2].position = new Vector2(0, -15);
-                    this._colliders[3].position = new Vector2(-30, -15);
+                    this._colliders[0].position = new Vector2(15, 30);
+                    this._colliders[1].position = new Vector2(-15, 30);
+                    this._colliders[2].position = new Vector2(-15, 0);
+                    this._colliders[3].position = new Vector2(-15, -30);
                     break;
                 case 90:
-                    this._colliders[0].position = new Vector2(-15, 30);
-                    this._colliders[1].position = new Vector2(15, 30);
-                    this._colliders[2].position = new Vector2(15, 0);
-                    this._colliders[3].position = new Vector2(15, -30);
+                    this._colliders[0].position = new Vector2(30, -15);
+                    this._colliders[1].position = new Vector2(30, 15);
+                    this._colliders[2].position = new Vector2(0, 15);
+                    this._colliders[3].position = new Vector2(-30, 15);
                     break;
                 case 180:
-                    this._colliders[0].position = new Vector2(-30, -15);
-                    this._colliders[1].position = new Vector2(-30, 15);
-                    this._colliders[2].position = new Vector2(0, 15);
-                    this._colliders[3].position = new Vector2(30, 15);
+                    this._colliders[0].position = new Vector2(-15, -30);
+                    this._colliders[1].position = new Vector2(15, -30);
+                    this._colliders[2].position = new Vector2(15, 0);
+                    this._colliders[3].position = new Vector2(15, 30);
                     break;
                 case 270:
-                    this._colliders[0].position = new Vector2(15, -30);
-                    this._colliders[1].position = new Vector2(-15, -30);
-                    this._colliders[2].position = new Vector2(-15, 0);
-                    this._colliders[3].position = new Vector2(-15, 30);
+                    this._colliders[0].position = new Vector2(-30, 15);
+                    this._colliders[1].position = new Vector2(-30, -15);
+                    this._colliders[2].position = new Vector2(0, -15);
+                    this._colliders[3].position = new Vector2(30, -15);
                     break;
                 default:
                     break;
@@ -246,28 +246,28 @@ class LBlock extends ReversableBlock {
         else {
             switch (this._orientation) {
                 case 0:
-                    this._colliders[0].position = new Vector2(30, -15);
-                    this._colliders[1].position = new Vector2(30, 15);
-                    this._colliders[2].position = new Vector2(0, 15 );
-                    this._colliders[3].position = new Vector2(-30, 15 );
+                    this._colliders[0].position = new Vector2(-15, 30);
+                    this._colliders[1].position = new Vector2(15, 30);
+                    this._colliders[2].position = new Vector2(15, 0);
+                    this._colliders[3].position = new Vector2(15, -30);
                     break;
                 case 90:
-                    this._colliders[0].position = new Vector2(15, 30);
-                    this._colliders[1].position = new Vector2(-15, 30);
-                    this._colliders[2].position = new Vector2(-15, 0);
-                    this._colliders[3].position = new Vector2(-15, -30);
+                    this._colliders[0].position = new Vector2(30, 15);
+                    this._colliders[1].position = new Vector2(30, -15);
+                    this._colliders[2].position = new Vector2(0, -15);
+                    this._colliders[3].position = new Vector2(-30, -15);
                     break;
                 case 180:
-                    this._colliders[0].position = new Vector2(-30, 15);
-                    this._colliders[1].position = new Vector2(-30, -15);
-                    this._colliders[2].position = new Vector2(0, -15);
-                    this._colliders[3].position = new Vector2(30, -15);
+                    this._colliders[0].position = new Vector2(15, -30);
+                    this._colliders[1].position = new Vector2(-15, -30);
+                    this._colliders[2].position = new Vector2(-15, 0);
+                    this._colliders[3].position = new Vector2(-15, 30);
                     break;
                 case 270:
-                    this._colliders[0].position = new Vector2(-15, -30);
-                    this._colliders[1].position = new Vector2(15, -30);
-                    this._colliders[2].position = new Vector2(15, 0);
-                    this._colliders[3].position = new Vector2(15, 30);
+                    this._colliders[0].position = new Vector2(-30, -15);
+                    this._colliders[1].position = new Vector2(-30, 15);
+                    this._colliders[2].position = new Vector2(0, 15);
+                    this._colliders[3].position = new Vector2(30, 15);
                     break;
                 default:
                     break;
@@ -311,28 +311,28 @@ class SquigglyBlock extends ReversableBlock {
         if (!this._reversed) {
             switch (this._orientation) {
                 case 0:
-                    this._colliders[0].position = new Vector2(15, -30);
-                    this._colliders[1].position = new Vector2(15, 0);
-                    this._colliders[2].position = new Vector2(-15, 0);
-                    this._colliders[3].position = new Vector2(-15, 30);
-                    break;
-                case 90:
-                    this._colliders[0].position = new Vector2(30, 15);
+                    this._colliders[0].position = new Vector2(-30, 15);
                     this._colliders[1].position = new Vector2(0, 15);
                     this._colliders[2].position = new Vector2(0, -15);
-                    this._colliders[3].position = new Vector2(-30, -15);
+                    this._colliders[3].position = new Vector2(30, -15);
+                    break;
+                case 90:
+                    this._colliders[0].position = new Vector2(15, 30);
+                    this._colliders[1].position = new Vector2(15, 0);
+                    this._colliders[2].position = new Vector2(-15, 0);
+                    this._colliders[3].position = new Vector2(-15, -30);
                     break;
                 case 180:
-                    this._colliders[0].position = new Vector2(-15, 30);
-                    this._colliders[1].position = new Vector2(-15, 0);
-                    this._colliders[2].position = new Vector2(15, 0);
-                    this._colliders[3].position = new Vector2(15, -30);
-                    break;
-                case 270:
-                    this._colliders[0].position = new Vector2(-30, -15);
+                    this._colliders[0].position = new Vector2(30, -15);
                     this._colliders[1].position = new Vector2(0, -15);
                     this._colliders[2].position = new Vector2(0, 15);
-                    this._colliders[3].position = new Vector2(30, 15);
+                    this._colliders[3].position = new Vector2(-30, 15);
+                    break;
+                case 270:
+                    this._colliders[0].position = new Vector2(-15, -30);
+                    this._colliders[1].position = new Vector2(-15, 0);
+                    this._colliders[2].position = new Vector2(15, 0);
+                    this._colliders[3].position = new Vector2(15, 30);
                     break;
                 default:
                     break;
@@ -341,28 +341,28 @@ class SquigglyBlock extends ReversableBlock {
         else {
             switch (this._orientation) {
                 case 0:
-                    this._colliders[0].position = new Vector2(15, 30);
-                    this._colliders[1].position = new Vector2(15, 0);
-                    this._colliders[2].position = new Vector2(-15, 0);
-                    this._colliders[3].position = new Vector2(-15, -30);
-                    break;
-                case 90:
-                    this._colliders[0].position = new Vector2(-30, 15);
+                    this._colliders[0].position = new Vector2(30, 15);
                     this._colliders[1].position = new Vector2(0, 15);
                     this._colliders[2].position = new Vector2(0, -15);
-                    this._colliders[3].position = new Vector2(30, -15);
+                    this._colliders[3].position = new Vector2(-30, -15);
+                    break;
+                case 90:
+                    this._colliders[0].position = new Vector2(15, -30);
+                    this._colliders[1].position = new Vector2(15, 0);
+                    this._colliders[2].position = new Vector2(-15, 0);
+                    this._colliders[3].position = new Vector2(-15, 30);
                     break;
                 case 180:
-                    this._colliders[0].position = new Vector2(-15, -30);
-                    this._colliders[1].position = new Vector2(-15, 0);
-                    this._colliders[2].position = new Vector2(15, 0);
-                    this._colliders[3].position = new Vector2(15, 30);
-                    break;
-                case 270:
-                    this._colliders[0].position = new Vector2(30, -15);
+                    this._colliders[0].position = new Vector2(-30, -15);
                     this._colliders[1].position = new Vector2(0, -15);
                     this._colliders[2].position = new Vector2(0, 15);
-                    this._colliders[3].position = new Vector2(-30, 15);
+                    this._colliders[3].position = new Vector2(30, 15);
+                    break;
+                case 270:
+                    this._colliders[0].position = new Vector2(-15, 30);
+                    this._colliders[1].position = new Vector2(-15, 0);
+                    this._colliders[2].position = new Vector2(15, 0);
+                    this._colliders[3].position = new Vector2(15, -30);
                     break;
                 default:
                     break;
@@ -382,28 +382,28 @@ class SquareBlock extends Block {
     public calculatePositions(): void {
         switch (this._orientation) {
             case 0:
-                this._colliders[0].position = new Vector2(-15, 15);
+                this._colliders[0].position = new Vector2(15, -15);
                 this._colliders[1].position = new Vector2(-15, -15);
-                this._colliders[2].position = new Vector2(15, -15);
+                this._colliders[2].position = new Vector2(-15, 15);
                 this._colliders[3].position = new Vector2(15, 15);
                 break;
             case 90:
                 this._colliders[0].position = new Vector2(-15, -15);
-                this._colliders[1].position = new Vector2(15, -15);
+                this._colliders[1].position = new Vector2(-15, 15);
                 this._colliders[2].position = new Vector2(15, 15);
-                this._colliders[3].position = new Vector2(-15, 15);
+                this._colliders[3].position = new Vector2(15, -15);
                 break;
             case 180:
-                this._colliders[0].position = new Vector2(15, -15);
+                this._colliders[0].position = new Vector2(-15, 15);
                 this._colliders[1].position = new Vector2(15, 15);
-                this._colliders[2].position = new Vector2(-15, 15);
+                this._colliders[2].position = new Vector2(15, -15);
                 this._colliders[3].position = new Vector2(-15, -15);
                 break;
             case 270:
                 this._colliders[0].position = new Vector2(15, 15);
-                this._colliders[1].position = new Vector2(-15, 15);
+                this._colliders[1].position = new Vector2(15, -15);
                 this._colliders[2].position = new Vector2(-15, -15);
-                this._colliders[3].position = new Vector2(15, -15);
+                this._colliders[3].position = new Vector2(-15, 15);
                 break;
             default:
                 break;
@@ -426,28 +426,28 @@ class LineBlock extends Block {
     public calculatePositions(): void {
         switch (this._orientation) {
             case 0:
-                this._colliders[0].position = new Vector2(0, -45);
-                this._colliders[1].position = new Vector2(0, -15);
-                this._colliders[2].position = new Vector2(0, 15);
-                this._colliders[3].position = new Vector2(0, 45);
+                this._colliders[0].position = new Vector2(-45, 0);
+                this._colliders[1].position = new Vector2(-15, 0);
+                this._colliders[2].position = new Vector2(15, 0);
+                this._colliders[3].position = new Vector2(45, 0);
                 break;
             case 90:
-                this._colliders[0].position = new Vector2(45, 0);
-                this._colliders[1].position = new Vector2(15, 0);
-                this._colliders[2].position = new Vector2(-15, 0);
-                this._colliders[3].position = new Vector2(-45, 0);
-                break;
-            case 180:
                 this._colliders[0].position = new Vector2(0, 45);
                 this._colliders[1].position = new Vector2(0, 15);
                 this._colliders[2].position = new Vector2(0, -15);
                 this._colliders[3].position = new Vector2(0, -45);
                 break;
+            case 180:
+                this._colliders[0].position = new Vector2(45, 0);
+                this._colliders[1].position = new Vector2(15, 0);
+                this._colliders[2].position = new Vector2(-15, 0);
+                this._colliders[3].position = new Vector2(-45, 0);
+                break;
             case 270:
-                this._colliders[0].position = new Vector2(-45, 0);
-                this._colliders[1].position = new Vector2(-15, 0);
-                this._colliders[2].position = new Vector2(15, 0);
-                this._colliders[3].position = new Vector2(45, 0);
+                this._colliders[0].position = new Vector2(0, -45);
+                this._colliders[1].position = new Vector2(0, -15);
+                this._colliders[2].position = new Vector2(0, 15);
+                this._colliders[3].position = new Vector2(0, 45);
                 break;
             default:
                 break;
