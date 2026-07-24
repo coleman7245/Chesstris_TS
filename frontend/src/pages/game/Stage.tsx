@@ -1,11 +1,22 @@
 import { useState, useContext } from 'react';
-
-import './Stage.css';
+import { styled } from 'styled-components';
 
 import { chess_piece_images, ChessPieceImages, tetris_block_types } from '../../utilities.ts';
 import { GameContext } from '../../App.tsx';
 import { TetrisPiece } from './TetrisPiece.tsx';
 import Stage from '../../classes/Stage.ts';
+
+const StyledStage = styled.div`
+    overflow: hidden;
+    border: 10px solid white;
+    outline: 10px solid black;
+    position: relative;
+    background-color: grey;
+    width: 360px;
+    height: 600px;
+    margin-top: 3%;
+    margin-left: 5%;
+`;
 
 function getRandomChessPiece(chessPieceImages : ChessPieceImages) : string {
     let objectLength : number = Object.keys(chessPieceImages).length;
@@ -37,9 +48,9 @@ function Board() {
     const gameBoardCollider = new Stage(gameState['stage_size']);
 
     return (
-        <div className='stage'>
+        <StyledStage className='stage'>
             {createRandomTetrisPiece(tetris_block_types, sources, gameBoardCollider)}
-        </div>
+        </StyledStage>
     )
 }
 
