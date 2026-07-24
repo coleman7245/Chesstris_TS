@@ -29,7 +29,7 @@ type GameState = {
     startTime : number,
     finishTime : Time, 
     score : number,
-    board_size : Vector2,
+    stage_size : Vector2,
     current_phase : Game_Phase,
     crossed_finish_line : boolean,
     win_state : WinState,
@@ -67,7 +67,7 @@ const initialGameState : GameState = {
     startTime : Date.now(),
     finishTime : {hours : 0, minutes: 0, seconds: 0}, 
     score : 0,
-    board_size : new Vector2(600, 360),
+    stage_size : new Vector2(600, 360),
     current_phase : Game_Phase.PLAYING,
     crossed_finish_line : false,
     win_state : {

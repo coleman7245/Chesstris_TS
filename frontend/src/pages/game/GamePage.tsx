@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import Navbar from '../../shared_components/Navbar.tsx';
-import Board from './Board.tsx';
+import Board from './Stage.tsx';
 import GameInfo from './GameInfo.tsx';
 
 import { Game_Phase } from '../../utilities.ts';

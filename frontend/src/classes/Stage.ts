@@ -1,7 +1,7 @@
 import Vector2 from './Vector2.ts';
 import Collider from './Collider.ts';
 
-class GameBoard {
+class Stage {
     private _size : Vector2;
     private _collider : Collider;
 
@@ -19,4 +19,4 @@ class GameBoard {
     public set size(size : Vector2) {this._size = size;}
 }
 
-export default GameBoard;
+export default Stage;
