@@ -4,7 +4,6 @@ import { styled } from 'styled-components';
 import { chess_piece_images, ChessPieceImages, tetris_block_types } from '../../utilities.ts';
 import { GameContext } from '../../App.tsx';
 import { TetrisPiece } from './TetrisPiece.tsx';
-import Stage from '../../classes/Stage.ts';
 
 const StyledStage = styled.div`
     overflow: hidden;
@@ -35,21 +34,20 @@ function getRandomChessPieces(chessPieceImages : ChessPieceImages) : Array<strin
     return source_images;
 }
 
-function createRandomTetrisPiece(tetrisBlockTypes : Array<string>, sources : Array<string>, stage : Stage) {
+function createRandomTetrisPiece(tetrisBlockTypes : Array<string>, sources : Array<string>) {
     let randomIndex : number = Math.floor(Math.random() * tetrisBlockTypes.length);
     let type : string = tetrisBlockTypes[randomIndex];
 
-    return <TetrisPiece sources={sources} type={type} stage={stage}  />;
+    return <TetrisPiece sources={sources} type={type}/>;
 }
 
 function Stage() {
     const [gameState] = useContext(GameContext);
     const [sources] = useState(getRandomChessPieces(chess_piece_images));
-    const gameBoardCollider : Stage = new Stage(gameState['stage_size']);
 
     return (
         <StyledStage>
-            {createRandomTetrisPiece(tetris_block_types, sources, gameBoardCollider)}
+            {createRandomTetrisPiece(tetris_block_types, sources)}
         </StyledStage>
     )
 }

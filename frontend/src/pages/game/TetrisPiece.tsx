@@ -5,7 +5,6 @@ import { Block } from '../../classes/BlockClasses.ts';
 import { GameContext } from '../../App.tsx';
 import { Game_Phase } from '../../utilities.ts';
 import Vector2 from '../../classes/Vector2.ts';
-import GameBoard from '../../classes/Stage.ts';
 
 const StyledChessImage = styled.img`
     position: absolute;
@@ -18,7 +17,7 @@ const StyledTetrisPiece = styled.div`
     position: absolute;
 `;
 
-function TetrisPiece({sources, type, stage} : {sources : string[], type : string, stage : GameBoard}) {
+function TetrisPiece({sources, type} : {sources : string[], type : string}) {
     const [gameState, dispatch] = useContext(GameContext);
     const defaultBlock : Block | null = Block.createTetrisBlock(type, gameState['default_group_positions'][type], 
         gameState['default_start_position'], 0, new Vector2(30, 30));
@@ -65,10 +64,10 @@ function TetrisPiece({sources, type, stage} : {sources : string[], type : string
             }
 
             for (let collider of newBlock.colliders) {
-                if (collider.hasCollided(stage.collider)) {
+                if (collider.hasCollided(gameState.stage_collider)) {
                     if (collider.collisionInfo.direction.bottom)
                         newBlock.isControlled = false;
-                    newBlock.correctCollision(collider, stage.collider);
+                    newBlock.correctCollision(collider, gameState.stage_collider);
                 }
             }
 
@@ -91,10 +90,10 @@ function TetrisPiece({sources, type, stage} : {sources : string[], type : string
                 tetrisBlock.move(30, 'y');
 
                 for (let collider of tetrisBlock.colliders) {
-                    if (collider.hasCollided(stage.collider)) {
+                    if (collider.hasCollided(gameState.stage_collider)) {
                         if (collider.collisionInfo.direction.bottom)
                             tetrisBlock.isControlled = false;
-                        tetrisBlock.correctCollision(collider, stage.collider);
+                        tetrisBlock.correctCollision(collider, gameState.stage_collider);
                     }
                 }
             }
