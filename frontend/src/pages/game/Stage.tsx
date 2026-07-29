@@ -5,8 +5,11 @@ import { chess_piece_images, ChessPieceImages, tetris_block_types } from '../../
 import { GameContext } from '../../App.tsx';
 import { TetrisPiece } from './TetrisPiece.tsx';
 
-const StyledStage = styled.div`
-    overflow: hidden;
+const StyledStage = styled.div<{height : number, width : number}>`
+    display: grid;
+    grid-template-rows: repeat(${props => props.height}, ${props => props.width});
+    grid-template-columns: repeat(${props => props.width}, 1fr);
+    grid-gap: 1px;
     border: 10px solid white;
     outline: 10px solid black;
     position: relative;
@@ -46,7 +49,7 @@ function Stage() {
     const [sources] = useState(getRandomChessPieces(chess_piece_images));
 
     return (
-        <StyledStage>
+        <StyledStage height={gameState.state_size.y} width={gameState.state_size.x}>
             {createRandomTetrisPiece(tetris_block_types, sources)}
         </StyledStage>
     )
