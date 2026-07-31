@@ -25,19 +25,24 @@ type CollisionInfo = {
 }
 
 type BlockStatus = {
+  type : string | number,
+  status : string
+};
+
+type TetrisBlock = {
   shape : Array<Array<string | number>>,
-  images : Array<string | null> | null;
+  images : Array<string> | null;
 };
 
 type TetrisBlocks = {
-  0 : BlockStatus,
-  l : BlockStatus,
-  L : BlockStatus,
-  T : BlockStatus,
-  J : BlockStatus,
-  O : BlockStatus,
-  S : BlockStatus,
-  Z : BlockStatus
+  0 : TetrisBlock,
+  l : TetrisBlock,
+  L : TetrisBlock,
+  T : TetrisBlock,
+  J : TetrisBlock,
+  O : TetrisBlock,
+  S : TetrisBlock,
+  Z : TetrisBlock
 };
 
-export { PositionLimit, CollisionInfo, TetrisBlocks };
+export { PositionLimit, CollisionInfo, BlockStatus, TetrisBlock, TetrisBlocks };

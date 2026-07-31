@@ -4,6 +4,8 @@ import { styled } from 'styled-components';
 import { chess_piece_images, ChessPieceImages, tetris_block_types } from '../../utilities.ts';
 import { GameContext } from '../../App.tsx';
 import { TetrisPiece } from './TetrisPiece.tsx';
+import Block from './Block.tsx';
+import { BlockStatus } from '../../types.ts';
 
 const StyledStage = styled.div<{height : number, width : number}>`
     display: grid;
@@ -44,13 +46,12 @@ function createRandomTetrisPiece(tetrisBlockTypes : Array<string>, sources : Arr
     return <TetrisPiece sources={sources} type={type}/>;
 }
 
-function Stage() {
+function Stage({stage} : {stage : Array<Array<BlockStatus>>}) {
     const [gameState] = useContext(GameContext);
-    const [sources] = useState(getRandomChessPieces(chess_piece_images));
 
     return (
         <StyledStage height={gameState.state_size.y} width={gameState.state_size.x}>
-            {createRandomTetrisPiece(tetris_block_types, sources)}
+            {stage.map((row) => row.map((block, x) => <Block key={x} type={block['type']} image_url={undefined} ></Block>))}
         </StyledStage>
     )
 }

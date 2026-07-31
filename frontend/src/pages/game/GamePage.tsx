@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import Navbar from '../../shared_components/Navbar.tsx';
-import Board from './Stage.tsx';
+import Stage from './Stage.tsx';
 import GameInfo from './GameInfo.tsx';
 
 import { Game_Phase } from '../../utilities.ts';
@@ -43,6 +43,13 @@ const StyledPauseButton = styled.button`
     }
 `;
 
+const STAGE_WIDTH : number = 360;
+const STAGE_HEIGHT : number = 600;
+
+function createStage() {
+    return Array.from(new Array(STAGE_HEIGHT), () => new Array(STAGE_WIDTH).fill({type : 0, status : 'clear'}));
+}
+
 function GamePage() {
     const [gameState, dispatch] = useContext(GameContext);
     const navigate : Function = useNavigate();
@@ -67,7 +74,7 @@ function GamePage() {
             <Navbar />
             <StyledGamePage>
                 <div>
-                    <Board />
+                    <Stage stage={createStage()} />
                     <GameInfo />
                     <StyledPauseButton onClick={() => dispatch({type : 'PAUSED'})}>Pause</StyledPauseButton>
                 </div>
