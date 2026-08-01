@@ -7,13 +7,13 @@ class Vector2 {
         this._y = y;
     }
 
-    public get y () : number {return this._y;}
+    public get x () : number {return this._x;}
 
-    public get x() : number {return this._x;}
-
-    public set y(y : number) {this._y = y;}
+    public get y() : number {return this._y;}
 
     public set x(x : number) {this._x = x;}
+
+    public set y(y : number) {this._y = y;}
 
     public add(b : Vector2) : Vector2 {return new Vector2(this._x + b.x, this.y + b.y);}
 

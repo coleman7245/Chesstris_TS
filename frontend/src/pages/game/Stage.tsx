@@ -50,7 +50,7 @@ function Stage({stage} : {stage : Array<Array<BlockStatus>>}) {
     const [gameState] = useContext(GameContext);
 
     return (
-        <StyledStage height={gameState.state_size.y} width={gameState.state_size.x}>
+        <StyledStage height={gameState.stage_size.y} width={gameState.stage_size.x}>
             {stage.map((row) => row.map((block, x) => <Block key={x} type={block['type']} image_url={undefined} ></Block>))}
         </StyledStage>
     )

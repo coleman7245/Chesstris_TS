@@ -1,3 +1,5 @@
+import Vector2 from "./classes/Vector2.ts"
+
 type PositionLimit = {
   minX : number, 
   minY : number, 
@@ -45,4 +47,9 @@ type TetrisBlocks = {
   Z : TetrisBlock
 };
 
-export { PositionLimit, CollisionInfo, BlockStatus, TetrisBlock, TetrisBlocks };
+type Player = {
+  position : Vector2,
+  tetrisBlocks : TetrisBlocks
+};
+
+export { PositionLimit, CollisionInfo, BlockStatus, TetrisBlock, TetrisBlocks, Player };
