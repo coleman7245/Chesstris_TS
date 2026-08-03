@@ -43,16 +43,14 @@ const StyledPauseButton = styled.button`
     }
 `;
 
-const STAGE_WIDTH : number = 360;
-const STAGE_HEIGHT : number = 600;
-
-function createStage() {
-    return Array.from(new Array(STAGE_HEIGHT), () => new Array(STAGE_WIDTH).fill({type : 0, status : 'clear'}));
-}
-
 function GamePage() {
     const [gameState, dispatch] = useContext(GameContext);
     const navigate : Function = useNavigate();
+
+    function createStage() {
+        return Array.from(new Array(gameState.stage_size.y / 30), () => 
+            new Array(gameState.stage_size.x / 30).fill({type : 0, status : 'clear'}));
+    }
 
     useEffect(() => {
         if (gameState.current_phase === Game_Phase.WON) {

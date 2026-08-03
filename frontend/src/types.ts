@@ -28,7 +28,8 @@ type CollisionInfo = {
 
 type BlockStatus = {
   type : string | number,
-  status : string
+  status : string,
+  image_url : string | undefined
 };
 
 type TetrisBlock = {
