@@ -69,7 +69,7 @@ const initialGameState : GameState = {
     startTime : Date.now(),
     finishTime : {hours : 0, minutes: 0, seconds: 0}, 
     score : 0,
-    stage_size : new Vector2(300, 600),
+    stage_size : new Vector2(285, 600),
     stage_collider : new Collider('stage', new Vector2(0, 0), new Vector2(0, 0), new Vector2(600, 360)),
     current_phase : Game_Phase.PLAYING,
     crossed_finish_line : false,

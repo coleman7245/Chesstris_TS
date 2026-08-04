@@ -10,8 +10,8 @@ import { BlockStatus } from '../../types.ts';
 const StyledStage = styled.div<{blockSize : number, height : number, width : number}>`
     display: grid;
     overflow: hidden;
-    grid-template-rows: repeat(${props => props.height / props.blockSize}, 1fr);
-    grid-template-columns: repeat(${props => props.width / props.blockSize}, 1fr);
+    grid-template-rows: repeat(${props => Math.floor(props.height / props.blockSize)}, 1fr);
+    grid-template-columns: repeat(${props => Math.floor(props.width / props.blockSize)}, 1fr);
     border: 10px solid white;
     outline: 10px solid black;
     position: relative;

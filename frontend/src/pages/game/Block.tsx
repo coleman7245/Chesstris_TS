@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 
 const StyledBlock = styled.div<{type? : string | number}>`
     width: 30px;
+    overflow: hidden;
     height: 30px;
     border: 1px solid black;
     background-color: ${props => (props.type === 0)? 'white' : 'rgba(0, 0, 0, 0)'};
