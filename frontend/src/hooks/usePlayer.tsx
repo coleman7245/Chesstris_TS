@@ -10,10 +10,35 @@ function createRandomTetrisBlock() : TetrisBlock {
     return TETRIS_BLOCKS[randomKey];
 };
 
-const [player, setPlayer] = useState({position : new Vector2(0, 0), tetrisBlocks : createRandomTetrisBlock()});
-
 function usePlayer() {
-
+    const [player, setPlayer] = useState({position : new Vector2(0, 0), tetrisBlocks : createRandomTetrisBlock()});
 };
 
-export { usePlayer, }
+function copy(matrix : Array<Array<TetrisBlock>>) {
+  let copy = new Array(matrix.length);
+
+  for (let y = 0; y < copy.length; y++) {
+    copy[y] = matrix[y].slice();
+  }
+
+  return copy;
+};
+
+function rotate(matrix : Array<Array<TetrisBlock>>) {
+  if (matrix.length !== 0 && matrix.length === matrix[0].length) {
+    let rotated = copy(matrix);
+    let col = matrix.length - 1;
+
+    for (let y = 0; y < matrix.length; y++) {
+      for (let x = 0; x < matrix.length; x++) {
+        rotated[y][x] = matrix[x][col];
+      }
+
+      col--;
+    }
+
+    return rotated;
+  } else return matrix;
+};
+
+export { usePlayer, rotate }
