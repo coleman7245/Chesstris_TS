@@ -11,34 +11,30 @@ function createRandomTetrisBlock() : TetrisBlock {
 };
 
 function usePlayer() {
-    const [player, setPlayer] = useState({position : new Vector2(0, 0), tetrisBlocks : createRandomTetrisBlock()});
-};
+    const [player, setPlayer] = useState({position : new Vector2(0, 0), tetrisBlock : createRandomTetrisBlock()});
 
-function copy(matrix : Array<Array<TetrisBlock>>) {
-  let copy = new Array(matrix.length);
+    function move(velocity : Vector2) {
+        let newPlayer : Player = {position : player.position, tetrisBlock : player.tetrisBlock};
 
-  for (let y = 0; y < copy.length; y++) {
-    copy[y] = matrix[y].slice();
-  }
-
-  return copy;
-};
-
-function rotate(matrix : Array<Array<TetrisBlock>>) {
-  if (matrix.length !== 0 && matrix.length === matrix[0].length) {
-    let rotated = copy(matrix);
-    let col = matrix.length - 1;
-
-    for (let y = 0; y < matrix.length; y++) {
-      for (let x = 0; x < matrix.length; x++) {
-        rotated[y][x] = matrix[x][col];
-      }
-
-      col--;
+        newPlayer.position = newPlayer.position.add(velocity);
+        
+        setPlayer(newPlayer);
     }
 
-    return rotated;
-  } else return matrix;
+    function rotate() {
+        let newPlayer : Player = {position : player.position, tetrisBlock : player.tetrisBlock};
+        let col : number = player.tetrisBlock.shape.length - 1;
+
+        for (let y = 0; y < player.tetrisBlock.shape.length; y++) {
+            for (let x = 0; x < player.tetrisBlock.shape.length; x++) {
+                newPlayer.tetrisBlock.shape[y][x] = player.tetrisBlock.shape[x][col];
+            }
+
+            col--;
+        }
+
+        setPlayer(newPlayer);
+    };
 };
 
-export { usePlayer, rotate }
+export default usePlayer 

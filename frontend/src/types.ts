@@ -50,7 +50,7 @@ type TetrisBlocks = {
 
 type Player = {
   position : Vector2,
-  tetrisBlocks : TetrisBlocks
+  tetrisBlock : TetrisBlock
 };
 
 export { PositionLimit, CollisionInfo, BlockStatus, TetrisBlock, TetrisBlocks, Player };

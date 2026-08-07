@@ -1,6 +1,17 @@
 import Player from './classes/Player.ts';
 import Vector2 from './classes/Vector2.ts';
 import Collider from './classes/Collider.ts';
+import { TetrisBlock } from './types.ts';
+
+function copy(matrix : Array<Array<string | number>>) {
+  let copy = new Array(matrix.length);
+
+  for (let y = 0; y < copy.length; y++) {
+    copy[y] = matrix[y].slice();
+  }
+
+  return copy;
+};
 
 type Score = {
     score : number,
@@ -166,4 +177,4 @@ const tetris_block_types : Array<string> = [
     'line'
 ];
 
-export { ChessPieceImages, WinState, State, Time, Player, Score, Action, GameState, initialGameState, Game_Phase, getCurrentGame, saveCurrentGame, overrideCurrentGame, chess_piece_images, tetris_block_types }; 
+export { ChessPieceImages, WinState, State, Time, Player, Score, Action, GameState, initialGameState, Game_Phase, getCurrentGame, saveCurrentGame, overrideCurrentGame, chess_piece_images, tetris_block_types, copy }; 
