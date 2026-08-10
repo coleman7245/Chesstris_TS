@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { UNSAFE_DataRouterStateContext, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import usePlayer from '../../hooks/usePlayer.tsx';
@@ -7,6 +7,7 @@ import useStage from '../../hooks/useStage.tsx';
 import Navbar from '../../shared_components/Navbar.tsx';
 import Stage from './Stage.tsx';
 import GameInfo from './GameInfo.tsx';
+import Vector2 from '../../classes/Vector2.ts';
 
 import { Game_Phase } from '../../utilities.ts';
 import { GameContext } from '../../App.tsx';
@@ -45,20 +46,32 @@ const StyledPauseButton = styled.button`
     }
 `;
 
-function handleInput(e : React.KeyboardEvent) {
-    e.preventDefault();
-
-    // switch(e.key) {
-    //     case 'a':
-    //         player
-    // }
-};
-
 function GamePage() {
     const [gameState, dispatch] = useContext(GameContext);
     const navigate : Function = useNavigate();
-    // const [player, setPlayer, move] = usePlayer();
-    // const [stage, setStage] = useStage();
+    const [player, createPlayer, move, rotate] = usePlayer();
+    const [stage, setStage] = useStage(player, gameState);
+
+    function handleInput(e : React.KeyboardEvent) {
+    e.preventDefault(); 
+
+    switch(e.key) {
+        case 'a':
+            move(new Vector2(-1, 0));
+            break;
+        case 's':
+            move(new Vector2(0, 1));
+            break;
+        case 'd':
+            move(new Vector2(1, 0));
+            break;
+        case 'r':
+            rotate();
+            break;
+        default:
+            break;
+    }
+};
 
     useEffect(() => {
         if (gameState.current_phase === Game_Phase.WON) {
@@ -80,7 +93,7 @@ function GamePage() {
             <Navbar />
             <StyledGamePage>
                 <div>
-                    {/* <Stage stage={stage} /> */}
+                    <Stage stage={stage} />
                     <GameInfo />
                     <StyledPauseButton onClick={() => dispatch({type : 'PAUSED'})}>Pause</StyledPauseButton>
                 </div>

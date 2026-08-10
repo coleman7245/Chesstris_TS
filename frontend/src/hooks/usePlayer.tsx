@@ -10,14 +10,22 @@ function createRandomTetrisBlock() : TetrisBlock {
     return TETRIS_BLOCKS[randomKey];
 };
 
+function initializePlayer() : Player {
+    let tetrisBlock : TetrisBlock = createRandomTetrisBlock();
+    let position : Vector2 = new Vector2(tetrisBlock.shape[0].length, tetrisBlock.shape.length);
+
+    return {position, tetrisBlock};
+};
+
 function usePlayer() {
-    const [player, setPlayer] = useState({position : new Vector2(0, 0), tetrisBlock : createRandomTetrisBlock()});
+    const [player, setPlayer] = useState(initializePlayer());
+
+    function createPlayer() {setPlayer(initializePlayer());}
 
     function move(velocity : Vector2) {
         let newPlayer : Player = {position : player.position, tetrisBlock : player.tetrisBlock};
 
         newPlayer.position = newPlayer.position.add(velocity);
-        
         setPlayer(newPlayer);
     }
 
@@ -35,6 +43,8 @@ function usePlayer() {
 
         setPlayer(newPlayer);
     };
+
+    return [player, createPlayer, move, rotate] as const;
 };
 
 export default usePlayer 
