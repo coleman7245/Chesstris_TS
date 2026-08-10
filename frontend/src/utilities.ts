@@ -1,7 +1,6 @@
 import Player from './classes/Player.ts';
 import Vector2 from './classes/Vector2.ts';
 import Collider from './classes/Collider.ts';
-import { TetrisBlock } from './types.ts';
 
 function copy(matrix : Array<Array<string | number>>) {
   let copy = new Array(matrix.length);

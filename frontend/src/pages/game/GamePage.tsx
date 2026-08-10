@@ -1,7 +1,9 @@
-import { useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
+import usePlayer from '../../hooks/usePlayer.tsx';
+import useStage from '../../hooks/useStage.tsx';
 import Navbar from '../../shared_components/Navbar.tsx';
 import Stage from './Stage.tsx';
 import GameInfo from './GameInfo.tsx';
@@ -43,14 +45,20 @@ const StyledPauseButton = styled.button`
     }
 `;
 
+function handleInput(e : React.KeyboardEvent) {
+    e.preventDefault();
+
+    // switch(e.key) {
+    //     case 'a':
+    //         player
+    // }
+};
+
 function GamePage() {
     const [gameState, dispatch] = useContext(GameContext);
     const navigate : Function = useNavigate();
-
-    function createStage() {
-        return Array.from(new Array(Math.floor(gameState.stage_size.y / 30)), () => 
-            new Array(Math.floor(gameState.stage_size.x / 30)).fill({type : 0, status : 'clear'}));
-    }
+    // const [player, setPlayer, move] = usePlayer();
+    // const [stage, setStage] = useStage();
 
     useEffect(() => {
         if (gameState.current_phase === Game_Phase.WON) {
@@ -72,7 +80,7 @@ function GamePage() {
             <Navbar />
             <StyledGamePage>
                 <div>
-                    <Stage stage={createStage()} />
+                    {/* <Stage stage={stage} /> */}
                     <GameInfo />
                     <StyledPauseButton onClick={() => dispatch({type : 'PAUSED'})}>Pause</StyledPauseButton>
                 </div>
