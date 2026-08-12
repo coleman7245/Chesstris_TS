@@ -1,5 +1,5 @@
-import React, { useEffect, useContext } from 'react';
-import { UNSAFE_DataRouterStateContext, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import usePlayer from '../../hooks/usePlayer.tsx';
@@ -8,6 +8,7 @@ import Navbar from '../../shared_components/Navbar.tsx';
 import Stage from './Stage.tsx';
 import GameInfo from './GameInfo.tsx';
 import Vector2 from '../../classes/Vector2.ts';
+import { createStage } from '../../utilities.ts';
 
 import { Game_Phase } from '../../utilities.ts';
 import { GameContext } from '../../App.tsx';
@@ -26,7 +27,7 @@ const StyledGamePage = styled.div`
     position: absolute;
 `;
 
-const StyledPauseButton = styled.button`
+const StyledStartStopButton = styled.button`
     background-color: white;
     font: 'Georgia';
     font-weight: bold;
@@ -47,55 +48,75 @@ const StyledPauseButton = styled.button`
 `;
 
 function GamePage() {
+    const [text, setText] = useState('Start');
     const [gameState, dispatch] = useContext(GameContext);
     const navigate : Function = useNavigate();
-    const [player, createPlayer, move, rotate] = usePlayer();
+    const [player, createPlayer, move, rotate] = usePlayer(gameState);
     const [stage, setStage] = useStage(player, gameState);
 
     function handleInput(e : React.KeyboardEvent) {
-    e.preventDefault(); 
+        e.preventDefault(); 
 
-    switch(e.key) {
-        case 'a':
-            move(new Vector2(-1, 0));
-            break;
-        case 's':
-            move(new Vector2(0, 1));
-            break;
-        case 'd':
-            move(new Vector2(1, 0));
-            break;
-        case 'r':
-            rotate();
-            break;
-        default:
-            break;
+        switch(e.key) {
+            case 'a':
+                move(new Vector2(-1, 0));
+                break;
+            case 's':
+                move(new Vector2(0, 1));
+                break;
+            case 'd':
+                move(new Vector2(1, 0));
+                break;
+            case 'r':
+                rotate();
+                break;
+            default:
+                break;
+        }
+    };
+
+    function initializeGame() {
+        setStage(createStage(gameState.stage_size));
+        createPlayer();
     }
-};
 
     useEffect(() => {
-        if (gameState.current_phase === Game_Phase.WON) {
+        if (gameState.current_phase === Game_Phase.PREGAME) {
+
+        }
+        else if (gameState.current_phase === Game_Phase.WIN) {
             const timeout = setTimeout(() => navigate('/win'), 0);
             return () => clearInterval(timeout);
          }
-        else if (gameState.current_phase === Game_Phase.LOST) {
+        else if (gameState.current_phase === Game_Phase.LOSE) {
             const timeout = setTimeout(() => navigate('/lose'), 0);
             return () => clearInterval(timeout);
         }
-        else if (gameState.current_phase === Game_Phase.PLAYING) {
+        else if (gameState.current_phase === Game_Phase.PAUSE) {
+
+        }
+        else if (gameState.current_phase === Game_Phase.PLAY) {
             const timeElapsed = setInterval(() => {dispatch({type : 'UPDATE_TIME'});}, 1000);
             return () => clearInterval(timeElapsed);
         }
     }, [gameState.current_phase, navigate, dispatch]);
 
     return (
-        <div>
+        <div onKeyDown={e => handleInput(e)}>
             <Navbar />
             <StyledGamePage>
                 <div>
                     <Stage stage={stage} />
                     <GameInfo />
-                    <StyledPauseButton onClick={() => dispatch({type : 'PAUSED'})}>Pause</StyledPauseButton>
+                    <StyledStartStopButton onClick={() => {
+                        if (text === 'Start') {
+                            initializeGame();
+                            setText('Pause');
+                        }
+                        else
+                            dispatch({type : 'Pause'});
+                    }}>{text}
+                    </StyledStartStopButton>
                 </div>
             </StyledGamePage>
         </div>

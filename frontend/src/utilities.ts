@@ -1,8 +1,8 @@
-import Player from './classes/Player.ts';
 import Vector2 from './classes/Vector2.ts';
 import Collider from './classes/Collider.ts';
+import { BlockStatus, ChessPieceImages, GameState } from './types.ts';
 
-function copy(matrix : Array<Array<string | number>>) {
+export function copy(matrix : Array<Array<BlockStatus>>) : Array<Array<BlockStatus>> {
   let copy = new Array(matrix.length);
 
   for (let y = 0; y < copy.length; y++) {
@@ -12,70 +12,21 @@ function copy(matrix : Array<Array<string | number>>) {
   return copy;
 };
 
-type Score = {
-    score : number,
-    player_name : string,
-    game_id : string
+export function createStage(stageSize : Vector2) : Array<Array<BlockStatus>> {
+        return Array.from(new Array(Math.floor(stageSize.y / 30)), () => 
+            new Array(Math.floor(stageSize.x / 30)).fill({type : 0, status : 'clear'}));
 };
 
-type Action = {
-    type : string,
-    player : Player,
-    hasScored : boolean,
-    crossedFinishLine : boolean
-}
+export enum Game_Phase {
+    PLAY,
+    LOSE,
+    WIN,
+    START,
+    PAUSE,
+    PREGAME
+};
 
-type DefaultGroupPositions = {
-    t : Array<Vector2>,
-    squiggly : Array<Vector2>,
-    reverse_squiggly : Array<Vector2>,
-    l : Array<Vector2>,
-    reverse_l : Array<Vector2>,
-    square : Array<Vector2>,
-    line : Array<Vector2>
-}
-
-type GameState = {
-    player_name : string, 
-    startTime : number,
-    finishTime : Time, 
-    score : number,
-    chess_piece_pixel_size : Vector2,
-    stage_size : Vector2,
-    stage_collider : Collider,
-    current_phase : Game_Phase,
-    crossed_finish_line : boolean,
-    win_state : WinState,
-    isPaused : boolean,
-    tetris_pieces : Array<number>,
-    default_start_position : Vector2,
-    default_group_positions : DefaultGroupPositions
-}
-
-type WinState = {
-    win_pos_y : number,
-    win_score : number
-}
-
-type Time = {
-    hours : number,
-    minutes : number,
-    seconds : number
-}
-
-type State = {
-
-}
-
-enum Game_Phase {
-    PLAYING,
-    LOST,
-    WON,
-    NOT_RUNNING,
-    PAUSED
-}
-
-const initialGameState : GameState = {
+export const initialGameState : GameState = {
     player_name : '', 
     startTime : Date.now(),
     finishTime : {hours : 0, minutes: 0, seconds: 0}, 
@@ -83,7 +34,7 @@ const initialGameState : GameState = {
     chess_piece_pixel_size : new Vector2(30, 30),
     stage_size : new Vector2(285, 600),
     stage_collider : new Collider('stage', new Vector2(0, 0), new Vector2(0, 0), new Vector2(600, 360)),
-    current_phase : Game_Phase.PLAYING,
+    current_phase : Game_Phase.PREGAME,
     crossed_finish_line : false,
     win_state : {
         win_pos_y : 480,
@@ -101,9 +52,9 @@ const initialGameState : GameState = {
         'square' : [new Vector2(-15, 15), new Vector2(-15, -15), new Vector2(15, -15), new Vector2(15, 15)],
         'line' : [new Vector2(0, -45), new Vector2(0, -15), new Vector2(0, 15), new Vector2(0, 45)]
     }
-}
+};
 
-async function getCurrentGame(dispatch : Function) : Promise<void> {
+export async function getCurrentGame(dispatch : Function) : Promise<void> {
     try {
         const response = await fetch('');
         const result = await response.json();
@@ -114,7 +65,7 @@ async function getCurrentGame(dispatch : Function) : Promise<void> {
     }
 }
 
-async function saveCurrentGame(dispatch : Function) : Promise<void> {
+export async function saveCurrentGame(dispatch : Function) : Promise<void> {
     try {
         const response = await fetch('');
         const result = await response.json();
@@ -125,7 +76,7 @@ async function saveCurrentGame(dispatch : Function) : Promise<void> {
     }
 }
 
-async function overrideCurrentGame(dispatch : Function) : Promise<void> {
+export async function overrideCurrentGame(dispatch : Function) : Promise<void> {
     try {
         const response = await fetch('');
         const result = await response.json();
@@ -136,22 +87,7 @@ async function overrideCurrentGame(dispatch : Function) : Promise<void> {
     }
 }
 
-type ChessPieceImages = {
-    'black_bishop': string,
-    'black_king' : string,
-    'black_knight': string,
-    'black_pawn' : string,
-    'black_queen' : string,
-    'black_rook' : string,
-    'white_bishop' : string,
-    'white_king' : string,
-    'white_knight' : string,
-    'white_pawn' : string,
-    'white_queen' : string,
-    'white_rook' : string
-}
-
-const chess_piece_images : ChessPieceImages = {
+export const chess_piece_images : ChessPieceImages = {
     'black_bishop': '/src/assets/images/chess_black_bishop.png',
     'black_king' : '/src/assets/images/chess_black_king.png',
     'black_knight': '/src/assets/images/chess_black_knight.png',
@@ -166,7 +102,7 @@ const chess_piece_images : ChessPieceImages = {
     'white_rook' : '/src/assets/images/chess_white_rook.png'
 };
 
-const tetris_block_types : Array<string> = [
+export const tetris_block_types : Array<string> = [
     't',
     'squiggly',
     'reverse_squiggly',
@@ -175,5 +111,3 @@ const tetris_block_types : Array<string> = [
     'square',
     'line'
 ];
-
-export { ChessPieceImages, WinState, State, Time, Player, Score, Action, GameState, initialGameState, Game_Phase, getCurrentGame, saveCurrentGame, overrideCurrentGame, chess_piece_images, tetris_block_types, copy }; 

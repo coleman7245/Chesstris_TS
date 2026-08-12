@@ -1,43 +1,45 @@
-import Vector2 from "./classes/Vector2.ts"
+import Vector2 from "./classes/Vector2.ts";
+import Collider from "./classes/Collider.ts";
+import { Game_Phase } from "./utilities.ts";
 
-type PositionLimit = {
+export type PositionLimit = {
   minX : number, 
   minY : number, 
   maxX : number, 
   maxY : number
-}
+};
 
-type CollisionPoints = {
+export type CollisionPoints = {
   top : number,
   bottom : number,
   left : number,
   right : number
-}
+};
 
-type CollisionDirection = {
+export type CollisionDirection = {
   top : boolean,
   bottom : boolean,
   left : boolean,
   right : boolean
-}
+};
 
-type CollisionInfo = {
+export type CollisionInfo = {
   points : CollisionPoints,
   direction : CollisionDirection
-}
+};
 
-type BlockStatus = {
+export type BlockStatus = {
   type : string | number,
   status : string,
   image_url : string | undefined
 };
 
-type TetrisBlock = {
+export type TetrisBlock = {
   shape : Array<Array<string | number>>,
   images : Array<string> | null;
 };
 
-type TetrisBlocks = {
+export type TetrisBlocks = {
   0 : TetrisBlock,
   l : TetrisBlock,
   L : TetrisBlock,
@@ -48,9 +50,74 @@ type TetrisBlocks = {
   Z : TetrisBlock
 };
 
-type Player = {
+export type Player = {
+  name : string,
   position : Vector2,
   tetrisBlock : TetrisBlock
 };
 
-export { PositionLimit, CollisionInfo, BlockStatus, TetrisBlock, TetrisBlocks, Player };
+export type ChessPieceImages = {
+    'black_bishop': string,
+    'black_king' : string,
+    'black_knight': string,
+    'black_pawn' : string,
+    'black_queen' : string,
+    'black_rook' : string,
+    'white_bishop' : string,
+    'white_king' : string,
+    'white_knight' : string,
+    'white_pawn' : string,
+    'white_queen' : string,
+    'white_rook' : string
+};
+
+export type Score = {
+    score : number,
+    player_name : string,
+    game_id : string
+};
+
+export type Action = {
+    type : string,
+    player : Player,
+    hasScored : boolean,
+    crossedFinishLine : boolean
+};
+
+export type DefaultGroupPositions = {
+    t : Array<Vector2>,
+    squiggly : Array<Vector2>,
+    reverse_squiggly : Array<Vector2>,
+    l : Array<Vector2>,
+    reverse_l : Array<Vector2>,
+    square : Array<Vector2>,
+    line : Array<Vector2>
+};
+
+export type GameState = {
+    player_name : string, 
+    startTime : number,
+    finishTime : Time, 
+    score : number,
+    chess_piece_pixel_size : Vector2,
+    stage_size : Vector2,
+    stage_collider : Collider,
+    current_phase : Game_Phase,
+    crossed_finish_line : boolean,
+    win_state : WinState,
+    isPaused : boolean,
+    tetris_pieces : Array<number>,
+    default_start_position : Vector2,
+    default_group_positions : DefaultGroupPositions
+};
+
+export type WinState = {
+    win_pos_y : number,
+    win_score : number
+};
+
+export type Time = {
+    hours : number,
+    minutes : number,
+    seconds : number
+};

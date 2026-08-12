@@ -13,8 +13,9 @@ import EditPage from './pages/edit/EditPage.tsx';
 import Login from './pages/login/Login.tsx';
 import Position from './classes/Vector2.ts';
 
-import {initialGameState, GameState, Time, Game_Phase, Action } from './utilities.ts';
+import {initialGameState, Game_Phase } from './utilities.ts';
 import DataHandler from './classes/DataHandler.ts';
+import { GameState, Time, Action } from './types.ts';
 
 const GameContext : React.Context<any> = createContext({});
 
@@ -35,7 +36,7 @@ function handleGameState(gameState : GameState, action : Action) : GameState {
         case 'UPDATE_TIME':
             newGameState.finishTime = getTime(newGameState.startTime);
             break;
-        case 'PAUSED':
+        case 'PAUSE':
             newGameState.isPaused = true;
             break;
         case 'RESET_GAME':
@@ -58,11 +59,11 @@ function handleGameState(gameState : GameState, action : Action) : GameState {
 
 function checkGamePhase(gameState : GameState) : Game_Phase {
     if (gameState.score <= gameState.win_state.win_score && gameState.crossed_finish_line)
-        return Game_Phase.WON;
+        return Game_Phase.WIN;
     else if (gameState.crossed_finish_line)
-        return Game_Phase.LOST;
+        return Game_Phase.LOSE;
     else
-        return Game_Phase.PLAYING;
+        return Game_Phase.PLAY;
 }
 
 function getTime(startTime : number) : Time {
