@@ -52,7 +52,7 @@ function GamePage() {
     const [gameState, dispatch] = useContext(GameContext);
     const navigate : Function = useNavigate();
     const [player, createPlayer, move, rotate] = usePlayer(gameState);
-    const [stage, setStage] = useStage(player, gameState);
+    const [stage, setStage] = useStage(player, createPlayer, gameState);
 
     function handleInput(e : React.KeyboardEvent) {
         e.preventDefault(); 
@@ -82,7 +82,7 @@ function GamePage() {
 
     useEffect(() => {
         if (gameState.current_phase === Game_Phase.PREGAME) {
-
+            
         }
         else if (gameState.current_phase === Game_Phase.WIN) {
             const timeout = setTimeout(() => navigate('/win'), 0);
@@ -109,12 +109,13 @@ function GamePage() {
                     <Stage stage={stage} />
                     <GameInfo />
                     <StyledStartStopButton onClick={() => {
-                        if (text === 'Start') {
+                        if (gameState.current_phase === Game_Phase.PREGAME) {
                             initializeGame();
                             setText('Pause');
+                            dispatch({type : 'START'});
                         }
                         else
-                            dispatch({type : 'Pause'});
+                            dispatch({type : 'PAUSE'});
                     }}>{text}
                     </StyledStartStopButton>
                 </div>

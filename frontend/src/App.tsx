@@ -13,7 +13,7 @@ import EditPage from './pages/edit/EditPage.tsx';
 import Login from './pages/login/Login.tsx';
 import Position from './classes/Vector2.ts';
 
-import {initialGameState, Game_Phase } from './utilities.ts';
+import { initialGameState, Game_Phase } from './utilities.ts';
 import DataHandler from './classes/DataHandler.ts';
 import { GameState, Time, Action } from './types.ts';
 

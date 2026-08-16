@@ -12,10 +12,12 @@ function createRandomTetrisBlock() : TetrisBlock {
 
 function usePlayer(gameState : GameState) {
     const [player, setPlayer] = useState({name : gameState.player_name, 
-        position : new Vector2(Math.floor(gameState.stage_size.x / 2), 0), tetrisBlock : createRandomTetrisBlock()});
+        position : new Vector2(Math.floor(gameState.stage_size.x / gameState.chess_piece_pixel_size.x / 2), 0), 
+            tetrisBlock : createRandomTetrisBlock()});
 
-    function createPlayer() {setPlayer({name : gameState.player_name, 
-        position : new Vector2(Math.floor(gameState.stage_size.x / 2), 0), tetrisBlock : createRandomTetrisBlock()});}
+    const createPlayer = useCallback(() => setPlayer({name : gameState.player_name, 
+        position : new Vector2(Math.floor(gameState.stage_size.x / gameState.chess_piece_pixel_size.x / 2), 0), 
+            tetrisBlock : createRandomTetrisBlock()}), []);
 
     function move(velocity : Vector2) {
         let newPlayer : Player = {name : gameState.player_name, position : player.position, tetrisBlock : player.tetrisBlock};

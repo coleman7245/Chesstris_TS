@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Player, GameState, BlockStatus } from '../types.ts';
-import { createStage, copy } from '../utilities.ts';
+import { createStage, copy, Game_Phase } from '../utilities.ts';
 
-function useStage(player : Player, gameState : GameState) {
+function useStage(player : Player, createPlayer : Function, gameState : GameState) {
     const [stage, setStage] = useState(createStage(gameState.stage_size));
 
     function drawPlayer(newStage : Array<Array<BlockStatus>>) {
@@ -27,8 +27,9 @@ function useStage(player : Player, gameState : GameState) {
     };
 
     useEffect(() => {
-        return () => setStage(prev => drawStage(prev));
-    }, [player]);
+        if (gameState.current_phase !== Game_Phase.PREGAME)
+            setStage(prev => drawStage(prev));
+    }, [player, createPlayer]);
 
     return [stage, setStage] as const;
 };
