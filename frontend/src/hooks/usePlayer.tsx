@@ -31,7 +31,7 @@ function usePlayer(gameState : GameState) {
         setPlayer( {name : player.name, position : player.position.copy(), 
                 tetrisBlock : {shape : player.tetrisBlock.shape.map(
                 (row, y) => row.map(
-                    (col, x) => col = player.tetrisBlock.shape[x].reverse()[y]
+                    (col, x) => col = player.tetrisBlock.shape[x].toReversed()[y]
                 )
             ),
             images : (player.tetrisBlock.images !== null)? player.tetrisBlock.images.slice() : null}}
