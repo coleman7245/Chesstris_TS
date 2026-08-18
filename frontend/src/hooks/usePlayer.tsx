@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import TETRIS_BLOCKS from '../tetrisblocks.ts';
-import { TetrisBlocks, TetrisBlock, Player, GameState } from '../types.ts';
+import { TetrisBlocks, TetrisBlock, GameState } from '../types.ts';
 import Vector2 from '../classes/Vector2.ts';
 import { copyTetrisBlockShape } from '../utilities.ts';
 

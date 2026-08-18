@@ -11,6 +11,22 @@ export function createStage(stageSize : Vector2) : Array<Array<BlockStatus>> {
             new Array(Math.floor(stageSize.x / 30)).fill({type : 0, status : 'clear'}));
 };
 
+function getRandomChessPiece(chessPieceImages : ChessPieceImages) : string {
+    const randomIndex : number = Math.floor(Math.random() * Object.keys(chessPieceImages).length);
+
+    return chessPieceImages[Object.keys(chessPieceImages)[randomIndex] as keyof ChessPieceImages];
+};
+
+export function getRandomChessPieces(chessPieceImages : ChessPieceImages) : Array<string> | null {
+    const source_images : Array<string> = new Array<string>();
+
+    for (let i = 0; i < 4; i++) {
+        source_images.push(getRandomChessPiece(chessPieceImages));
+    }
+
+    return source_images;
+};
+
 export enum Game_Phase {
     PLAY,
     LOSE,

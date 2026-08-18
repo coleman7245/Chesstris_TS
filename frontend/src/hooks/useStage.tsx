@@ -6,20 +6,26 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
     const [stage, setStage] = useState(createStage(gameState.stage_size));
 
     function drawPlayer(newStage : Array<Array<BlockStatus>>) {
+        console.log(player.tetrisBlock.images);
+
         player.tetrisBlock.shape.forEach((row, y) => {
             row.forEach((type, x) => {
-                newStage[y + player.position.y][x + player.position.x] = {type : type, status : "cleared", image_url : undefined};
+                newStage[y + player.position.y][x + player.position.x] = {type : type, status : "cleared", 
+                    image_url : (player.tetrisBlock.images !== null && type !== 0)? 
+                    player.tetrisBlock.images[type as number - 1] : undefined};
         })});
     };
 
-    function drawStage(prev : Array<Array<BlockStatus>>) {
-        let newStage : Array<Array<BlockStatus>> = prev.map(row => 
+    function refreshStage(prev : Array<Array<BlockStatus>>) : Array<Array<BlockStatus>> {
+        return prev.map(row => 
             row.map(block => 
                 block = (block.status === "cleared")? {type : 0, status : "cleared", image_url : undefined} : block
             )
         );
+    };
 
-        console.log(newStage);
+    function drawStage(prev : Array<Array<BlockStatus>>) {
+        const newStage = refreshStage(prev);
 
         drawPlayer(newStage);
 

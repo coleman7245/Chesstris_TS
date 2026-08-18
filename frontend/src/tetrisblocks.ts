@@ -1,9 +1,10 @@
 import { TetrisBlocks } from './types.ts';
+import { getRandomChessPieces, chess_piece_images } from './utilities.ts';
 
 const TETRIS_BLOCKS : TetrisBlocks = {
     0 : {
         shape : [[0]],
-        images : null
+        images : getRandomChessPieces(chess_piece_images)
     },
     l : {
             shape : [
@@ -12,7 +13,7 @@ const TETRIS_BLOCKS : TetrisBlocks = {
                 [0, '3', 0, 0],
                 [0, '4', 0, 0],
             ],
-            images : null
+            images : getRandomChessPieces(chess_piece_images)
     },
     L : {
         shape : [
@@ -20,7 +21,7 @@ const TETRIS_BLOCKS : TetrisBlocks = {
             [0, '2', 0],
             [0, '3', '4']
         ],
-        images : null
+        images : getRandomChessPieces(chess_piece_images)
     },
     T : {
         shape : [
@@ -28,7 +29,7 @@ const TETRIS_BLOCKS : TetrisBlocks = {
             [0, '4', 0],
             [0, 0, 0],
         ],
-        images : null
+        images : getRandomChessPieces(chess_piece_images)
     },
   J : {
         shape : [
@@ -36,14 +37,14 @@ const TETRIS_BLOCKS : TetrisBlocks = {
             [0, '2', 0],
             ['4', '3', 0]
         ],
-        images : null
+        images : getRandomChessPieces(chess_piece_images)
     },
   O : {
         shape : [
             ['1', '2'],
             ['3', '4']
         ],
-        images : null
+        images : getRandomChessPieces(chess_piece_images)
     },
   S : {
         shape : [
@@ -51,7 +52,7 @@ const TETRIS_BLOCKS : TetrisBlocks = {
             ['3', '4', 0],
             [0, 0, 0]
         ],
-        images : null
+        images : getRandomChessPieces(chess_piece_images)
     },
   Z : {
         shape : [
@@ -59,7 +60,7 @@ const TETRIS_BLOCKS : TetrisBlocks = {
             [0, '3', '4'],
             [0, 0, 0]
         ],
-        images : null
+        images : getRandomChessPieces(chess_piece_images)
     }
 };
 

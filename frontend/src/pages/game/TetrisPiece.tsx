@@ -81,7 +81,7 @@ function TetrisPiece({sources, type} : {sources : string[], type : string}) {
         const id : NodeJS.Timeout = setInterval(() => {
             
             if (tetrisBlock !== null && tetrisRef !== null && tetrisRef.current !== null) {
-                if (gameState.current_phase !== Game_Phase.PAUSED || tetrisBlock.isControlled)
+                if (gameState.current_phase !== Game_Phase.PAUSE || tetrisBlock.isControlled)
                     tetrisRef.current.focus();
 
                 if (!tetrisBlock.isControlled)
