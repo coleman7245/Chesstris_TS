@@ -2,15 +2,9 @@ import Vector2 from './classes/Vector2.ts';
 import Collider from './classes/Collider.ts';
 import { BlockStatus, ChessPieceImages, GameState } from './types.ts';
 
-export function copy(matrix : Array<Array<BlockStatus>>) : Array<Array<BlockStatus>> {
-  let copy = new Array(matrix.length);
+export function copyBlockStatusMatrix(matrix : Array<Array<BlockStatus>>) : Array<Array<BlockStatus>> {return matrix.map((row) => row.map(col => col));};
 
-  for (let y = 0; y < copy.length; y++) {
-    copy[y] = matrix[y].slice();
-  }
-
-  return copy;
-};
+export function copyTetrisBlockShape(matrix : Array<Array<string | number>>) : Array<Array<string | number>> {return matrix.map((row) => row.map(col => col));}
 
 export function createStage(stageSize : Vector2) : Array<Array<BlockStatus>> {
         return Array.from(new Array(Math.floor(stageSize.y / 30)), () => 

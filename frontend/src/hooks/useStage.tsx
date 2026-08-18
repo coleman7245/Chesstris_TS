@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Player, GameState, BlockStatus } from '../types.ts';
-import { createStage, copy, Game_Phase } from '../utilities.ts';
+import { createStage, copyBlockStatusMatrix, copyTetrisBlockShape, Game_Phase } from '../utilities.ts';
 
 function useStage(player : Player, createPlayer : Function, gameState : GameState) {
     const [stage, setStage] = useState(createStage(gameState.stage_size));
@@ -13,7 +13,7 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
     };
 
     function drawStage(prev : Array<Array<BlockStatus>>) {
-        let newStage = copy(prev);
+        let newStage = copyBlockStatusMatrix(prev);
 
         newStage.forEach(row => {
             row.forEach(block => {

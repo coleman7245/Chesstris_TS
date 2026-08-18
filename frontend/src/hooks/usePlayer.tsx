@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import TETRIS_BLOCKS from '../tetrisblocks.ts';
 import { TetrisBlocks, TetrisBlock, Player, GameState } from '../types.ts';
 import Vector2 from '../classes/Vector2.ts';
+import { copyTetrisBlockShape } from '../utilities.ts';
 
 function createRandomTetrisBlock() : TetrisBlock {
     const selection : string = 'LJTOlSZ';
@@ -20,25 +21,21 @@ function usePlayer(gameState : GameState) {
             tetrisBlock : createRandomTetrisBlock()}), []);
 
     function move(velocity : Vector2) {
-        let newPlayer : Player = {name : gameState.player_name, position : player.position, tetrisBlock : player.tetrisBlock};
-
-        newPlayer.position = newPlayer.position.add(velocity);
-        setPlayer(newPlayer);
+        setPlayer( {name : player.name, position : player.position.add(velocity), 
+            tetrisBlock : {shape : copyTetrisBlockShape(player.tetrisBlock.shape), images : 
+                (player.tetrisBlock.images !== null)? player.tetrisBlock.images.slice() : null}}
+        );
     }
 
     function rotate() {
-        let newPlayer : Player = {name : gameState.player_name, position : player.position, tetrisBlock : player.tetrisBlock};
-        let col : number = player.tetrisBlock.shape.length - 1;
-
-        for (let y = 0; y < player.tetrisBlock.shape.length; y++) {
-            for (let x = 0; x < player.tetrisBlock.shape.length; x++) {
-                newPlayer.tetrisBlock.shape[y][x] = player.tetrisBlock.shape[x][col];
-            }
-
-            col--;
-        }
-
-        setPlayer(newPlayer);
+        setPlayer( {name : player.name, position : player.position.copy(), 
+                tetrisBlock : {shape : player.tetrisBlock.shape.map(
+                (row, y) => row.map(
+                    (col, x) => col = player.tetrisBlock.shape[x].reverse()[y]
+                )
+            ),
+            images : (player.tetrisBlock.images !== null)? player.tetrisBlock.images.slice() : null}}
+        );
     };
 
     return [player, createPlayer, move, rotate] as const;
