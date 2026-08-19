@@ -1,6 +1,6 @@
 import Vector2 from './classes/Vector2.ts';
 import Collider from './classes/Collider.ts';
-import { BlockStatus, ChessPieceImages, GameState } from './types.ts';
+import { BlockStatus, ChessPieceImages, GameState, Player } from './types.ts';
 
 export function copyBlockStatusMatrix(matrix : Array<Array<BlockStatus>>) : Array<Array<BlockStatus>> {return matrix.map((row) => row.map(col => col));};
 
@@ -121,3 +121,19 @@ export const tetris_block_types : Array<string> = [
     'square',
     'line'
 ];
+
+export function hasCollided(player : Player, stage : Array<Array<BlockStatus>>, velocity : Vector2) : boolean {
+    const newPosition = player.position.add(velocity);
+
+    for (let y = 0; y < player.tetrisBlock.shape.length; y++) { 
+        for (let x = 0; x < player.tetrisBlock.shape[y].length; x++) {
+            console.log(newPosition.x + x, newPosition.y + y);
+            if (player.tetrisBlock.shape[y][x] !== 0 && (newPosition.x + x < 0 || newPosition.x + x >= stage[0].length || newPosition.y + y < 0 || newPosition.y + y >= stage.length)) {
+                console.log("Collision detected!");
+                return true;
+            }
+        }
+    }
+
+    return false;
+};

@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { styled } from 'styled-components';
 
-// import { chess_piece_images, tetris_block_types } from '../../utilities.ts';
 import { GameContext } from '../../App.tsx';
 import Block from './Block.tsx';
 import { BlockStatus } from '../../types.ts';
@@ -27,7 +26,7 @@ function Stage({stage} : {stage : Array<Array<BlockStatus>>}) {
 
     return (
         <StyledStage $blockSize={gameState.chess_piece_pixel_size} height={gameState.stage_size.y} width={gameState.stage_size.x}>
-            {stage.map((row) => row.map((block, x) => <Block status={block['status']} key={x} type={block['type']} 
+            {stage.map((row) => row.map((block, x) => <Block key={x} type={block['type']} 
                 image_url={block['image_url']} />))}
         </StyledStage>
     )

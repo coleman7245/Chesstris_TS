@@ -10,7 +10,7 @@ import GameInfo from './GameInfo.tsx';
 import Vector2 from '../../classes/Vector2.ts';
 import { createStage } from '../../utilities.ts';
 
-import { Game_Phase } from '../../utilities.ts';
+import { Game_Phase, hasCollided } from '../../utilities.ts';
 import { GameContext } from '../../App.tsx';
 
 const StyledGamePage = styled.div`
@@ -54,18 +54,24 @@ function GamePage() {
     const [player, createPlayer, move, rotate] = usePlayer(gameState);
     const [stage, setStage] = useStage(player, createPlayer, gameState);
 
+    function movePlayer(velocity : Vector2) : void {
+        if (!hasCollided(player, stage, velocity)) {
+            move(velocity);
+        }
+    };
+
     function handleInput(e : React.KeyboardEvent) {
         e.preventDefault(); 
 
         switch(e.key) {
             case 'a':
-                move(new Vector2(-1, 0));
+                movePlayer(new Vector2(-1, 0));
                 break;
             case 's':
-                move(new Vector2(0, 1));
+                movePlayer(new Vector2(0, 1));
                 break;
             case 'd':
-                move(new Vector2(1, 0));
+                movePlayer(new Vector2(1, 0));
                 break;
             case 'r':
                 rotate();

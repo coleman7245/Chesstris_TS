@@ -6,8 +6,6 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
     const [stage, setStage] = useState(createStage(gameState.stage_size));
 
     function drawPlayer(newStage : Array<Array<BlockStatus>>) {
-        console.log(player.tetrisBlock.images);
-
         player.tetrisBlock.shape.forEach((row, y) => {
             row.forEach((type, x) => {
                 newStage[y + player.position.y][x + player.position.x] = {type : type, status : "cleared", 
