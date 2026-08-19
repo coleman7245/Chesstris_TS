@@ -8,9 +8,11 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
     function drawPlayer(newStage : Array<Array<BlockStatus>>) {
         player.tetrisBlock.shape.forEach((row, y) => {
             row.forEach((type, x) => {
-                newStage[y + player.position.y][x + player.position.x] = {type : type, status : "cleared", 
+                if (type !== 0) {
+                    newStage[y + player.position.y][x + player.position.x] = {type : type, status : "cleared", 
                     image_url : (player.tetrisBlock.images !== null && type !== 0)? 
                     player.tetrisBlock.images[type as number - 1] : undefined};
+                }
         })});
     };
 

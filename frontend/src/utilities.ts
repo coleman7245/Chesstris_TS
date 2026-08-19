@@ -8,7 +8,7 @@ export function copyTetrisBlockShape(matrix : Array<Array<string | number>>) : A
 
 export function createStage(stageSize : Vector2) : Array<Array<BlockStatus>> {
         return Array.from(new Array(Math.floor(stageSize.y / 30)), () => 
-            new Array(Math.floor(stageSize.x / 30)).fill({type : 0, status : 'clear'}));
+            new Array(Math.floor(stageSize.x / 30)).fill({type : 0, status : "cleared"}));
 };
 
 function getRandomChessPiece(chessPieceImages : ChessPieceImages) : string {
@@ -127,9 +127,11 @@ export function hasCollided(player : Player, stage : Array<Array<BlockStatus>>, 
 
     for (let y = 0; y < player.tetrisBlock.shape.length; y++) { 
         for (let x = 0; x < player.tetrisBlock.shape[y].length; x++) {
-            console.log(newPosition.x + x, newPosition.y + y);
-            if (player.tetrisBlock.shape[y][x] !== 0 && (newPosition.x + x < 0 || newPosition.x + x >= stage[0].length || newPosition.y + y < 0 || newPosition.y + y >= stage.length)) {
-                console.log("Collision detected!");
+            if (player.tetrisBlock.shape[y][x] !== 0 && 
+                (newPosition.x + x < 0 || 
+                    newPosition.x + x >= stage[0].length || 
+                    newPosition.y + y < 0 || 
+                    newPosition.y + y >= stage.length - 1)) {
                 return true;
             }
         }
