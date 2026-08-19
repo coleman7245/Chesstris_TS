@@ -55,7 +55,7 @@ function GamePage() {
     const [stage, setStage] = useStage(player, createPlayer, gameState);
 
     function movePlayer(velocity : Vector2) : void {
-        if (!hasCollided(player, stage, velocity)) {
+        if (!hasCollided(player, stage, velocity)['collision']) {
             move(velocity);
         }
     };
@@ -82,7 +82,7 @@ function GamePage() {
     };
 
     function initializeGame() {
-        setStage(createStage(gameState.stage_size));
+        setStage(createStage(gameState.stage_size, gameState.chess_piece_pixel_size));
         createPlayer();
     }
 

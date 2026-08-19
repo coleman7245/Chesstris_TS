@@ -1,14 +1,13 @@
 import Vector2 from './classes/Vector2.ts';
-import Collider from './classes/Collider.ts';
-import { BlockStatus, ChessPieceImages, GameState, Player } from './types.ts';
+import { BlockStatus, ChessPieceImages, GameState, Player, CollisionInfo } from './types.ts';
 
 export function copyBlockStatusMatrix(matrix : Array<Array<BlockStatus>>) : Array<Array<BlockStatus>> {return matrix.map((row) => row.map(col => col));};
 
 export function copyTetrisBlockShape(matrix : Array<Array<string | number>>) : Array<Array<string | number>> {return matrix.map((row) => row.map(col => col));}
 
-export function createStage(stageSize : Vector2) : Array<Array<BlockStatus>> {
-        return Array.from(new Array(Math.floor(stageSize.y / 30)), () => 
-            new Array(Math.floor(stageSize.x / 30)).fill({type : 0, status : "cleared"}));
+export function createStage(stageSize : Vector2, pixelSize : Vector2) : Array<Array<BlockStatus>> {
+        return Array.from(new Array(Math.floor(stageSize.y / pixelSize.y)), () => 
+            new Array(Math.floor(stageSize.x / pixelSize.x)).fill({type : 0, status : "cleared"}));
 };
 
 function getRandomChessPiece(chessPieceImages : ChessPieceImages) : string {
@@ -42,8 +41,7 @@ export const initialGameState : GameState = {
     finishTime : {hours : 0, minutes: 0, seconds: 0}, 
     score : 0,
     chess_piece_pixel_size : new Vector2(30, 30),
-    stage_size : new Vector2(285, 600),
-    stage_collider : new Collider('stage', new Vector2(0, 0), new Vector2(0, 0), new Vector2(600, 360)),
+    stage_size : new Vector2(285, 570),
     current_phase : Game_Phase.PREGAME,
     crossed_finish_line : false,
     win_state : {
@@ -122,20 +120,23 @@ export const tetris_block_types : Array<string> = [
     'line'
 ];
 
-export function hasCollided(player : Player, stage : Array<Array<BlockStatus>>, velocity : Vector2) : boolean {
+export function hasCollided(player : Player, stage : Array<Array<BlockStatus>>, velocity : Vector2) : CollisionInfo {
     const newPosition = player.position.add(velocity);
 
     for (let y = 0; y < player.tetrisBlock.shape.length; y++) { 
         for (let x = 0; x < player.tetrisBlock.shape[y].length; x++) {
-            if (player.tetrisBlock.shape[y][x] !== 0 && 
-                (newPosition.x + x < 0 || 
-                    newPosition.x + x >= stage[0].length || 
-                    newPosition.y + y < 0 || 
-                    newPosition.y + y >= stage.length - 1)) {
-                return true;
+            if (player.tetrisBlock.shape[y][x] !== 0) { 
+                if (newPosition.x + x < 0)
+                    return {direction : 'left', collision : true};
+                if (newPosition.x + x >= stage[0].length)
+                    return {direction : 'right', collision : true};
+                if (newPosition.y + y < 0)
+                    return {direction : 'top', collision : true};
+                if (newPosition.y + y >= stage.length - 1)
+                    return {direction : 'bottom', collision : true};
             }
         }
     }
 
-    return false;
+    return {direction : 'none', collision : false};
 };

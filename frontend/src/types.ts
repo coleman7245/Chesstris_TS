@@ -1,5 +1,4 @@
 import Vector2 from "./classes/Vector2.ts";
-import Collider from "./classes/Collider.ts";
 import { Game_Phase } from "./utilities.ts";
 
 export type PositionLimit = {
@@ -23,10 +22,15 @@ export type CollisionDirection = {
   right : boolean
 };
 
+// export type CollisionInfo = {
+//   points : CollisionPoints,
+//   direction : CollisionDirection
+// };
+
 export type CollisionInfo = {
-  points : CollisionPoints,
-  direction : CollisionDirection
-};
+  collision : boolean,
+  direction : string
+}
 
 export type BlockStatus = {
   type : string | number,
@@ -101,7 +105,6 @@ export type GameState = {
     score : number,
     chess_piece_pixel_size : Vector2,
     stage_size : Vector2,
-    stage_collider : Collider,
     current_phase : Game_Phase,
     crossed_finish_line : boolean,
     win_state : WinState,

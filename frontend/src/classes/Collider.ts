@@ -1,101 +1,101 @@
-import { CollisionInfo } from "../types.ts";
-import Vector2 from './Vector2.ts';
+// import { CollisionInfo } from "../types.ts";
+// import Vector2 from './Vector2.ts';
 
-class Collider {
-    private _type : string;
-    private _center : Vector2;
-    private _size : Vector2;
-    private _position : Vector2;
-    private _global_position : Vector2;
-    private _collisionInfo : CollisionInfo;
+// class Collider {
+//     private _type : string;
+//     private _center : Vector2;
+//     private _size : Vector2;
+//     private _position : Vector2;
+//     private _global_position : Vector2;
+//     private _collisionInfo : CollisionInfo;
 
-    public constructor(type : string, position : Vector2, globalPosition : Vector2, size : Vector2) {
-        this._type = type;
-        this._position = position.copy();
-        this._global_position = globalPosition.copy();
-        this._size = size.copy();
-        this._center = this._position.add(globalPosition).add(size.scale(-.05));
-        this._collisionInfo = {
-            points : {top : globalPosition.y, bottom : globalPosition.y + size.y, 
-                left : globalPosition.x, right : globalPosition.x + size.x},
-            direction : {top : false, bottom : false, left : false, right : false}
-        };
-    }
+//     public constructor(type : string, position : Vector2, globalPosition : Vector2, size : Vector2) {
+//         this._type = type;
+//         this._position = position.copy();
+//         this._global_position = globalPosition.copy();
+//         this._size = size.copy();
+//         this._center = this._position.add(globalPosition).add(size.scale(-.05));
+//         this._collisionInfo = {
+//             points : {top : globalPosition.y, bottom : globalPosition.y + size.y, 
+//                 left : globalPosition.x, right : globalPosition.x + size.x},
+//             direction : {top : false, bottom : false, left : false, right : false}
+//         };
+//     }
 
-    public get type() : string {return this._type;}
+//     public get type() : string {return this._type;}
 
-    public set type(type : string) {this._type = type;}
+//     public set type(type : string) {this._type = type;}
 
-    public get center() : Vector2 {return this._center;}
+//     public get center() : Vector2 {return this._center;}
 
-    public set center(center : Vector2) {this._center = center.copy();}
+//     public set center(center : Vector2) {this._center = center.copy();}
 
-    public get collisionInfo() : CollisionInfo {return this._collisionInfo;}
+//     public get collisionInfo() : CollisionInfo {return this._collisionInfo;}
 
-    public set collisionInfo(collisionInfo : CollisionInfo) {this._collisionInfo = collisionInfo;}
+//     public set collisionInfo(collisionInfo : CollisionInfo) {this._collisionInfo = collisionInfo;}
 
-    public get globalPosition() : Vector2 {return this._global_position;}
+//     public get globalPosition() : Vector2 {return this._global_position;}
 
-    public set globalPosition(globalPosition : Vector2) {this._global_position = globalPosition;}
+//     public set globalPosition(globalPosition : Vector2) {this._global_position = globalPosition;}
 
-    public get position() : Vector2 {return this._position;}
+//     public get position() : Vector2 {return this._position;}
 
-    public set position(position : Vector2) {this._position = position.copy();}
+//     public set position(position : Vector2) {this._position = position.copy();}
 
-    public get size() : Vector2 {return this._size;}
+//     public get size() : Vector2 {return this._size;}
     
-    public set size(size : Vector2) {this._size = size.copy();}
+//     public set size(size : Vector2) {this._size = size.copy();}
 
-    public calculateCollisionPoints() : void {
-        this._collisionInfo.points.top = this._position.y + this._global_position.y;
-        this._collisionInfo.points.bottom = this._collisionInfo.points.top + this._size.y;
-        this._collisionInfo.points.left = this._position.x + this._global_position.x;
-        this._collisionInfo.points.right = this._collisionInfo.points.left + this._size.x;
-    }
+//     public calculateCollisionPoints() : void {
+//         this._collisionInfo.points.top = this._position.y + this._global_position.y;
+//         this._collisionInfo.points.bottom = this._collisionInfo.points.top + this._size.y;
+//         this._collisionInfo.points.left = this._position.x + this._global_position.x;
+//         this._collisionInfo.points.right = this._collisionInfo.points.left + this._size.x;
+//     }
 
-    public copy() : Collider {return new Collider(this._type, this._position, this._global_position, this._size);}
+//     public copy() : Collider {return new Collider(this._type, this._position, this._global_position, this._size);}
 
-    public hasCollided(other : Collider) : boolean {
-        let collisionDetected : boolean = false;
-        this.calculateCollisionPoints();
-        other.calculateCollisionPoints();
+//     public hasCollided(other : Collider) : boolean {
+//         let collisionDetected : boolean = false;
+//         this.calculateCollisionPoints();
+//         other.calculateCollisionPoints();
 
-        if (other.type === 'block') {
-            if (this._collisionInfo.points.top < other._collisionInfo.points.bottom && 
-                (this._collisionInfo.points.left <= other._collisionInfo.points.right || 
-                    this._collisionInfo.points.right >= other._collisionInfo.points.left))
-                collisionDetected = true;
-            if (this._collisionInfo.points.bottom > other._collisionInfo.points.top)
-                collisionDetected = true;
-            if (this._collisionInfo.points.left > other._collisionInfo.points.right)
-                collisionDetected = true;
-            if (this._collisionInfo.points.right < other._collisionInfo.points.left)
-                collisionDetected = true;
-        }
-        else {
-            if (this._collisionInfo.points.bottom > other._collisionInfo.points.bottom) {
-                this._collisionInfo.direction.bottom = true;
-                collisionDetected = true;
-            }
-            if (this._collisionInfo.points.left < other._collisionInfo.points.left) {
-                this._collisionInfo.direction.left = true;
-                collisionDetected = true;
-            }
-            if (this._collisionInfo.points.right > other._collisionInfo.points.right) {
-                this._collisionInfo.direction.right = true;
-                collisionDetected = true;
-            }
-        }
+//         if (other.type === 'block') {
+//             if (this._collisionInfo.points.top < other._collisionInfo.points.bottom && 
+//                 (this._collisionInfo.points.left <= other._collisionInfo.points.right || 
+//                     this._collisionInfo.points.right >= other._collisionInfo.points.left))
+//                 collisionDetected = true;
+//             if (this._collisionInfo.points.bottom > other._collisionInfo.points.top)
+//                 collisionDetected = true;
+//             if (this._collisionInfo.points.left > other._collisionInfo.points.right)
+//                 collisionDetected = true;
+//             if (this._collisionInfo.points.right < other._collisionInfo.points.left)
+//                 collisionDetected = true;
+//         }
+//         else {
+//             if (this._collisionInfo.points.bottom > other._collisionInfo.points.bottom) {
+//                 this._collisionInfo.direction.bottom = true;
+//                 collisionDetected = true;
+//             }
+//             if (this._collisionInfo.points.left < other._collisionInfo.points.left) {
+//                 this._collisionInfo.direction.left = true;
+//                 collisionDetected = true;
+//             }
+//             if (this._collisionInfo.points.right > other._collisionInfo.points.right) {
+//                 this._collisionInfo.direction.right = true;
+//                 collisionDetected = true;
+//             }
+//         }
         
-        return collisionDetected;
-    }
+//         return collisionDetected;
+//     }
 
-    public resetCollisionDirection() : void {
-        this._collisionInfo.direction.top = false;
-        this._collisionInfo.direction.bottom = false;
-        this._collisionInfo.direction.left = false;
-        this._collisionInfo.direction.right = false;
-    }
-}
+//     public resetCollisionDirection() : void {
+//         this._collisionInfo.direction.top = false;
+//         this._collisionInfo.direction.bottom = false;
+//         this._collisionInfo.direction.left = false;
+//         this._collisionInfo.direction.right = false;
+//     }
+// }
 
-export default Collider;
+// export default Collider;

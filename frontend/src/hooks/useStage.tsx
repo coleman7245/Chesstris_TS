@@ -3,7 +3,7 @@ import { Player, GameState, BlockStatus } from '../types.ts';
 import { createStage, Game_Phase } from '../utilities.ts';
 
 function useStage(player : Player, createPlayer : Function, gameState : GameState) {
-    const [stage, setStage] = useState(createStage(gameState.stage_size));
+    const [stage, setStage] = useState(createStage(gameState.stage_size, gameState.chess_piece_pixel_size));
 
     function drawPlayer(newStage : Array<Array<BlockStatus>>) {
         player.tetrisBlock.shape.forEach((row, y) => {
