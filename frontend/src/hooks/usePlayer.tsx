@@ -1,8 +1,8 @@
 import { useState, useCallback } from 'react';
 import TETRIS_BLOCKS from '../tetrisblocks.ts';
-import { TetrisBlocks, TetrisBlock, GameState } from '../types.ts';
+import { TetrisBlocks, TetrisBlock, GameState, Player, BlockStatus } from '../types.ts';
 import Vector2 from '../classes/Vector2.ts';
-import { copyTetrisBlockShape } from '../utilities.ts';
+import { copyTetrisBlockShape, hasCollided } from '../utilities.ts';
 
 function createRandomTetrisBlock() : TetrisBlock {
     const selection : string = 'LJTOlSZ';
@@ -21,24 +21,42 @@ function usePlayer(gameState : GameState) {
             tetrisBlock : createRandomTetrisBlock()}), []);
 
     function move(velocity : Vector2) {
-        setPlayer( {name : player.name, position : player.position.add(velocity), 
+        setPlayer({name : player.name, position : player.position.add(velocity), 
             tetrisBlock : {shape : copyTetrisBlockShape(player.tetrisBlock.shape), images : 
                 (player.tetrisBlock.images !== null)? player.tetrisBlock.images.slice() : null}}
         );
     }
 
-    function rotate() {
-        setPlayer( {name : player.name, position : player.position.copy(), 
-                tetrisBlock : {shape : player.tetrisBlock.shape.map(
-                (row, y) => row.map(
-                    (col, x) => col = player.tetrisBlock.shape[x].toReversed()[y]
-                )
-            ),
-            images : (player.tetrisBlock.images !== null)? player.tetrisBlock.images.slice() : null}}
+    function rotate() : Array<Array<string | number>> {
+        return player.tetrisBlock.shape.map(
+            (row, y) => row.map(
+                (col, x) => col = player.tetrisBlock.shape[x].toReversed()[y]
+            )
         );
     };
 
-    return [player, createPlayer, move, rotate] as const;
+    function rotatePlayer(stage : Array<Array<BlockStatus>>) : void {
+        const rotatedPlayer : Player = {name : player.name, position : player.position.copy(), 
+            tetrisBlock : {shape : rotate(), 
+                images : (player.tetrisBlock.images !== null)? player.tetrisBlock.images.slice() : null}};
+
+        for (let dir = hasCollided(rotatedPlayer, stage, Vector2.zero()); dir !== 'none'; 
+            dir = hasCollided(rotatedPlayer, stage, Vector2.zero())) {
+                console.log(dir);
+                if (dir === 'left')
+                    rotatedPlayer.position = rotatedPlayer.position.add(new Vector2(1, 0));
+                else if (dir === 'right')
+                    rotatedPlayer.position = rotatedPlayer.position.add(new Vector2(-1, 0));
+                else if (dir === 'top')
+                    rotatedPlayer.position = rotatedPlayer.position.add(new Vector2(0, 1));
+                else if (dir === 'bottom')
+                    rotatedPlayer.position = rotatedPlayer.position.add(new Vector2(0, -1));
+        }
+
+        setPlayer(rotatedPlayer);
+    };
+
+    return [player, createPlayer, move, rotatePlayer] as const;
 };
 
 export default usePlayer 

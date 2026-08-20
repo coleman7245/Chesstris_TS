@@ -15,8 +15,8 @@ const StyledStage = styled.div<{$blockSize : Vector2, height : number, width : n
     outline: 10px solid black;
     position: relative;
     background-color: grey;
-    width: ${props => props.width}px;
-    height: ${props => props.height}px;
+    width: fit-content;
+    height: fit-content;
     margin-top: 3%;
     margin-left: 5%;
 `;

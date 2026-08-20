@@ -51,11 +51,11 @@ function GamePage() {
     const [text, setText] = useState('Start');
     const [gameState, dispatch] = useContext(GameContext);
     const navigate : Function = useNavigate();
-    const [player, createPlayer, move, rotate] = usePlayer(gameState);
+    const [player, createPlayer, move, rotatePlayer] = usePlayer(gameState);
     const [stage, setStage] = useStage(player, createPlayer, gameState);
 
     function movePlayer(velocity : Vector2) : void {
-        if (!hasCollided(player, stage, velocity)['collision']) {
+        if (hasCollided(player, stage, velocity) === 'none') {
             move(velocity);
         }
     };
@@ -74,7 +74,7 @@ function GamePage() {
                 movePlayer(new Vector2(1, 0));
                 break;
             case 'r':
-                rotate();
+                rotatePlayer(stage);
                 break;
             default:
                 break;

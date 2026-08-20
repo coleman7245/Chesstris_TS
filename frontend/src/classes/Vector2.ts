@@ -29,6 +29,8 @@ class Vector2 {
 
     public subtract(b : Vector2) : Vector2 {return this.add(b.scale(-1));}
 
+    public static zero() : Vector2 {return new Vector2(0, 0);}
+
     public setVector2(x : number, y : number) {
         this._x = x;
         this._y = y;

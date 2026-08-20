@@ -1,5 +1,5 @@
 import Vector2 from './classes/Vector2.ts';
-import { BlockStatus, ChessPieceImages, GameState, Player, CollisionInfo } from './types.ts';
+import { BlockStatus, ChessPieceImages, GameState, Player } from './types.ts';
 
 export function copyBlockStatusMatrix(matrix : Array<Array<BlockStatus>>) : Array<Array<BlockStatus>> {return matrix.map((row) => row.map(col => col));};
 
@@ -41,7 +41,7 @@ export const initialGameState : GameState = {
     finishTime : {hours : 0, minutes: 0, seconds: 0}, 
     score : 0,
     chess_piece_pixel_size : new Vector2(30, 30),
-    stage_size : new Vector2(285, 570),
+    stage_size : new Vector2(285, 540),
     current_phase : Game_Phase.PREGAME,
     crossed_finish_line : false,
     win_state : {
@@ -120,23 +120,23 @@ export const tetris_block_types : Array<string> = [
     'line'
 ];
 
-export function hasCollided(player : Player, stage : Array<Array<BlockStatus>>, velocity : Vector2) : CollisionInfo {
+export function hasCollided(player : Player, stage : Array<Array<BlockStatus>>, velocity : Vector2) : string {
     const newPosition = player.position.add(velocity);
 
     for (let y = 0; y < player.tetrisBlock.shape.length; y++) { 
         for (let x = 0; x < player.tetrisBlock.shape[y].length; x++) {
             if (player.tetrisBlock.shape[y][x] !== 0) { 
                 if (newPosition.x + x < 0)
-                    return {direction : 'left', collision : true};
+                    return 'left';
                 if (newPosition.x + x >= stage[0].length)
-                    return {direction : 'right', collision : true};
+                    return 'right'
                 if (newPosition.y + y < 0)
-                    return {direction : 'top', collision : true};
-                if (newPosition.y + y >= stage.length - 1)
-                    return {direction : 'bottom', collision : true};
+                    return 'top';
+                if (newPosition.y + y >= stage.length)
+                    return 'bottom';
             }
         }
     }
 
-    return {direction : 'none', collision : false};
+    return 'none';
 };
