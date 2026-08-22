@@ -4,6 +4,7 @@ import { styled } from 'styled-components';
 
 import usePlayer from '../../hooks/usePlayer.tsx';
 import useStage from '../../hooks/useStage.tsx';
+import useInterval from '../../hooks/useInterval.tsx';
 import Navbar from '../../shared_components/Navbar.tsx';
 import Stage from './Stage.tsx';
 import GameInfo from './GameInfo.tsx';
@@ -53,10 +54,23 @@ function GamePage() {
     const navigate : Function = useNavigate();
     const [player, createPlayer, move, rotatePlayer] = usePlayer(gameState);
     const [stage, setStage] = useStage(player, createPlayer, gameState);
+    const [dropInterval, setDropInterval] = useState(0);
 
     function movePlayer(velocity : Vector2) : void {
         if (hasCollided(player, stage, velocity) === 'none') {
             move(velocity);
+        }
+    };
+
+    function restartInterval() : void {
+        setDropInterval(1000);
+    };
+
+    function drop() : void {
+        let dropVel : Vector2 = new Vector2(0, 1);
+
+        if (hasCollided(player, stage, dropVel) !== 'bottom') {
+            move(dropVel);
         }
     };
 
@@ -84,9 +98,12 @@ function GamePage() {
     function initializeGame() {
         setStage(createStage(gameState.stage_size, gameState.chess_piece_pixel_size));
         createPlayer();
-    }
+        restartInterval();
+    };
 
     useEffect(() => {
+        console.log(gameState.current_phase);
+
         if (gameState.current_phase === Game_Phase.PREGAME) {
             
         }
@@ -107,8 +124,10 @@ function GamePage() {
         }
     }, [gameState.current_phase, navigate, dispatch]);
 
+    useInterval(drop, dropInterval);
+
     return (
-        <div onKeyDown={e => handleInput(e)}>
+        <div onKeyDown={e => handleInput(e)} onKeyUp={restartInterval}>
             <Navbar />
             <StyledGamePage>
                 <div>

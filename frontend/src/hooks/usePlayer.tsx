@@ -42,7 +42,6 @@ function usePlayer(gameState : GameState) {
 
         for (let dir = hasCollided(rotatedPlayer, stage, Vector2.zero()); dir !== 'none'; 
             dir = hasCollided(rotatedPlayer, stage, Vector2.zero())) {
-                console.log(dir);
                 if (dir === 'left')
                     rotatedPlayer.position = rotatedPlayer.position.add(new Vector2(1, 0));
                 else if (dir === 'right')
