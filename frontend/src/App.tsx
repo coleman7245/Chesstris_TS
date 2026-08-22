@@ -1,8 +1,6 @@
 import React, { createContext, useReducer } from 'react';
 import { Routes, Route } from 'react-router-dom';
-
 import './App.css';
-
 import HomePage from './pages/home/HomePage.tsx';
 import GamePage from './pages/game/GamePage.tsx';
 import RankingsPage from './pages/rankings/RankingsPage.tsx';
@@ -12,10 +10,9 @@ import ResultPage from './pages/result/ResultPage.tsx';
 import EditPage from './pages/edit/EditPage.tsx';
 import Login from './pages/login/Login.tsx';
 import Position from './classes/Vector2.ts';
-
-import { initialGameState, Game_Phase } from './utilities.ts';
+import { initialGameState, Game_Phase, getTime } from './utilities.ts';
 import DataHandler from './classes/DataHandler.ts';
-import { GameState, Time, Action } from './types.ts';
+import { GameState, Action } from './types.ts';
 
 const GameContext : React.Context<any> = createContext({});
 
@@ -64,22 +61,7 @@ function checkGamePhase(gameState : GameState) : Game_Phase {
         return Game_Phase.LOSE;
     else
         return Game_Phase.PLAY;
-}
-
-function getTime(startTime : number) : Time {
-    let currentTime : number = Date.now() - startTime;
-    let seconds : number = currentTime / 1000;
-    let minutes : number = seconds / 60;
-    let hours : number = minutes / 60;
-
-    let gameTime : Time = {
-        seconds : (seconds >= 60) ? Math.floor(seconds - (Math.floor(minutes) * 60)) : Math.floor(seconds),
-        minutes : (minutes >= 60) ? Math.floor(minutes - (Math.floor(hours) * 60)) : Math.floor(minutes),
-        hours : Math.floor(hours)
-    }
-
-    return gameTime;
-}
+};
 
 function App() {
     const [gameState, dispatch] = useReducer(handleGameState, initialGameState);

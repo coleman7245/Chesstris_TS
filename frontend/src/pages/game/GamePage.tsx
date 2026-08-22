@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-
 import usePlayer from '../../hooks/usePlayer.tsx';
 import useStage from '../../hooks/useStage.tsx';
 import useInterval from '../../hooks/useInterval.tsx';
@@ -9,10 +8,9 @@ import Navbar from '../../shared_components/Navbar.tsx';
 import Stage from './Stage.tsx';
 import GameInfo from './GameInfo.tsx';
 import Vector2 from '../../classes/Vector2.ts';
-import { createStage } from '../../utilities.ts';
-
-import { Game_Phase, hasCollided } from '../../utilities.ts';
+import { createStage, getTime, Game_Phase, hasCollided } from '../../utilities.ts';
 import { GameContext } from '../../App.tsx';
+import useGameTime from '../../hooks/useGameTime.tsx';
 
 const StyledGamePage = styled.div`
     font: 8em 'Georgia';
@@ -55,6 +53,7 @@ function GamePage() {
     const [player, createPlayer, move, rotatePlayer] = usePlayer(gameState);
     const [stage, setStage] = useStage(player, createPlayer, gameState);
     const [dropInterval, setDropInterval] = useState(0);
+    const [gameTime, _] = useGameTime(gameState.current_phase);
 
     function movePlayer(velocity : Vector2) : void {
         if (hasCollided(player, stage, velocity) === 'none') {
@@ -62,7 +61,7 @@ function GamePage() {
         }
     };
 
-    function restartInterval() : void {
+    function startDrop() : void {
         setDropInterval(1000);
     };
 
@@ -98,16 +97,11 @@ function GamePage() {
     function initializeGame() {
         setStage(createStage(gameState.stage_size, gameState.chess_piece_pixel_size));
         createPlayer();
-        restartInterval();
+        startDrop();
     };
 
     useEffect(() => {
-        console.log(gameState.current_phase);
-
-        if (gameState.current_phase === Game_Phase.PREGAME) {
-            
-        }
-        else if (gameState.current_phase === Game_Phase.WIN) {
+        if (gameState.current_phase === Game_Phase.WIN) {
             const timeout = setTimeout(() => navigate('/win'), 0);
             return () => clearInterval(timeout);
          }
@@ -115,24 +109,17 @@ function GamePage() {
             const timeout = setTimeout(() => navigate('/lose'), 0);
             return () => clearInterval(timeout);
         }
-        else if (gameState.current_phase === Game_Phase.PAUSE) {
-
-        }
-        else if (gameState.current_phase === Game_Phase.PLAY) {
-            const timeElapsed = setInterval(() => {dispatch({type : 'UPDATE_TIME'});}, 1000);
-            return () => clearInterval(timeElapsed);
-        }
-    }, [gameState.current_phase, navigate, dispatch]);
+    }, [gameState.current_phase, navigate]);
 
     useInterval(drop, dropInterval);
 
     return (
-        <div onKeyDown={e => handleInput(e)} onKeyUp={restartInterval}>
+        <div onKeyDown={e => handleInput(e)} onKeyUp={startDrop}>
             <Navbar />
             <StyledGamePage>
                 <div>
                     <Stage stage={stage} />
-                    <GameInfo />
+                    <GameInfo gameTime={getTime(gameTime)} />
                     <StyledStartStopButton onClick={() => {
                         if (gameState.current_phase === Game_Phase.PREGAME) {
                             initializeGame();

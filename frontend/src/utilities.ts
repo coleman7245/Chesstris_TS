@@ -1,5 +1,6 @@
 import Vector2 from './classes/Vector2.ts';
-import { BlockStatus, ChessPieceImages, GameState, Player } from './types.ts';
+import { BlockStatus, ChessPieceImages, GameState, Player, Time } from './types.ts';
+import { SetStateAction, Dispatch } from 'react';
 
 export function copyBlockStatusMatrix(matrix : Array<Array<BlockStatus>>) : Array<Array<BlockStatus>> {return matrix.map((row) => row.map(col => col));};
 
@@ -139,4 +140,33 @@ export function hasCollided(player : Player, stage : Array<Array<BlockStatus>>, 
     }
 
     return 'none';
+};
+
+// export function getTime(startTime : number) : Time {
+//     let currentTime : number = Date.now() - startTime;
+//     let seconds : number = currentTime / 1000;
+//     let minutes : number = seconds / 60;
+//     let hours : number = minutes / 60;
+
+//     let gameTime : Time = {
+//         seconds : (seconds >= 60) ? Math.floor(seconds - (Math.floor(minutes) * 60)) : Math.floor(seconds),
+//         minutes : (minutes >= 60) ? Math.floor(minutes - (Math.floor(hours) * 60)) : Math.floor(minutes),
+//         hours : Math.floor(hours)
+//     }
+
+//     return gameTime;
+// };
+
+export function getTime(currentTime : number | Dispatch<SetStateAction<number>>) : Time {
+    let seconds : number = (currentTime as number) / 1000;
+    let minutes : number = seconds / 60;
+    let hours : number = minutes / 60;
+
+    let gameTime : Time = {
+        seconds : (seconds >= 60) ? Math.floor(seconds - (Math.floor(minutes) * 60)) : Math.floor(seconds),
+        minutes : (minutes >= 60) ? Math.floor(minutes - (Math.floor(hours) * 60)) : Math.floor(minutes),
+        hours : Math.floor(hours)
+    }
+
+    return gameTime;
 };

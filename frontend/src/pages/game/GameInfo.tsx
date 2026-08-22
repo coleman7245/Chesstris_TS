@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { styled } from 'styled-components';
-
 import { GameContext } from '../../App.tsx';
+import { Time } from '../../types.ts';
 
 const StyledGameInfo = styled.div`
     position: absolute;
@@ -14,13 +14,13 @@ const StyledGameInfo = styled.div`
     left: -300px;
 `;
 
-function GameInfo() {
+function GameInfo({gameTime} : {gameTime : Time}) {
     const [gameState] = useContext(GameContext);
 
     return (
         <StyledGameInfo className='gameinfo'>
             Player: {gameState.player_name} <br />
-            Time: {gameState.finishTime.hours} : {gameState.finishTime.minutes} : {gameState.finishTime.seconds} <br />
+            Time: {gameTime.hours} : {gameTime.minutes} : {gameTime.seconds} <br />
             Score: {gameState.score}
         </StyledGameInfo>
     )
