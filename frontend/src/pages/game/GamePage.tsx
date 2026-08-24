@@ -52,17 +52,13 @@ function GamePage() {
     const navigate : Function = useNavigate();
     const [player, createPlayer, move, rotatePlayer] = usePlayer(gameState);
     const [stage, setStage] = useStage(player, createPlayer, gameState);
-    const [dropInterval, setDropInterval] = useState(0);
+    const [dropInterval] = useState(1000);
     const [gameTime, _] = useGameTime(gameState.current_phase);
 
     function movePlayer(velocity : Vector2) : void {
         if (hasCollided(player, stage, velocity) === 'none') {
             move(velocity);
         }
-    };
-
-    function startDrop() : void {
-        setDropInterval(1000);
     };
 
     function drop() : void {
@@ -97,7 +93,6 @@ function GamePage() {
     function initializeGame() {
         setStage(createStage(gameState.stage_size, gameState.chess_piece_pixel_size));
         createPlayer();
-        startDrop();
     };
 
     useEffect(() => {
@@ -111,10 +106,10 @@ function GamePage() {
         }
     }, [gameState.current_phase, navigate]);
 
-    useInterval(drop, dropInterval);
+    useInterval(drop, dropInterval, gameState.current_phase);
 
     return (
-        <div onKeyDown={e => handleInput(e)} onKeyUp={startDrop}>
+        <div onKeyDown={e => handleInput(e)}>
             <Navbar />
             <StyledGamePage>
                 <div>

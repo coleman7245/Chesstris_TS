@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
+import { Game_Phase } from '../utilities.ts';
 
-export default function useInterval(callback : () => void, delay : number) {
+export default function useInterval(callback : () => void, delay : number, gamePhase : Game_Phase) {
     const fnc = useRef(() => {});
 
     useEffect(() => {
@@ -12,9 +13,9 @@ export default function useInterval(callback : () => void, delay : number) {
             fnc.current();
         };
 
-        if (delay !== 0) {
+        if (gamePhase !== Game_Phase.PREGAME) {
             const id = setInterval(countdown, delay);
             return () => clearInterval(id);
         }
-    }, [delay]);
+    }, [gamePhase]);
 };
