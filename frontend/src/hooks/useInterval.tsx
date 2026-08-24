@@ -13,7 +13,7 @@ export default function useInterval(callback : () => void, delay : number, gameP
             fnc.current();
         };
 
-        if (gamePhase !== Game_Phase.PREGAME) {
+        if (gamePhase === Game_Phase.PLAY) {
             const id = setInterval(countdown, delay);
             return () => clearInterval(id);
         }

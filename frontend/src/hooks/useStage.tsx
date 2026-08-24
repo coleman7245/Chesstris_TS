@@ -33,7 +33,7 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
     };
 
     useEffect(() => {
-        if (gameState.current_phase !== Game_Phase.PREGAME)
+        if (gameState.current_phase === Game_Phase.PLAY)
             setStage(prev => drawStage(prev));
     }, [player, createPlayer]);
 

@@ -53,7 +53,7 @@ function GamePage() {
     const [player, createPlayer, move, rotatePlayer] = usePlayer(gameState);
     const [stage, setStage] = useStage(player, createPlayer, gameState);
     const [dropInterval] = useState(1000);
-    const [gameTime, _] = useGameTime(gameState.current_phase);
+    const [gameTime, _] = useGameTime(gameState.current_phase, 1000);
 
     function movePlayer(velocity : Vector2) : void {
         if (hasCollided(player, stage, velocity) === 'none') {
@@ -68,6 +68,20 @@ function GamePage() {
             move(dropVel);
         }
     };
+
+    function handlePause(e : React.MouseEvent) {
+        e.preventDefault();
+
+        if (gameState.current_phase === Game_Phase.PREGAME) {
+            initializeGame();
+            setText('Pause');
+            dispatch('START');
+        }
+        else if (gameState.current_phase === Game_Phase.PLAY) {
+            setText('Resume');
+            dispatch({type : 'PAUSE'});
+        }
+    }
 
     function handleInput(e : React.KeyboardEvent) {
         e.preventDefault(); 
@@ -95,6 +109,8 @@ function GamePage() {
         createPlayer();
     };
 
+    useEffect(() => console.log(gameState.current_phase));
+
     useEffect(() => {
         if (gameState.current_phase === Game_Phase.WIN) {
             const timeout = setTimeout(() => navigate('/win'), 0);
@@ -115,15 +131,7 @@ function GamePage() {
                 <div>
                     <Stage stage={stage} />
                     <GameInfo gameTime={getTime(gameTime)} />
-                    <StyledStartStopButton onClick={() => {
-                        if (gameState.current_phase === Game_Phase.PREGAME) {
-                            initializeGame();
-                            setText('Pause');
-                            dispatch({type : 'START'});
-                        }
-                        else
-                            dispatch({type : 'PAUSE'});
-                    }}>{text}
+                    <StyledStartStopButton onClick={(e) => {handlePause(e)}}>{text}
                     </StyledStartStopButton>
                 </div>
             </StyledGamePage>
