@@ -70,12 +70,14 @@ function GamePage() {
     };
 
     function handlePause(e : React.MouseEvent) {
-        e.preventDefault();
-
         if (gameState.current_phase === Game_Phase.PREGAME) {
             initializeGame();
             setText('Pause');
             dispatch('START');
+        }
+        else if (gameState.current_phase === Game_Phase.PAUSE) {
+            setText('Pause');
+            dispatch({type: 'PAUSE'});
         }
         else if (gameState.current_phase === Game_Phase.PLAY) {
             setText('Resume');
@@ -108,8 +110,6 @@ function GamePage() {
         setStage(createStage(gameState.stage_size, gameState.chess_piece_pixel_size));
         createPlayer();
     };
-
-    useEffect(() => console.log(gameState.current_phase));
 
     useEffect(() => {
         if (gameState.current_phase === Game_Phase.WIN) {

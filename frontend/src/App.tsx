@@ -34,13 +34,14 @@ function handleGameState(gameState : GameState, action : Action) : GameState {
             newGameState.finishTime = getTime(newGameState.startTime);
             break;
         case 'PAUSE':
-            newGameState.isPaused = true;
+            newGameState.isPaused = !gameState.isPaused;
             break;
         case 'RESET_GAME':
             newGameState.score = 0;
             newGameState.startTime = Date.now();
             newGameState.finishTime = getTime(newGameState.startTime);
             newGameState.default_start_position = new Position(135, 30);
+            break;
         case 'CHANGE_SCORE':
             if (action.hasScored)
                 newGameState.score += 1;
@@ -50,11 +51,13 @@ function handleGameState(gameState : GameState, action : Action) : GameState {
             break;
     }
 
-    newGameState.current_phase = checkGamePhase(gameState);
+    newGameState.current_phase = checkGamePhase(newGameState);
     return newGameState;
 }
 
 function checkGamePhase(gameState : GameState) : Game_Phase {
+    if (gameState.isPaused)
+        return Game_Phase.PAUSE;
     if (gameState.score <= gameState.win_state.win_score && gameState.crossed_finish_line)
         return Game_Phase.WIN;
     else if (gameState.crossed_finish_line)
