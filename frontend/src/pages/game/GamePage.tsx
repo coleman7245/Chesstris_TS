@@ -80,6 +80,8 @@ function GamePage() {
     };
 
     function handlePause(e : React.MouseEvent) {
+        e.preventDefault();
+
         if (gameState.current_phase === Game_Phase.PREGAME) {
             initializeGame();
             setText('Pause');

@@ -5,13 +5,25 @@ import { createStage, Game_Phase } from '../utilities.ts';
 function useStage(player : Player, createPlayer : Function, gameState : GameState) {
     const [stage, setStage] = useState(createStage(gameState.stage_size, gameState.chess_piece_pixel_size));
 
-    function drawPlayer(newStage : Array<Array<BlockStatus>>) {
+    // function clearRows(prev : Array<Array<BlockStatus>>) : void {
+    //     for (let y : number = 0; y < prev.length; y++) {
+    //         for (let x : number = 0; x < prev[y].length; x++) {
+
+    //         }
+    //     }
+    // };
+
+    // function knightElimination(prev : Array<Array<BlockStatus>>) : void {
+    //     if (prev[player.position.y - 2][player.position.x - 1] && prev[player.position.y - 2][player.position.x - 1]) {}
+    // };
+
+    function drawPlayer(prev : Array<Array<BlockStatus>>) {
         player.tetrisBlock.shape.forEach((row, y) => {
             row.forEach((type, x) => {
                 if (type !== 0) {
-                    newStage[y + player.position.y][x + player.position.x] = {type : type, status : (player.finished)? "finished" : "cleared", 
+                    prev[y + player.position.y][x + player.position.x] = {type : type, status : (player.finished)? "finished" : "cleared", 
                     image_url : (player.tetrisBlock.images !== null && type !== 0)? 
-                    player.tetrisBlock.images[type as number - 1] : undefined};
+                    player.tetrisBlock.images[type - 1] : undefined};
                 }
         })});
     };

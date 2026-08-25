@@ -27,7 +27,7 @@ function usePlayer(gameState : GameState) {
         );
     }
 
-    function rotate() : Array<Array<string | number>> {
+    function rotate() : Array<Array<number>> {
         return player.tetrisBlock.shape.map(
             (row, y) => row.map(
                 (col, x) => col = player.tetrisBlock.shape[x].toReversed()[y]

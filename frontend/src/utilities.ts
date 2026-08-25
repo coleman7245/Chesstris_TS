@@ -4,7 +4,7 @@ import { SetStateAction, Dispatch } from 'react';
 
 export function copyBlockStatusMatrix(matrix : Array<Array<BlockStatus>>) : Array<Array<BlockStatus>> {return matrix.map((row) => row.map(col => col));};
 
-export function copyTetrisBlockShape(matrix : Array<Array<string | number>>) : Array<Array<string | number>> {return matrix.map((row) => row.map(col => col));}
+export function copyTetrisBlockShape(matrix : Array<Array<number>>) : Array<Array<number>> {return matrix.map((row) => row.map(col => col));}
 
 export function createStage(stageSize : Vector2, pixelSize : Vector2) : Array<Array<BlockStatus>> {
         return Array.from(new Array(Math.floor(stageSize.y / pixelSize.y)), () => 

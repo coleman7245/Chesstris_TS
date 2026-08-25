@@ -39,7 +39,7 @@ export type BlockStatus = {
 };
 
 export type TetrisBlock = {
-  shape : Array<Array<string | number>>,
+  shape : Array<Array<number>>,
   images : Array<string> | null;
 };
 
