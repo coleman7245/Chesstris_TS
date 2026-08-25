@@ -52,16 +52,22 @@ function GamePage() {
     const navigate : Function = useNavigate();
     const [player, createPlayer, move, rotatePlayer] = usePlayer(gameState);
     const [stage, setStage] = useStage(player, createPlayer, gameState);
-    const [dropInterval] = useState(1000);
+    const [dropInterval, setDropInterval] = useState(0);
     const [gameTime, _] = useGameTime(gameState.current_phase, 1000);
 
     function movePlayer(velocity : Vector2) : void {
-        const collision : string = hasCollided(player, stage, velocity);
-
-        if (collision === 'none') {
+        if (hasCollided(player, stage, velocity) === 'none')
             move(velocity, false);
-        }
     };
+
+    function startDrop() {
+        setDropInterval(1000);
+    }
+
+    function dropPlayer() {
+        setDropInterval(0);
+        drop();
+    }
 
     function drop() : void {
         let dropVel : Vector2 = new Vector2(0, 1);
@@ -81,10 +87,12 @@ function GamePage() {
         }
         else if (gameState.current_phase === Game_Phase.PAUSE) {
             setText('Pause');
+            setDropInterval(1000);
             dispatch({type: 'PAUSE'});
         }
         else if (gameState.current_phase === Game_Phase.PLAY) {
             setText('Resume');
+            setDropInterval(0);
             dispatch({type : 'PAUSE'});
         }
     }
@@ -97,7 +105,7 @@ function GamePage() {
                 movePlayer(new Vector2(-1, 0));
                 break;
             case 's':
-                drop();
+                dropPlayer();
                 break;
             case 'd':
                 movePlayer(new Vector2(1, 0));
@@ -113,6 +121,7 @@ function GamePage() {
     function initializeGame() {
         setStage(createStage(gameState.stage_size, gameState.chess_piece_pixel_size));
         createPlayer();
+        setDropInterval(1000);
     };
 
     useEffect(() => {
@@ -129,7 +138,7 @@ function GamePage() {
     useInterval(drop, dropInterval, gameState.current_phase);
 
     return (
-        <div onKeyDown={e => handleInput(e)}>
+        <div onKeyDown={e => handleInput(e)} onKeyUp={startDrop}>
             <Navbar />
             <StyledGamePage>
                 <div>

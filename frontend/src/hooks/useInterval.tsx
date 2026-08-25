@@ -13,9 +13,9 @@ export default function useInterval(callback : () => void, delay : number, gameP
             fnc.current();
         };
 
-        if (gamePhase === Game_Phase.PLAY) {
+        if (gamePhase === Game_Phase.PLAY && delay !== 0) {
             const id = setInterval(countdown, delay);
             return () => clearInterval(id);
         }
-    }, [gamePhase]);
+    }, [delay]);
 };
