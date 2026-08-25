@@ -56,8 +56,10 @@ function GamePage() {
     const [gameTime, _] = useGameTime(gameState.current_phase, 1000);
 
     function movePlayer(velocity : Vector2) : void {
-        if (hasCollided(player, stage, velocity) === 'none') {
-            move(velocity);
+        const collision : string = hasCollided(player, stage, velocity);
+
+        if (collision === 'none') {
+            move(velocity, false);
         }
     };
 
@@ -65,8 +67,10 @@ function GamePage() {
         let dropVel : Vector2 = new Vector2(0, 1);
 
         if (hasCollided(player, stage, dropVel) !== 'bottom') {
-            move(dropVel);
+            move(dropVel, false);
         }
+        else
+            move(Vector2.zero(), true);
     };
 
     function handlePause(e : React.MouseEvent) {

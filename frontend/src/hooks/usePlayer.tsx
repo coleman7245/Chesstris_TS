@@ -14,16 +14,16 @@ function createRandomTetrisBlock() : TetrisBlock {
 function usePlayer(gameState : GameState) {
     const [player, setPlayer] = useState({name : gameState.player_name, 
         position : new Vector2(Math.floor(gameState.stage_size.x / gameState.chess_piece_pixel_size.x / 2), 0), 
-            tetrisBlock : createRandomTetrisBlock()});
+            tetrisBlock : createRandomTetrisBlock(), finished : false});
 
     const createPlayer = useCallback(() => setPlayer({name : gameState.player_name, 
         position : new Vector2(Math.floor(gameState.stage_size.x / gameState.chess_piece_pixel_size.x / 2), 0), 
-            tetrisBlock : createRandomTetrisBlock()}), []);
+            tetrisBlock : createRandomTetrisBlock(), finished : false}), []);
 
-    function move(velocity : Vector2) {
+    function move(velocity : Vector2, finished : boolean) {
         setPlayer({name : player.name, position : player.position.add(velocity), 
             tetrisBlock : {shape : copyTetrisBlockShape(player.tetrisBlock.shape), images : 
-                (player.tetrisBlock.images !== null)? player.tetrisBlock.images.slice() : null}}
+                (player.tetrisBlock.images !== null)? player.tetrisBlock.images.slice() : null}, finished : finished}
         );
     }
 
@@ -38,7 +38,7 @@ function usePlayer(gameState : GameState) {
     function rotatePlayer(stage : Array<Array<BlockStatus>>) : void {
         const rotatedPlayer : Player = {name : player.name, position : player.position.copy(), 
             tetrisBlock : {shape : rotate(), 
-                images : (player.tetrisBlock.images !== null)? player.tetrisBlock.images.slice() : null}};
+                images : (player.tetrisBlock.images !== null)? player.tetrisBlock.images.slice() : null}, finished : player.finished};
 
         for (let dir = hasCollided(rotatedPlayer, stage, Vector2.zero()); dir !== 'none'; 
             dir = hasCollided(rotatedPlayer, stage, Vector2.zero())) {

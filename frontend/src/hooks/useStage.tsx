@@ -9,7 +9,7 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
         player.tetrisBlock.shape.forEach((row, y) => {
             row.forEach((type, x) => {
                 if (type !== 0) {
-                    newStage[y + player.position.y][x + player.position.x] = {type : type, status : "cleared", 
+                    newStage[y + player.position.y][x + player.position.x] = {type : type, status : (player.finished)? "finished" : "cleared", 
                     image_url : (player.tetrisBlock.images !== null && type !== 0)? 
                     player.tetrisBlock.images[type as number - 1] : undefined};
                 }
@@ -28,6 +28,9 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
         const newStage = refreshStage(prev);
 
         drawPlayer(newStage);
+
+        if (player.finished)
+            createPlayer();
 
         return newStage;
     };

@@ -57,7 +57,8 @@ export type TetrisBlocks = {
 export type Player = {
   name : string,
   position : Vector2,
-  tetrisBlock : TetrisBlock
+  tetrisBlock : TetrisBlock,
+  finished : boolean
 };
 
 export type ChessPieceImages = {
