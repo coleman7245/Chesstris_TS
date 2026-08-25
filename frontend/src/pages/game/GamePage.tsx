@@ -97,7 +97,7 @@ function GamePage() {
                 movePlayer(new Vector2(-1, 0));
                 break;
             case 's':
-                movePlayer(new Vector2(0, 1));
+                drop();
                 break;
             case 'd':
                 movePlayer(new Vector2(1, 0));

@@ -123,18 +123,22 @@ export const tetris_block_types : Array<string> = [
 
 export function hasCollided(player : Player, stage : Array<Array<BlockStatus>>, velocity : Vector2) : string {
     const newPosition = player.position.add(velocity);
+    let block : BlockStatus | null = null;
 
-    for (let y = 0; y < player.tetrisBlock.shape.length; y++) { 
+    for (let y = 0; y < player.tetrisBlock.shape.length; y++) {
         for (let x = 0; x < player.tetrisBlock.shape[y].length; x++) {
-            if (player.tetrisBlock.shape[y][x] !== 0) { 
-                if (newPosition.x + x < 0)
+            block = (newPosition.x + x < 0 || newPosition.y + y < 0 || newPosition.x + x >= stage[0].length || 
+                newPosition.y + y >= stage.length)? null : stage[newPosition.y + y][newPosition.x + x];
+
+            if (player.tetrisBlock.shape[y][x] !== 0) {
+                if (newPosition.y + y >= stage.length || (block && block.status === 'finished'))
+                    return 'bottom'; 
+                if (newPosition.x + x < 0 || (block && block.status === 'finished'))
                     return 'left';
-                if (newPosition.x + x >= stage[0].length)
+                if (newPosition.x + x >= stage[0].length || (block && block.status === 'finished')) 
                     return 'right'
-                if (newPosition.y + y < 0)
+                if (newPosition.y + y < 0 || (block && block.status === 'finished'))
                     return 'top';
-                if (newPosition.y + y >= stage.length)
-                    return 'bottom';
             }
         }
     }
