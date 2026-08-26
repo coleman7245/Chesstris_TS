@@ -97,7 +97,7 @@ export async function overrideCurrentGame(dispatch : Function) : Promise<void> {
     }
 }
 
-export const chess_piece_images : ChessPieces = {
+export const chess_pieces : ChessPieces = {
     'black_bishop': {type : 'bishop', color : 'black', image_url : '/src/assets/images/chess_black_bishop.png'},
     'black_king' : {type : 'king', color : 'black', image_url : '/src/assets/images/chess_black_king.png'},
     'black_knight': {type : 'knight', color : 'black', image_url : '/src/assets/images/chess_black_knight.png'},
