@@ -22,8 +22,8 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
             row.forEach((type, x) => {
                 if (type !== 0) {
                     prev[y + player.position.y][x + player.position.x] = {type : type, status : (player.finished)? "finished" : "cleared", 
-                    image_url : (player.tetrisBlock.images !== null && type !== 0)? 
-                    player.tetrisBlock.images[type - 1] : undefined};
+                    chess_piece : {type : player.tetrisBlock.chess_pieces[type - 1].type, image_url : (player.tetrisBlock.chess_pieces !== null && type !== 0)? 
+                    player.tetrisBlock.chess_pieces[type - 1].image_url : undefined}};
                 }
         })});
     };
@@ -31,7 +31,8 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
     function refreshStage(prev : Array<Array<BlockStatus>>) : Array<Array<BlockStatus>> {
         return prev.map(row => 
             row.map(block => 
-                block = (block.status === "cleared")? {type : 0, status : "cleared", image_url : undefined} : block
+                block = (block.status === "cleared")? {type : 0, status : "cleared", 
+                    chess_piece : {type : 'none', image_url : undefined}} : block
             )
         );
     };

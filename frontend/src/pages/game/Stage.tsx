@@ -27,7 +27,7 @@ function Stage({stage} : {stage : Array<Array<BlockStatus>>}) {
     return (
         <StyledStage $blockSize={gameState.chess_piece_pixel_size} height={gameState.stage_size.y} width={gameState.stage_size.x}>
             {stage.map((row) => row.map((block, x) => <Block key={x} type={block['type']} 
-                image_url={block['image_url']} />))}
+                image_url={block['chess_piece']['image_url']} />))}
         </StyledStage>
     )
 };

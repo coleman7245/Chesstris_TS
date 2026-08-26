@@ -33,14 +33,14 @@ export type CollisionInfo = {
 }
 
 export type BlockStatus = {
-  type : string | number,
+  type : number,
   status : string,
-  image_url : string | undefined
+  chess_piece : ChessPiece
 };
 
 export type TetrisBlock = {
   shape : Array<Array<number>>,
-  images : Array<string> | null;
+  chess_pieces : Array<ChessPiece>;
 };
 
 export type TetrisBlocks = {
@@ -74,6 +74,11 @@ export type ChessPieceImages = {
     'white_pawn' : string,
     'white_queen' : string,
     'white_rook' : string
+};
+
+export type ChessPiece = {
+  type : string,
+  image_url : string | undefined
 };
 
 export type Score = {

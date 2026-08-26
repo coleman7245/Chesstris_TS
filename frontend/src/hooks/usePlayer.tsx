@@ -22,8 +22,8 @@ function usePlayer(gameState : GameState) {
 
     function move(velocity : Vector2, finished : boolean) {
         setPlayer({name : player.name, position : player.position.add(velocity), 
-            tetrisBlock : {shape : copyTetrisBlockShape(player.tetrisBlock.shape), images : 
-                (player.tetrisBlock.images !== null)? player.tetrisBlock.images.slice() : null}, finished : finished}
+            tetrisBlock : {shape : copyTetrisBlockShape(player.tetrisBlock.shape), 
+                chess_pieces : player.tetrisBlock.chess_pieces.slice()}, finished : finished}
         );
     }
 
@@ -38,7 +38,7 @@ function usePlayer(gameState : GameState) {
     function rotatePlayer(stage : Array<Array<BlockStatus>>) : void {
         const rotatedPlayer : Player = {name : player.name, position : player.position.copy(), 
             tetrisBlock : {shape : rotate(), 
-                images : (player.tetrisBlock.images !== null)? player.tetrisBlock.images.slice() : null}, finished : player.finished};
+                chess_pieces : player.tetrisBlock.chess_pieces.slice()}, finished : player.finished};
 
         for (let dir = hasCollided(rotatedPlayer, stage, Vector2.zero()); dir !== 'none'; 
             dir = hasCollided(rotatedPlayer, stage, Vector2.zero())) {

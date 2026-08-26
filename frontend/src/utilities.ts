@@ -1,5 +1,5 @@
 import Vector2 from './classes/Vector2.ts';
-import { BlockStatus, ChessPieceImages, GameState, Player, Time } from './types.ts';
+import { BlockStatus, ChessPieceImages, ChessPiece, GameState, Player, Time } from './types.ts';
 import { SetStateAction, Dispatch } from 'react';
 
 export function copyBlockStatusMatrix(matrix : Array<Array<BlockStatus>>) : Array<Array<BlockStatus>> {return matrix.map((row) => row.map(col => col));};
@@ -8,17 +8,18 @@ export function copyTetrisBlockShape(matrix : Array<Array<number>>) : Array<Arra
 
 export function createStage(stageSize : Vector2, pixelSize : Vector2) : Array<Array<BlockStatus>> {
         return Array.from(new Array(Math.floor(stageSize.y / pixelSize.y)), () => 
-            new Array(Math.floor(stageSize.x / pixelSize.x)).fill({type : 0, status : "cleared"}));
+            new Array(Math.floor(stageSize.x / pixelSize.x)).fill({type : 0, status : "cleared", 
+                chess_piece : {type : 'none', image_url : undefined}}));
 };
 
-function getRandomChessPiece(chessPieceImages : ChessPieceImages) : string {
+function getRandomChessPiece(chessPieceImages : ChessPieceImages) : ChessPiece {
     const randomIndex : number = Math.floor(Math.random() * Object.keys(chessPieceImages).length);
 
-    return chessPieceImages[Object.keys(chessPieceImages)[randomIndex] as keyof ChessPieceImages];
+    return {type : Object.keys(chessPieceImages)[randomIndex], image_url : chessPieceImages[Object.keys(chessPieceImages)[randomIndex] as keyof ChessPieceImages]};
 };
 
-export function getRandomChessPieces(chessPieceImages : ChessPieceImages) : Array<string> | null {
-    const source_images : Array<string> = new Array<string>();
+export function getRandomChessPieces(chessPieceImages : ChessPieceImages) : Array<ChessPiece> {
+    const source_images : Array<ChessPiece> = new Array<ChessPiece>();
 
     for (let i = 0; i < 4; i++) {
         source_images.push(getRandomChessPiece(chessPieceImages));

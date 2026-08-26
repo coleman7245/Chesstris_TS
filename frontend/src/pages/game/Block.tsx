@@ -8,7 +8,7 @@ const StyledBlock = styled.div<{type? : string | number}>`
     background-color: ${props => (props.type !== 0)? 'white' : 'rgba(0, 0, 0, 0)'};
 `;
 
-const StyledChessImage = styled.img<{type? : string | number, image_url? : string | undefined}>`
+const StyledChessImage = styled.img<{type? : number, image_url? : string | undefined}>`
     position: relative;
     width: 30px;
     height: 30px;
@@ -16,7 +16,7 @@ const StyledChessImage = styled.img<{type? : string | number, image_url? : strin
     background-color: ${props => (props.type !== 0)? 'white' : 'rgba(0, 0, 0, 0)'};
 `;
 
-function Block({type, image_url} : {type : string | number, image_url : string | undefined}) {
+function Block({type, image_url} : {type : number, image_url : string | undefined}) {
     return (type !== 0)? <StyledChessImage type={type} src={image_url} /> : 
         <StyledBlock type={type} />
 }
