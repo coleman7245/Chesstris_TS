@@ -22,8 +22,7 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
             row.forEach((type, x) => {
                 if (type !== 0) {
                     prev[y + player.position.y][x + player.position.x] = {type : type, status : (player.finished)? "finished" : "cleared", 
-                    chess_piece : {type : player.tetrisBlock.chess_pieces[type - 1].type, image_url : (player.tetrisBlock.chess_pieces !== null && type !== 0)? 
-                    player.tetrisBlock.chess_pieces[type - 1].image_url : undefined}};
+                    chess_piece : player.tetrisBlock.chess_pieces[type - 1]};
                 }
         })});
     };
@@ -32,7 +31,7 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
         return prev.map(row => 
             row.map(block => 
                 block = (block.status === "cleared")? {type : 0, status : "cleared", 
-                    chess_piece : {type : 'none', image_url : undefined}} : block
+                    chess_piece : {type : 'none', color : 'none', image_url : undefined}} : block
             )
         );
     };

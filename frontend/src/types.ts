@@ -61,23 +61,24 @@ export type Player = {
   finished : boolean
 };
 
-export type ChessPieceImages = {
-    'black_bishop': string,
-    'black_king' : string,
-    'black_knight': string,
-    'black_pawn' : string,
-    'black_queen' : string,
-    'black_rook' : string,
-    'white_bishop' : string,
-    'white_king' : string,
-    'white_knight' : string,
-    'white_pawn' : string,
-    'white_queen' : string,
-    'white_rook' : string
+export type ChessPieces = {
+    'black_bishop': ChessPiece,
+    'black_king' : ChessPiece,
+    'black_knight': ChessPiece,
+    'black_pawn' : ChessPiece,
+    'black_queen' : ChessPiece,
+    'black_rook' : ChessPiece,
+    'white_bishop' : ChessPiece,
+    'white_king' : ChessPiece,
+    'white_knight' : ChessPiece,
+    'white_pawn' : ChessPiece,
+    'white_queen' : ChessPiece,
+    'white_rook' : ChessPiece
 };
 
 export type ChessPiece = {
   type : string,
+  color : string,
   image_url : string | undefined
 };
 

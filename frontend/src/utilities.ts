@@ -1,5 +1,5 @@
 import Vector2 from './classes/Vector2.ts';
-import { BlockStatus, ChessPieceImages, ChessPiece, GameState, Player, Time } from './types.ts';
+import { BlockStatus, ChessPieces, ChessPiece, GameState, Player, Time } from './types.ts';
 import { SetStateAction, Dispatch } from 'react';
 
 export function copyBlockStatusMatrix(matrix : Array<Array<BlockStatus>>) : Array<Array<BlockStatus>> {return matrix.map((row) => row.map(col => col));};
@@ -12,13 +12,13 @@ export function createStage(stageSize : Vector2, pixelSize : Vector2) : Array<Ar
                 chess_piece : {type : 'none', image_url : undefined}}));
 };
 
-function getRandomChessPiece(chessPieceImages : ChessPieceImages) : ChessPiece {
-    const randomIndex : number = Math.floor(Math.random() * Object.keys(chessPieceImages).length);
+function getRandomChessPiece(chessPieces : ChessPieces) : ChessPiece {
+    const randomIndex : number = Math.floor(Math.random() * Object.keys(chessPieces).length);
 
-    return {type : Object.keys(chessPieceImages)[randomIndex], image_url : chessPieceImages[Object.keys(chessPieceImages)[randomIndex] as keyof ChessPieceImages]};
+    return chessPieces[Object.keys(chessPieces)[randomIndex] as keyof ChessPieces];
 };
 
-export function getRandomChessPieces(chessPieceImages : ChessPieceImages) : Array<ChessPiece> {
+export function getRandomChessPieces(chessPieceImages : ChessPieces) : Array<ChessPiece> {
     const source_images : Array<ChessPiece> = new Array<ChessPiece>();
 
     for (let i = 0; i < 4; i++) {
@@ -97,19 +97,19 @@ export async function overrideCurrentGame(dispatch : Function) : Promise<void> {
     }
 }
 
-export const chess_piece_images : ChessPieceImages = {
-    'black_bishop': '/src/assets/images/chess_black_bishop.png',
-    'black_king' : '/src/assets/images/chess_black_king.png',
-    'black_knight': '/src/assets/images/chess_black_knight.png',
-    'black_pawn' : '/src/assets/images/chess_black_pawn.png',
-    'black_queen' : '/src/assets/images/chess_black_queen.png',
-    'black_rook' : '/src/assets/images/chess_black_rook.png',
-    'white_bishop' : '/src/assets/images/chess_white_bishop.png',
-    'white_king' : '/src/assets/images/chess_white_king.png',
-    'white_knight' : '/src/assets/images/chess_white_knight.png',
-    'white_pawn' : '/src/assets/images/chess_white_pawn.png',
-    'white_queen' : '/src/assets/images/chess_white_queen.png',
-    'white_rook' : '/src/assets/images/chess_white_rook.png'
+export const chess_piece_images : ChessPieces = {
+    'black_bishop': {type : 'bishop', color : 'black', image_url : '/src/assets/images/chess_black_bishop.png'},
+    'black_king' : {type : 'king', color : 'black', image_url : '/src/assets/images/chess_black_king.png'},
+    'black_knight': {type : 'knight', color : 'black', image_url : '/src/assets/images/chess_black_knight.png'},
+    'black_pawn' : {type : 'pawn', color : 'black', image_url : '/src/assets/images/chess_black_pawn.png'},
+    'black_queen' : {type : 'queen', color : 'black', image_url : '/src/assets/images/chess_black_queen.png'},
+    'black_rook' : {type : 'bishop', color : 'black', image_url : '/src/assets/images/chess_black_rook.png'},
+    'white_bishop' : {type : 'bishop', color : 'white', image_url : '/src/assets/images/chess_white_bishop.png'},
+    'white_king' : {type : 'king', color : 'white', image_url : '/src/assets/images/chess_white_king.png'},
+    'white_knight' : {type : 'knight', color : 'white', image_url : '/src/assets/images/chess_white_knight.png'},
+    'white_pawn' : {type : 'pawn', color : 'white', image_url : '/src/assets/images/chess_white_pawn.png'},
+    'white_queen' : {type : 'queen', color : 'white', image_url : '/src/assets/images/chess_white_queen.png'},
+    'white_rook' : {type : 'bishop', color : 'white', image_url : '/src/assets/images/chess_white_rook.png'}
 };
 
 export const tetris_block_types : Array<string> = [
