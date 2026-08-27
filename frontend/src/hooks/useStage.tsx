@@ -17,6 +17,24 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
         }
     };
 
+    function shiftDownRows(stage : Array<Array<BlockStatus>>) : void {
+        for (let y : number = stage.length - 1; y >= 0; y--) {
+            for (let x : number = stage[y].length - 1; x >= 0; x--) {
+                if (stage[y][x].type !== 0) {
+                    let moveDown : number = y;
+
+                    while (stage[moveDown + 1] && stage[moveDown + 1][x] && stage[moveDown + 1][x].type === 0) {
+                        stage[moveDown + 1][x] = {type : stage[moveDown][x].type, status : stage[moveDown][x].status, 
+                            chess_piece : {...stage[moveDown][x].chess_piece}};
+                        stage[moveDown][x] = clearBlock();
+                        
+                        moveDown++;
+                    }
+                }
+            }
+        };
+    };
+
     function clearBlock() : BlockStatus {return {type : 0, status : 'cleared', chess_piece : {type : 'none', color : 'none', image_url : undefined}};};
 
     function knightElimination(stage : Array<Array<BlockStatus>>, position : Vector2, chessPiece : ChessPiece ) : void {
@@ -104,7 +122,7 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
     function drawStage(prev : Array<Array<BlockStatus>>) {
         const newStage = refreshStage(prev);
         clearRows(newStage);
-
+        shiftDownRows(newStage);
         drawPlayer(newStage);
 
         if (player.finished)
