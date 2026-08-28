@@ -11,7 +11,7 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
             for (let x : number = 0; x < stage[y].length; x++) {
                 if (stage[y][x].type !== 0) {
                     if (stage[y][x].chess_piece.type === 'knight')
-                        knightElimination(stage, new Vector2(x, y), stage[y][x].chess_piece);
+                        knightElimination(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
                 }
             }
         }
@@ -37,61 +37,61 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
 
     function clearBlock() : BlockStatus {return {type : 0, status : 'cleared', chess_piece : {type : 'none', color : 'none', image_url : undefined}};};
 
-    function knightElimination(stage : Array<Array<BlockStatus>>, position : Vector2, chessPiece : ChessPiece ) : void {
+    function knightElimination(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : void {
         let eliminated : boolean = false;
 
         if ((stage[position.y - 2] && stage[position.y - 2][position.x - 1] &&
             stage[position.y - 2][position.x - 1].chess_piece.color !== 'none' && 
-            stage[position.y - 2][position.x - 1].chess_piece.color !== chessPiece.color)) {
+            stage[position.y - 2][position.x - 1].chess_piece.color !== color)) {
             stage[position.y - 2][position.x - 1] = clearBlock();
             eliminated = true;
         }
 
         if ((stage[position.y - 2] && stage[position.y - 2][position.x + 1] && 
             stage[position.y - 2][position.x + 1].chess_piece.color !== 'none' &&
-            stage[position.y - 2][position.x + 1].chess_piece.color !== chessPiece.color)) {
+            stage[position.y - 2][position.x + 1].chess_piece.color !== color)) {
             stage[position.y - 2][position.x + 1] = clearBlock();
             eliminated = true;
         }
 
         if ((stage[position.y + 2] && stage[position.y + 2][position.x - 1] &&
             stage[position.y + 2][position.x - 1].chess_piece.color !== 'none' && 
-            stage[position.y + 2][position.x - 1].chess_piece.color !== chessPiece.color)) {
+            stage[position.y + 2][position.x - 1].chess_piece.color !== color)) {
             stage[position.y + 2][position.x - 1] = clearBlock();
             eliminated = true;
         }
 
         if ((stage[position.y + 2] && stage[position.y + 2][position.x + 1] &&
             stage[position.y + 2][position.x + 1].chess_piece.color !== 'none' && 
-            stage[position.y + 2][position.x + 1].chess_piece.color !== chessPiece.color)) {
+            stage[position.y + 2][position.x + 1].chess_piece.color !== color)) {
             stage[position.y + 2][position.x + 1] = clearBlock();
             eliminated = true;
         }
 
         if ((stage[position.y - 1] && stage[position.y - 1][position.x - 2] &&
             stage[position.y - 1][position.x - 2].chess_piece.color !== 'none' && 
-            stage[position.y - 1][position.x - 2].chess_piece.color !== chessPiece.color)) {
+            stage[position.y - 1][position.x - 2].chess_piece.color !== color)) {
             stage[position.y - 1][position.x - 2] = clearBlock();
             eliminated = true;
         }
 
         if ((stage[position.y - 1] && stage[position.y - 1][position.x + 2] && 
             stage[position.y - 1][position.x + 2].chess_piece.color !== 'none' &&
-            stage[position.y - 1][position.x + 2].chess_piece.color !== chessPiece.color)) {
+            stage[position.y - 1][position.x + 2].chess_piece.color !== color)) {
             stage[position.y - 1][position.x + 2] = clearBlock();
             eliminated = true;
         }
 
         if ((stage[position.y + 1] && stage[position.y + 1][position.x - 2] && 
             stage[position.y + 1][position.x - 2].chess_piece.color !== 'none' &&
-            stage[position.y + 1][position.x - 2].chess_piece.color !== chessPiece.color)) {
+            stage[position.y + 1][position.x - 2].chess_piece.color !== color)) {
             stage[position.y + 1][position.x - 2] = clearBlock();
             eliminated = true;
         }
 
         if ((stage[position.y + 1] && stage[position.y + 1][position.x + 2] && 
              stage[position.y + 1][position.x + 2].chess_piece.color !== 'none' &&
-            stage[position.y + 1][position.x + 2].chess_piece.color !== chessPiece.color)) {
+            stage[position.y + 1][position.x + 2].chess_piece.color !== color)) {
             stage[position.y + 1][position.x + 2] = clearBlock();
             eliminated = true;
         }
