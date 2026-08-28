@@ -6,15 +6,21 @@ import Vector2 from '../classes/Vector2.ts';
 function useStage(player : Player, createPlayer : Function, gameState : GameState) {
     const [stage, setStage] = useState(createStage(gameState.stage_size, gameState.chess_piece_pixel_size));
 
-    function clearRows(stage : Array<Array<BlockStatus>>) : void {
+    function clearRows(stage : Array<Array<BlockStatus>>) : boolean {
+        let eliminated : boolean = false;
+
         for (let y : number = 0; y < stage.length; y++) {
             for (let x : number = 0; x < stage[y].length; x++) {
                 if (stage[y][x].type !== 0) {
-                    if (stage[y][x].chess_piece.type === 'knight')
+                    if (stage[y][x].chess_piece.type === 'knight') {
                         knightElimination(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
+                        eliminated = true;
+                    }
                 }
             }
         }
+
+        return eliminated;
     };
 
     function shiftDownRows(stage : Array<Array<BlockStatus>>) : void {
@@ -121,8 +127,9 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
 
     function drawStage(prev : Array<Array<BlockStatus>>) {
         const newStage = refreshStage(prev);
-        clearRows(newStage);
-        shiftDownRows(newStage);
+        let eliminated : boolean = clearRows(newStage);
+        if (eliminated)
+            shiftDownRows(newStage);
         drawPlayer(newStage);
 
         if (player.finished)
