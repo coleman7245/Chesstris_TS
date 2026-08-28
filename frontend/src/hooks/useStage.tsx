@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Player, GameState, BlockStatus, ChessPiece } from '../types.ts';
-import { createStage, Game_Phase } from '../utilities.ts';
+import { Player, GameState, BlockStatus } from '../types.ts';
+import { chess_pieces, createStage, Game_Phase } from '../utilities.ts';
 import Vector2 from '../classes/Vector2.ts';
 
 function useStage(player : Player, createPlayer : Function, gameState : GameState) {
@@ -35,7 +35,7 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
         };
     };
 
-    function clearBlock() : BlockStatus {return {type : 0, status : 'cleared', chess_piece : {type : 'none', color : 'none', image_url : undefined}};};
+    function clearBlock() : BlockStatus {return {type : 0, status : 'cleared', chess_piece : chess_pieces['blank_block']};};
 
     function knightElimination(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : void {
         let eliminated : boolean = false;
@@ -114,10 +114,10 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
         return prev.map(row => 
             row.map(block => 
                 block = (block.status === "cleared")? {type : 0, status : "cleared", 
-                    chess_piece : {type : 'none', color : 'none', image_url : undefined}} : block
+                   chess_piece : chess_pieces['blank_block']} : block
             )
         );
-    };
+    }; 
 
     function drawStage(prev : Array<Array<BlockStatus>>) {
         const newStage = refreshStage(prev);

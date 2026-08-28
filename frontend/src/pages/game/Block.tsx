@@ -1,13 +1,5 @@
 import { styled } from 'styled-components';
 
-const StyledBlock = styled.div<{type? : string | number}>`
-    position: relative;
-    width: 30px;
-    height: 30px;
-    border: 1px solid black;
-    background-color: ${props => (props.type !== 0)? 'white' : 'rgba(0, 0, 0, 0)'};
-`;
-
 const StyledChessImage = styled.img<{type? : number, image_url? : string | undefined}>`
     position: relative;
     width: 30px;
@@ -17,8 +9,7 @@ const StyledChessImage = styled.img<{type? : number, image_url? : string | undef
 `;
 
 function Block({type, image_url} : {type : number, image_url : string | undefined}) {
-    return (type !== 0)? <StyledChessImage type={type} src={image_url} /> : 
-        <StyledBlock type={type} />
+    return <StyledChessImage type={type} src={image_url} />
 }
 
 export default Block;

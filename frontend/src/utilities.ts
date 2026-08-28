@@ -9,11 +9,11 @@ export function copyTetrisBlockShape(matrix : Array<Array<number>>) : Array<Arra
 export function createStage(stageSize : Vector2, pixelSize : Vector2) : Array<Array<BlockStatus>> {
         return Array.from(new Array(Math.floor(stageSize.y / pixelSize.y)), () => 
             new Array(Math.floor(stageSize.x / pixelSize.x)).fill({type : 0, status : "cleared", 
-                chess_piece : {type : 'none', image_url : undefined}}));
+                chess_piece : chess_pieces['blank_block']}));
 };
 
 function getRandomChessPiece(chessPieces : ChessPieces) : ChessPiece {
-    const randomIndex : number = Math.floor(Math.random() * Object.keys(chessPieces).length);
+    const randomIndex : number = Math.floor(Math.random() * (Object.keys(chessPieces).length - 1));
 
     return chessPieces[Object.keys(chessPieces)[randomIndex] as keyof ChessPieces];
 };
@@ -109,7 +109,8 @@ export const chess_pieces : ChessPieces = {
     'white_knight' : {type : 'knight', color : 'white', image_url : '/src/assets/images/chess_white_knight.png'},
     'white_pawn' : {type : 'pawn', color : 'white', image_url : '/src/assets/images/chess_white_pawn.png'},
     'white_queen' : {type : 'queen', color : 'white', image_url : '/src/assets/images/chess_white_queen.png'},
-    'white_rook' : {type : 'bishop', color : 'white', image_url : '/src/assets/images/chess_white_rook.png'}
+    'white_rook' : {type : 'bishop', color : 'white', image_url : '/src/assets/images/chess_white_rook.png'},
+    'blank_block' : {type : 'none', color : 'none', image_url : '/src/assets/images/blank_block.png'}
 };
 
 export const tetris_block_types : Array<string> = [
