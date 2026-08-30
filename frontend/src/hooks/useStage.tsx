@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Player, GameState, BlockStatus } from '../types.ts';
-import { chess_pieces, createStage, Game_Phase } from '../utilities.ts';
+import { chess_pieces, createStage, Game_Phase, clearBlock } from '../utilities.ts';
+import { knightElimination } from '../../elimination_rules.ts';
 import Vector2 from '../classes/Vector2.ts';
 
 function useStage(player : Player, createPlayer : Function, gameState : GameState) {
@@ -39,71 +40,6 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
                 }
             }
         };
-    };
-
-    function clearBlock() : BlockStatus {return {type : 0, status : 'cleared', chess_piece : chess_pieces['blank_block']};};
-
-    function knightElimination(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : void {
-        let eliminated : boolean = false;
-
-        if ((stage[position.y - 2] && stage[position.y - 2][position.x - 1] &&
-            stage[position.y - 2][position.x - 1].chess_piece.color !== 'none' && 
-            stage[position.y - 2][position.x - 1].chess_piece.color !== color)) {
-            stage[position.y - 2][position.x - 1] = clearBlock();
-            eliminated = true;
-        }
-
-        if ((stage[position.y - 2] && stage[position.y - 2][position.x + 1] && 
-            stage[position.y - 2][position.x + 1].chess_piece.color !== 'none' &&
-            stage[position.y - 2][position.x + 1].chess_piece.color !== color)) {
-            stage[position.y - 2][position.x + 1] = clearBlock();
-            eliminated = true;
-        }
-
-        if ((stage[position.y + 2] && stage[position.y + 2][position.x - 1] &&
-            stage[position.y + 2][position.x - 1].chess_piece.color !== 'none' && 
-            stage[position.y + 2][position.x - 1].chess_piece.color !== color)) {
-            stage[position.y + 2][position.x - 1] = clearBlock();
-            eliminated = true;
-        }
-
-        if ((stage[position.y + 2] && stage[position.y + 2][position.x + 1] &&
-            stage[position.y + 2][position.x + 1].chess_piece.color !== 'none' && 
-            stage[position.y + 2][position.x + 1].chess_piece.color !== color)) {
-            stage[position.y + 2][position.x + 1] = clearBlock();
-            eliminated = true;
-        }
-
-        if ((stage[position.y - 1] && stage[position.y - 1][position.x - 2] &&
-            stage[position.y - 1][position.x - 2].chess_piece.color !== 'none' && 
-            stage[position.y - 1][position.x - 2].chess_piece.color !== color)) {
-            stage[position.y - 1][position.x - 2] = clearBlock();
-            eliminated = true;
-        }
-
-        if ((stage[position.y - 1] && stage[position.y - 1][position.x + 2] && 
-            stage[position.y - 1][position.x + 2].chess_piece.color !== 'none' &&
-            stage[position.y - 1][position.x + 2].chess_piece.color !== color)) {
-            stage[position.y - 1][position.x + 2] = clearBlock();
-            eliminated = true;
-        }
-
-        if ((stage[position.y + 1] && stage[position.y + 1][position.x - 2] && 
-            stage[position.y + 1][position.x - 2].chess_piece.color !== 'none' &&
-            stage[position.y + 1][position.x - 2].chess_piece.color !== color)) {
-            stage[position.y + 1][position.x - 2] = clearBlock();
-            eliminated = true;
-        }
-
-        if ((stage[position.y + 1] && stage[position.y + 1][position.x + 2] && 
-             stage[position.y + 1][position.x + 2].chess_piece.color !== 'none' &&
-            stage[position.y + 1][position.x + 2].chess_piece.color !== color)) {
-            stage[position.y + 1][position.x + 2] = clearBlock();
-            eliminated = true;
-        }
-
-        if (eliminated)
-            stage[position.y][position.x] = clearBlock();
     };
 
     function drawPlayer(prev : Array<Array<BlockStatus>>) {

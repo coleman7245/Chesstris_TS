@@ -176,3 +176,5 @@ export function getTime(currentTime : number | Dispatch<SetStateAction<number>>)
 
     return gameTime;
 };
+
+export function clearBlock() : BlockStatus {return {type : 0, status : 'cleared', chess_piece : chess_pieces['blank_block']};};
