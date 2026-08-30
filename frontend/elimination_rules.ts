@@ -2,7 +2,7 @@ import { BlockStatus } from "./src/types.ts";
 import Vector2 from "./src/classes/Vector2.ts";
 import { clearBlock } from "./src/utilities.ts";
 
-export function knightElimination(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : void {
+export function knightElimination(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : boolean {
     let eliminated : boolean = false;
 
     if ((stage[position.y - 2] && stage[position.y - 2][position.x - 1] &&
@@ -63,9 +63,11 @@ export function knightElimination(stage : Array<Array<BlockStatus>>, position : 
 
     if (eliminated)
         stage[position.y][position.x] = clearBlock();
+
+    return eliminated;
 };
 
-export function pawnElimination(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : void {
+export function pawnElimination(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : boolean {
     let eliminated : boolean = false;
 
     if (stage[position.y + 1] && 
@@ -98,6 +100,7 @@ export function pawnElimination(stage : Array<Array<BlockStatus>>, position : Ve
     }
 
     if (eliminated)
-        if (eliminated)
         stage[position.y][position.x] = clearBlock();
+
+    return eliminated;
 };

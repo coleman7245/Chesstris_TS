@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Player, GameState, BlockStatus } from '../types.ts';
 import { chess_pieces, createStage, Game_Phase, clearBlock } from '../utilities.ts';
-import { knightElimination } from '../../elimination_rules.ts';
+import * as rules from '../../elimination_rules.ts';
 import Vector2 from '../classes/Vector2.ts';
 
 function useStage(player : Player, createPlayer : Function, gameState : GameState) {
@@ -13,10 +13,10 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
         for (let y : number = 0; y < stage.length; y++) {
             for (let x : number = 0; x < stage[y].length; x++) {
                 if (stage[y][x].type !== 0) {
-                    if (stage[y][x].chess_piece.type === 'knight') {
-                        knightElimination(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
-                        eliminated = true;
-                    }
+                    if (stage[y][x].chess_piece.type === 'knight')
+                        eliminated = rules.knightElimination(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
+                    else if (stage[y][x].chess_piece.type === 'pawn')
+                        eliminated = rules.pawnElimination(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
                 }
             }
         }
