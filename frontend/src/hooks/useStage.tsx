@@ -14,9 +14,11 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
             for (let x : number = 0; x < stage[y].length; x++) {
                 if (stage[y][x].type !== 0) {
                     if (stage[y][x].chess_piece.type === 'knight')
-                        eliminated = rules.knightElimination(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
+                        eliminated = rules.eliminateKnights(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
                     else if (stage[y][x].chess_piece.type === 'pawn')
-                        eliminated = rules.pawnElimination(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
+                        eliminated = rules.eliminatePawns(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
+                    else if (stage[y][x].chess_piece.type === 'bishop')
+                        eliminated = rules.eliminateBishops(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
                 }
             }
         }
