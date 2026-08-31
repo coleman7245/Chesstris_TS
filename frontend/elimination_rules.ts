@@ -54,19 +54,12 @@ export function eliminateBishops(stage : Array<Array<BlockStatus>>, position : V
     for (let y : number = -1; y <= 1; y++) {
         for (let x : number = -1; x <= 1; x++) {
             if (y !== 0 && x !== 0) {
-                let step : number = 1;
-
-                while (stage[position.y + (y * step)] && stage[position.y + (y * step)][position.x + (x * step)]) {
-
-                    if (stage[position.y + (y * step)] && 
-                        stage[position.y + (y * step)][position.x + (x * step)] && 
-                        stage[position.y + (y * step)][position.x + (x * step)].chess_piece.color !== 'none' && 
+                for (let step : number = 1; stage[position.y + (y * step)] && stage[position.y + (y * step)][position.x + (x * step)]; step++) {
+                    if (stage[position.y + (y * step)][position.x + (x * step)].chess_piece.color !== 'none' && 
                         stage[position.y + (y * step)][position.x + (x * step)].chess_piece.color !== color) {
                             stage[position.y + (y * step)][position.x + (x * step)] = clearBlock();
                             eliminated = true;
                     }
-
-                    step++;
                 }
             }
         }
