@@ -14,7 +14,7 @@ export function eliminateKnights(stage : Array<Array<BlockStatus>>, position : V
                     stage[position.y + y][position.x + x].chess_piece.color !== color) {
                         stage[position.y + y][position.x + x] = clearBlock();
                         eliminated = true;
-                    }
+                }
             }
         }
     };
@@ -37,7 +37,7 @@ export function eliminatePawns(stage : Array<Array<BlockStatus>>, position : Vec
                     stage[position.y + y][position.x + x].chess_piece.color !== color) {
                         stage[position.y + y][position.x + x] = clearBlock();
                         eliminated = true;
-                    }
+                }
             }
         }
     };
@@ -60,6 +60,35 @@ export function eliminateBishops(stage : Array<Array<BlockStatus>>, position : V
                             stage[position.y + (y * step)][position.x + (x * step)] = clearBlock();
                             eliminated = true;
                     }
+                }
+            }
+        }
+    };
+
+    if (eliminated)
+        stage[position.y][position.x] = clearBlock();
+
+    return eliminated;
+};
+
+export function eliminateRooks(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : boolean {
+    let eliminated : boolean = false;
+
+    for (let step : number = -1; step <= 1; step++) {
+        if (step !== 0) {
+            for (let y : number = 1; stage[position.y + (y * step)] && stage[position.y + (y * step)][position.x]; y++) {
+                if (stage[position.y + (y * step)][position.x].chess_piece.color !== 'none' && 
+                    stage[position.y + (y * step)][position.x].chess_piece.color !== color) {
+                    stage[position.y + (y * step)][position.x] = clearBlock();
+                        eliminated = true;
+                }
+            }
+
+            for (let x : number = 1; stage[position.y] && stage[position.y][position.x + (x * step)]; x++) {
+                if (stage[position.y][position.x + (x * step)].chess_piece.color !== 'none' && 
+                    stage[position.y][position.x + (x * step)].chess_piece.color !== color) {
+                    stage[position.y][position.x + (x * step)] = clearBlock();
+                        eliminated = true;
                 }
             }
         }

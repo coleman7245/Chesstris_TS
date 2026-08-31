@@ -19,6 +19,8 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
                         eliminated = rules.eliminatePawns(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
                     else if (stage[y][x].chess_piece.type === 'bishop')
                         eliminated = rules.eliminateBishops(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
+                    else if (stage[y][x].chess_piece.type === 'rook')
+                        eliminated = rules.eliminateRooks(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
                 }
             }
         }
