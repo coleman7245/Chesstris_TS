@@ -21,6 +21,8 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
                         eliminated = rules.eliminateBishops(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
                     else if (stage[y][x].chess_piece.type === 'rook')
                         eliminated = rules.eliminateRooks(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
+                    else if (stage[y][x].chess_piece.type === 'king')
+                        eliminated = rules.eliminatePawns(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
 
                     if (eliminated)
                             stage[y][x] = clearBlock();
@@ -29,7 +31,7 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
         }
     };
 
-    function shiftDownRows(stage : Array<Array<BlockStatus>>) : void {
+    function shiftDownBlocks(stage : Array<Array<BlockStatus>>) : void {
         for (let y : number = stage.length - 1; y >= 0; y--) {
             for (let x : number = stage[y].length - 1; x >= 0; x--) {
                 if (stage[y][x].type !== 0) {
@@ -69,7 +71,7 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
     function drawStage(prev : Array<Array<BlockStatus>>) {
         const newStage = refreshStage(prev);
         clearBlocks(newStage);
-        shiftDownRows(newStage);
+        shiftDownBlocks(newStage);
         drawPlayer(newStage);
 
         if (player.finished)

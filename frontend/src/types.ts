@@ -73,8 +73,13 @@ export type ChessPieces = {
     'white_knight' : ChessPiece,
     'white_pawn' : ChessPiece,
     'white_queen' : ChessPiece,
-    'white_rook' : ChessPiece
+    'white_rook' : ChessPiece,
     'blank_block' : ChessPiece
+};
+
+export type Spaces = {
+    'white_space' : ChessPiece,
+    'black_space' : ChessPiece,
 };
 
 export type ChessPiece = {

@@ -1,10 +1,10 @@
 import { TetrisBlocks } from './types.ts';
-import { getRandomChessPieces, chess_pieces } from './utilities.ts';
+import { getRandomChessPieces, chess_pieces, spaces } from './utilities.ts';
 
 const TETRIS_BLOCKS : TetrisBlocks = {
     0 : {
         shape : [[0]],
-        chess_pieces : getRandomChessPieces(chess_pieces)
+        chess_pieces : getRandomChessPieces(chess_pieces, spaces)
     },
     l : {
             shape : [
@@ -13,7 +13,7 @@ const TETRIS_BLOCKS : TetrisBlocks = {
                 [0, 3, 0, 0],
                 [0, 4, 0, 0],
             ],
-            chess_pieces : getRandomChessPieces(chess_pieces)
+            chess_pieces : getRandomChessPieces(chess_pieces, spaces)
     },
     L : {
         shape : [
@@ -21,7 +21,7 @@ const TETRIS_BLOCKS : TetrisBlocks = {
             [0, 2, 0],
             [0, 3, 4]
         ],
-        chess_pieces : getRandomChessPieces(chess_pieces)
+        chess_pieces : getRandomChessPieces(chess_pieces, spaces)
     },
     T : {
         shape : [
@@ -29,7 +29,7 @@ const TETRIS_BLOCKS : TetrisBlocks = {
             [0, 4, 0],
             [0, 0, 0],
         ],
-        chess_pieces : getRandomChessPieces(chess_pieces)
+        chess_pieces : getRandomChessPieces(chess_pieces, spaces)
     },
   J : {
         shape : [
@@ -37,14 +37,14 @@ const TETRIS_BLOCKS : TetrisBlocks = {
             [0, 2, 0],
             [4, 3, 0]
         ],
-        chess_pieces : getRandomChessPieces(chess_pieces)
+        chess_pieces : getRandomChessPieces(chess_pieces, spaces)
     },
   O : {
         shape : [
             [1, 2],
             [3, 4]
         ],
-        chess_pieces : getRandomChessPieces(chess_pieces)
+        chess_pieces : getRandomChessPieces(chess_pieces, spaces)
     },
   S : {
         shape : [
@@ -52,7 +52,7 @@ const TETRIS_BLOCKS : TetrisBlocks = {
             [3, 4, 0],
             [0, 0, 0]
         ],
-        chess_pieces : getRandomChessPieces(chess_pieces)
+        chess_pieces : getRandomChessPieces(chess_pieces, spaces)
     },
   Z : {
         shape : [
@@ -60,7 +60,7 @@ const TETRIS_BLOCKS : TetrisBlocks = {
             [0, 3, 4],
             [0, 0, 0]
         ],
-        chess_pieces : getRandomChessPieces(chess_pieces)
+        chess_pieces : getRandomChessPieces(chess_pieces, spaces)
     }
 };
 
