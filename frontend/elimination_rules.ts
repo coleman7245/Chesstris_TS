@@ -49,10 +49,12 @@ export function eliminateBishops(stage : Array<Array<BlockStatus>>, position : V
         for (let x : number = -1; x <= 1; x++) {
             if (y !== 0 && x !== 0) {
                 for (let step : number = 1; stage[position.y + (y * step)] && stage[position.y + (y * step)][position.x + (x * step)]; step++) {
-                    if (stage[position.y + (y * step)][position.x + (x * step)].chess_piece.color !== 'none' && 
-                        stage[position.y + (y * step)][position.x + (x * step)].chess_piece.color !== color) {
-                            stage[position.y + (y * step)][position.x + (x * step)] = clearBlock();
-                            eliminated = true;
+                    if (stage[position.y + (y * step)][position.x + (x * step)].chess_piece.color === color)
+                        break;
+                    else if (stage[position.y + (y * step)][position.x + (x * step)].chess_piece.color !== 'none') {
+                        stage[position.y + (y * step)][position.x + (x * step)] = clearBlock();
+                        eliminated = true;
+                        break;
                     }
                 }
             }
@@ -68,18 +70,22 @@ export function eliminateRooks(stage : Array<Array<BlockStatus>>, position : Vec
     for (let step : number = -1; step <= 1; step++) {
         if (step !== 0) {
             for (let y : number = 1; stage[position.y + (y * step)] && stage[position.y + (y * step)][position.x]; y++) {
-                if (stage[position.y + (y * step)][position.x].chess_piece.color !== 'none' && 
-                    stage[position.y + (y * step)][position.x].chess_piece.color !== color) {
+                if (stage[position.y + (y * step)][position.x].chess_piece.color === color)
+                    break;
+                else if (stage[position.y + (y * step)][position.x].chess_piece.color !== 'none') {
                     stage[position.y + (y * step)][position.x] = clearBlock();
-                        eliminated = true;
+                    eliminated = true;
+                    break;
                 }
             }
 
             for (let x : number = 1; stage[position.y] && stage[position.y][position.x + (x * step)]; x++) {
-                if (stage[position.y][position.x + (x * step)].chess_piece.color !== 'none' && 
-                    stage[position.y][position.x + (x * step)].chess_piece.color !== color) {
+                if (stage[position.y][position.x + (x * step)].chess_piece.color === color)
+                    break;
+                else if (stage[position.y][position.x + (x * step)].chess_piece.color !== 'none') {
                     stage[position.y][position.x + (x * step)] = clearBlock();
-                        eliminated = true;
+                    eliminated = true;
+                    break;
                 }
             }
         }
@@ -94,18 +100,22 @@ export function eliminateQueens(stage : Array<Array<BlockStatus>>, position : Ve
     for (let step : number = -1; step <= 1; step++) {
         if (step !== 0) {
             for (let y : number = 1; stage[position.y + (y * step)] && stage[position.y + (y * step)][position.x]; y++) {
-                if (stage[position.y + (y * step)][position.x].chess_piece.color !== 'none' && 
-                    stage[position.y + (y * step)][position.x].chess_piece.color !== color) {
+                if (stage[position.y + (y * step)][position.x].chess_piece.color === color)
+                    break;
+                else if (stage[position.y + (y * step)][position.x].chess_piece.color !== 'none') {
                     stage[position.y + (y * step)][position.x] = clearBlock();
-                        eliminated = true;
+                    eliminated = true;
+                    break;
                 }
             }
 
             for (let x : number = 1; stage[position.y] && stage[position.y][position.x + (x * step)]; x++) {
-                if (stage[position.y][position.x + (x * step)].chess_piece.color !== 'none' && 
-                    stage[position.y][position.x + (x * step)].chess_piece.color !== color) {
+                if (stage[position.y][position.x + (x * step)].chess_piece.color === color)
+                    break;
+                else if (stage[position.y][position.x + (x * step)].chess_piece.color !== 'none') {
                     stage[position.y][position.x + (x * step)] = clearBlock();
-                        eliminated = true;
+                    eliminated = true;
+                    break;
                 }
             }
         }
@@ -115,10 +125,12 @@ export function eliminateQueens(stage : Array<Array<BlockStatus>>, position : Ve
         for (let x : number = -1; x <= 1; x++) {
             if (y !== 0 && x !== 0) {
                 for (let step : number = 1; stage[position.y + (y * step)] && stage[position.y + (y * step)][position.x + (x * step)]; step++) {
-                    if (stage[position.y + (y * step)][position.x + (x * step)].chess_piece.color !== 'none' && 
-                        stage[position.y + (y * step)][position.x + (x * step)].chess_piece.color !== color) {
+                    if (stage[position.y + (y * step)][position.x + (x * step)].chess_piece.color === color)
+                        break;
+                    else if (stage[position.y + (y * step)][position.x + (x * step)].chess_piece.color !== 'none') {
                             stage[position.y + (y * step)][position.x + (x * step)] = clearBlock();
                             eliminated = true;
+                            break;
                     }
                 }
             }
