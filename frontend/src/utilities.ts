@@ -49,7 +49,8 @@ export enum Game_Phase {
 };
 
 export const initialGameState : GameState = {
-    player_name : '', 
+    player_name : '',
+    email : '', 
     startTime : Date.now(),
     finishTime : {hours : 0, minutes: 0, seconds: 0}, 
     score : 0,
@@ -62,17 +63,7 @@ export const initialGameState : GameState = {
         win_score : 18
     },
     isPaused : false,
-    tetris_pieces : [],
-    default_start_position : new Vector2(30, 180),
-    default_group_positions : {
-        't' : [new Vector2(0, 0), new Vector2(0, 30), new Vector2(0, -30), new Vector2(30, 0)],
-        'squiggly' : [new Vector2(15, -30), new Vector2(15, 0), new Vector2(-15, 0), new Vector2(-15, 30)],
-        'reverse_squiggly' : [new Vector2(15, 30), new Vector2(15, 0), new Vector2(-15, 0), new Vector2(-15, -30)],
-        'l' : [new Vector2(30, 15), new Vector2(30, -15), new Vector2(0, -15), new Vector2(-30, -15)],
-        'reverse_l' : [new Vector2(30, -15), new Vector2(30, 15), new Vector2(0, 15), new Vector2(-30, 15)],
-        'square' : [new Vector2(-15, 15), new Vector2(-15, -15), new Vector2(15, -15), new Vector2(15, 15)],
-        'line' : [new Vector2(0, -45), new Vector2(0, -15), new Vector2(0, 15), new Vector2(0, 45)]
-    }
+    tetris_pieces : []
 };
 
 export async function getCurrentGame(dispatch : Function) : Promise<void> {

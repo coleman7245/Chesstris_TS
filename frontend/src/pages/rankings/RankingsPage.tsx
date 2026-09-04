@@ -1,11 +1,35 @@
 import { useState, useEffect } from 'react';
-
-import './RankingsPage.css';
+import { styled } from 'styled-components';
 
 import Navbar from '../../shared_components/Navbar.jsx'
 import RankingsList from './RankingsList.jsx';
 
-function RankingsPage() {
+const StyledRankingsPage = styled.div`
+    color: black;
+    background-color: white;
+    border-bottom: 10px double black;
+    border-right: 10px double black;
+    border-left: 10px double black;
+    border-radius: 10px;
+    height: 900px;
+    width: 1487px;
+    position: absolute;
+`;
+
+const StyledButton = styled.button`
+    position: absolute;
+    font: 'Georgia';
+    font-weight: bold;
+    padding: 2%;
+    border: 5px double black;
+
+    &:focus {
+        color: white;
+        background-color: black;
+    }
+`;
+
+export default function RankingsPage() {
     const [scores, setScores] = useState([]);
 
     async function getScores() : Promise<any> {
@@ -27,14 +51,12 @@ function RankingsPage() {
     return (
         <>
             <Navbar />
-            <div className='rankingspage'>
-                <button id='score-rankings-btn'>Scores</button>
-                <button id='player-rankings-btn'>Players</button>
-                <button id='time-rankings-btn'>Times</button>
+            <StyledRankingsPage>
+                <StyledButton id='score-rankings-btn'>Scores</StyledButton>
+                <StyledButton id='player-rankings-btn'>Players</StyledButton>
+                <StyledButton id='time-rankings-btn'>Times</StyledButton>
                 <RankingsList name='Scores' scores={scores}/>
-            </div>
+            </StyledRankingsPage>
         </>
     );
-}
-
-export default RankingsPage;
+};

@@ -14,7 +14,7 @@ const StyledGameInfo = styled.div`
     left: -300px;
 `;
 
-function GameInfo({gameTime} : {gameTime : Time}) {
+export default function GameInfo({gameTime} : {gameTime : Time}) {
     const [gameState] = useContext(GameContext);
 
     return (
@@ -24,6 +24,4 @@ function GameInfo({gameTime} : {gameTime : Time}) {
             Score: {gameState.score}
         </StyledGameInfo>
     )
-}
-
-export default GameInfo;
+};

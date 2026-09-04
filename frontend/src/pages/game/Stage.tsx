@@ -21,7 +21,7 @@ const StyledStage = styled.div<{$blockSize : Vector2, height : number, width : n
     margin-left: 5%;
 `;
 
-function Stage({stage} : {stage : Array<Array<BlockStatus>>}) {
+export default function Stage({stage} : {stage : Array<Array<BlockStatus>>}) {
     const [gameState] = useContext(GameContext);
 
     return (
@@ -31,5 +31,3 @@ function Stage({stage} : {stage : Array<Array<BlockStatus>>}) {
         </StyledStage>
     )
 };
-
-export default Stage;

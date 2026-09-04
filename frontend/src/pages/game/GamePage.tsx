@@ -46,7 +46,7 @@ const StyledStartStopButton = styled.button`
     }
 `;
 
-function GamePage() {
+export default function GamePage() {
     const [text, setText] = useState('Start');
     const [gameState, dispatch] = useContext(GameContext);
     const navigate : Function = useNavigate();
@@ -152,6 +152,4 @@ function GamePage() {
             </StyledGamePage>
         </div>
     );
-}
-
-export default GamePage;
+};

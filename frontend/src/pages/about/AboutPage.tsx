@@ -15,7 +15,7 @@ const StyledAboutPage = styled.div`
     width: 1487px;
 `;
 
-function AboutPage() {
+export default function AboutPage() {
     return (
         <>
             <Navbar />
@@ -24,6 +24,4 @@ function AboutPage() {
             </StyledAboutPage>
         </>
     )
-}
-
-export default AboutPage;
+};

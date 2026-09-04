@@ -12,16 +12,16 @@ function createRandomTetrisBlock() : TetrisBlock {
 };
 
 function usePlayer(gameState : GameState) {
-    const [player, setPlayer] = useState({name : gameState.player_name, 
+    const [player, setPlayer] = useState({name : gameState.player_name, email : gameState.email,
         position : new Vector2(Math.floor(gameState.stage_size.x / gameState.chess_piece_pixel_size.x / 2), 0), 
             tetrisBlock : createRandomTetrisBlock(), finished : false});
 
-    const createPlayer = useCallback(() => setPlayer({name : gameState.player_name, 
+    const createPlayer = useCallback(() => setPlayer({name : gameState.player_name, email : gameState.email,
         position : new Vector2(Math.floor(gameState.stage_size.x / gameState.chess_piece_pixel_size.x / 2), 0), 
             tetrisBlock : createRandomTetrisBlock(), finished : false}), []);
 
     function move(velocity : Vector2, finished : boolean) {
-        setPlayer({name : player.name, position : player.position.add(velocity), 
+        setPlayer({name : player.name, email : player.email, position : player.position.add(velocity), 
             tetrisBlock : {shape : copyTetrisBlockShape(player.tetrisBlock.shape), 
                 chess_pieces : player.tetrisBlock.chess_pieces.slice()}, finished : finished}
         );
@@ -36,7 +36,7 @@ function usePlayer(gameState : GameState) {
     };
 
     function rotatePlayer(stage : Array<Array<BlockStatus>>) : void {
-        const rotatedPlayer : Player = {name : player.name, position : player.position.copy(), 
+        const rotatedPlayer : Player = {name : player.name, email : player.email, position : player.position.copy(), 
             tetrisBlock : {shape : rotate(), 
                 chess_pieces : player.tetrisBlock.chess_pieces.slice()}, finished : player.finished};
 

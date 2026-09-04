@@ -8,8 +8,6 @@ const StyledChessImage = styled.img<{type? : number, image_url? : string | undef
     background-color: ${props => (props.type !== 0)? 'white' : 'rgba(0, 0, 0, 0)'};
 `;
 
-function Block({type, image_url} : {type : number, image_url : string | undefined}) {
+export default function Block({type, image_url} : {type : number, image_url : string | undefined}) {
     return <StyledChessImage type={type} src={image_url} />
-}
-
-export default Block;
+};

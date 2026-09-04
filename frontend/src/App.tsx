@@ -1,6 +1,5 @@
 import React, { createContext, useReducer } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import './App.css';
 import HomePage from './pages/home/HomePage.tsx';
 import GamePage from './pages/game/GamePage.tsx';
 import RankingsPage from './pages/rankings/RankingsPage.tsx';
@@ -40,7 +39,6 @@ function handleGameState(gameState : GameState, action : Action) : GameState {
             newGameState.score = 0;
             newGameState.startTime = Date.now();
             newGameState.finishTime = getTime(newGameState.startTime);
-            newGameState.default_start_position = new Position(135, 30);
             break;
         case 'CHANGE_SCORE':
             if (action.hasScored)

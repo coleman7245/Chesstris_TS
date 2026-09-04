@@ -56,6 +56,7 @@ export type TetrisBlocks = {
 
 export type Player = {
   name : string,
+  email : string,
   position : Vector2,
   tetrisBlock : TetrisBlock,
   finished : boolean
@@ -112,7 +113,8 @@ export type DefaultGroupPositions = {
 };
 
 export type GameState = {
-    player_name : string, 
+    player_name : string,
+    email : string, 
     startTime : number,
     finishTime : Time, 
     score : number,
@@ -122,9 +124,7 @@ export type GameState = {
     crossed_finish_line : boolean,
     win_state : WinState,
     isPaused : boolean,
-    tetris_pieces : Array<number>,
-    default_start_position : Vector2,
-    default_group_positions : DefaultGroupPositions
+    tetris_pieces : Array<number>
 };
 
 export type WinState = {

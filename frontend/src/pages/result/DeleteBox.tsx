@@ -1,10 +1,40 @@
 import { useState, useContext } from 'react';
-
-import './DeleteBox.css';
-
+import { styled } from 'styled-components';
 import { GameContext } from '../../App.tsx';
 
-function DeleteBox() {
+const StyledDeleteBox = styled.div`
+    font: 50px 'Georgia';
+    text-align: center;
+    color: black;
+    background-color: white;
+    border-radius: 10px;
+    margin-top: 3%;
+    margin-left: 5%;
+    border: 10px double black;
+    padding: 2%;
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    left: 500px;
+    top: 350px;
+`;
+
+const StyledButton = styled.button`
+    background-color: white;
+    font: 'Georgia';
+    font-weight: bold;
+    border: 5px double black;
+    padding: 2%;
+    margin-left: 1%;
+    margin-right: 1%;
+
+    &:focus {
+        color: white;
+        background-color: black;
+    }
+`;
+
+export default function DeleteBox() {
     const [isDeleted, setIsDeleted] = useState(false);
     const [gameState] = useContext(GameContext);
 
@@ -36,11 +66,10 @@ function DeleteBox() {
     }
 
     return (
-        <div className='delete-box'>
+        <StyledDeleteBox>
             {!isDeleted? 'Delete Data?' : 'Data Deleted!'}
-            {isDeleted ? null : <button id='delete'  onClick={() => handleDelete("http://localhost:8080/api", gameState.player_name)}>Delete</button>}
-        </div>
+            {isDeleted ? null : 
+                <StyledButton id='delete'  onClick={() => handleDelete("http://localhost:8080/api", gameState.player_name)}>Delete</StyledButton>}
+        </StyledDeleteBox>
     )
-}
-
-export default DeleteBox;
+};

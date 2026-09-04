@@ -1,12 +1,36 @@
 import { useContext, useState, useEffect, useRef } from 'react';
-
-import './Form.css';
-
+import { styled } from 'styled-components';
 import { GameContext } from '../App.tsx';
+import { Player } from '../types.ts';
 
-import { Player } from '../utilities.ts';
+const StyledForm = styled.form`
+    border: 10px double black;
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    margin-top: 3%;
+    margin-left: 3%;
+    padding: 5%;
+    text-align: center;
+    font: 1em 'Arial';
+    font-weight: bold;
+    border-radius: 10px;
+`;
 
-function Form() {
+const StyledButton = styled.button`
+    background-color: white;
+    font: 'Georgia';
+    font-weight: bold;
+    border: 1px double black;
+    border-radius: 10px;
+
+    &:active {
+        color: white;
+        background-color: black;
+    }
+`;
+
+export default function Form() {
     const textRef = useRef<HTMLFormElement>(null);
     const [dispatch] = useContext(GameContext);
     const [name, setName] = useState('');
@@ -47,21 +71,19 @@ function Form() {
     }, [nameTaken, emailTaken]);
 
     return (
-        <form className='form' ref={textRef} id='player-form' onSubmit={(e) => handleSubmission(e, dispatch, name, email)}>
+        <StyledForm ref={textRef} id='player-form' onSubmit={(e) => handleSubmission(e, dispatch, name, email)}>
             Enter your name and email <br /> <br />
             {!emailTaken && nameTaken ? <div id='name-taken-warning' style={{color:'red'}}>Name already taken!</div> : null}
             {emailTaken && !nameTaken ? <div id='email-taken-warning' style={{color:'red'}}>Email already taken!</div> : null}
             {emailTaken && nameTaken ? <div id='logging-in'>Logging In...</div> : null}
             <input id='name-field' type='text' placeholder='Name' onChange={(e) => setName(e.target.value)} value={name}/> <br /> <br />
             <input id='email-field' type='text' placeholder='Email' onChange={(e) => setEmail(e.target.value)} value={email}/> <br /> <br />
-            <button onClick={(e) => {
+            <StyledButton onClick={(e) => {
                 const button = e.target as HTMLButtonElement;
                 button.blur();
                 }}>
                 Submit
-            </button>
-        </form>
+            </StyledButton>
+        </StyledForm>
     )
-}
-
-export default Form;
+};

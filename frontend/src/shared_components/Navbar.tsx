@@ -1,45 +1,49 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-
+import { styled } from 'styled-components';
 import { GameContext } from '../App.tsx';
 
-import './Navbar.css';
+const StyledNavBar = styled.div`
+    background-color: white;
+    border: 10px double black;
+    overflow: hidden;
+    border-radius: 10px;
+`;
 
-function Navbar() {
+const StyledPlayerLogin = styled.span`
+    margin-left: 68%;
+    color: black;
+    font-weight: bold;
+`;
+
+const StyledLink = styled(Link)`
+    textDecoration: 'none';
+    padding: 0.5% 0.5%;
+    border-right: 2px solid black;
+    color: black;
+    font-weight: bold;
+
+    &:hover {
+        color: white;
+        background-color: black;
+    }
+`;
+
+export default function Navbar() {
     const [gameState] = useContext(GameContext);
 
     return (
-        <div className='navbar'>
-            <Link to='/' style={{textDecoration: 'none'}}>
-                Home
-            </Link>
-            <Link to='/game' style={{textDecoration: 'none'}}>
-                Game
-            </Link>
-            <Link to='/rankings' style={{textDecoration: 'none'}}>
-                Rankings
-            </Link>
-            <Link to='/edit' style={{textDecoration: 'none'}}>
-                Edit
-            </Link>
-            <Link to='/rules' style={{textDecoration: 'none'}}>
-                Rules
-            </Link>
-            <Link to='/about' style={{textDecoration: 'none'}}>
-                About
-            </Link>
+        <StyledNavBar>
+            <StyledLink to='/'>Home</StyledLink>
+            <StyledLink to='/game'>Game</StyledLink>
+            <StyledLink to='/rankings'>Rankings</StyledLink>
+            <StyledLink to='/edit'>Edit</StyledLink>
+            <StyledLink to='/rules'>Rules</StyledLink>
+            <StyledLink to='/about'>About</StyledLink>
             {gameState.player_name ?
-                <span>
-                    Player: {gameState.player_name} logged in
-                </span>
+                <StyledPlayerLogin>Player: {gameState.player_name} logged in</StyledPlayerLogin>
                 :
-                <span>
-                    <Link to='/login'>
-                        Sign In
-                    </Link>
-                </span>}
-        </div>
+                <StyledPlayerLogin><StyledLink to='/login'>Sign In</StyledLink></StyledPlayerLogin>}
+        </StyledNavBar>
     )
-}
-
-export default Navbar;
+};

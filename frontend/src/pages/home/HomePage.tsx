@@ -28,7 +28,7 @@ const StyledHomeButton = styled.button`
     font-weight: bold;
 `;
 
-function HomePage() {
+export default function HomePage() {
     return (
         <StyledHomePage>
             This is Chesstris <br />
@@ -55,6 +55,4 @@ function HomePage() {
             </Link>
         </StyledHomePage>
     );
-}
-
-export default HomePage;
+};

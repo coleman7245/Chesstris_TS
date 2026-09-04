@@ -5,7 +5,7 @@ import './EditPage.css';
 import Navbar from '../../shared_components/Navbar.tsx';
 import EditForm from './EditForm.tsx';
 
-function EditPage() {
+export default function EditPage() {
 
     return (
         <>
@@ -13,6 +13,4 @@ function EditPage() {
             <EditForm />
         </>
     )
-}
-
-export default EditPage;
+};
