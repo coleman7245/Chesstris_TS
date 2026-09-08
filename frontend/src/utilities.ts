@@ -1,6 +1,5 @@
 import Vector2 from './classes/Vector2.ts';
-import { BlockStatus, ChessPieces, ChessPiece, GameState, Player, Time, Spaces } from './types.ts';
-import { SetStateAction, Dispatch } from 'react';
+import { BlockStatus, ChessPieces, ChessPiece, GameState, Player, Spaces } from './types.ts';
 
 export function copyBlockStatusMatrix(matrix : Array<Array<BlockStatus>>) : Array<Array<BlockStatus>> {return matrix.map((row) => row.map(col => col));};
 
@@ -62,8 +61,7 @@ export const initialGameState : GameState = {
         win_pos_y : 480,
         win_score : 18
     },
-    isPaused : false,
-    tetris_pieces : []
+    isPaused : false
 };
 
 export async function getCurrentGame(dispatch : Function) : Promise<void> {
@@ -153,20 +151,6 @@ export function hasCollided(player : Player, stage : Array<Array<BlockStatus>>, 
     }
 
     return 'none';
-};
-
-export function getTime(currentTime : number | Dispatch<SetStateAction<number>>) : Time {
-    let seconds : number = (currentTime as number) / 1000;
-    let minutes : number = seconds / 60;
-    let hours : number = minutes / 60;
-
-    let gameTime : Time = {
-        seconds : (seconds >= 60) ? Math.floor(seconds - (Math.floor(minutes) * 60)) : Math.floor(seconds),
-        minutes : (minutes >= 60) ? Math.floor(minutes - (Math.floor(hours) * 60)) : Math.floor(minutes),
-        hours : Math.floor(hours)
-    }
-
-    return gameTime;
 };
 
 export function clearBlock() : BlockStatus {return {type : 0, status : 'cleared', chess_piece : chess_pieces['blank_block']};};

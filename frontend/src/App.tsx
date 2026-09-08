@@ -8,8 +8,7 @@ import RulesPage from './pages/rules/RulesPage.tsx';
 import ResultPage from './pages/result/ResultPage.tsx';
 import EditPage from './pages/edit/EditPage.tsx';
 import Login from './pages/login/Login.tsx';
-import Position from './classes/Vector2.ts';
-import { initialGameState, Game_Phase, getTime } from './utilities.ts';
+import { initialGameState, Game_Phase } from './utilities.ts';
 import DataHandler from './classes/DataHandler.ts';
 import { GameState, Action } from './types.ts';
 
@@ -29,16 +28,8 @@ function handleGameState(gameState : GameState, action : Action) : GameState {
             DataHandler.put(action.player, url, action.player.name);
             newGameState.player_name = action.player.name;
             break;
-        case 'UPDATE_TIME':
-            newGameState.finishTime = getTime(newGameState.startTime);
-            break;
         case 'PAUSE':
             newGameState.isPaused = !gameState.isPaused;
-            break;
-        case 'RESET_GAME':
-            newGameState.score = 0;
-            newGameState.startTime = Date.now();
-            newGameState.finishTime = getTime(newGameState.startTime);
             break;
         case 'CHANGE_SCORE':
             if (action.hasScored)

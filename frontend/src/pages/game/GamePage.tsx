@@ -8,7 +8,7 @@ import Navbar from '../../shared_components/Navbar.tsx';
 import Stage from './Stage.tsx';
 import GameInfo from './GameInfo.tsx';
 import Vector2 from '../../classes/Vector2.ts';
-import { createStage, getTime, Game_Phase, hasCollided } from '../../utilities.ts';
+import { createStage, Game_Phase, hasCollided } from '../../utilities.ts';
 import { GameContext } from '../../App.tsx';
 import useGameTime from '../../hooks/useGameTime.tsx';
 
@@ -53,7 +53,7 @@ export default function GamePage() {
     const [player, createPlayer, move, rotatePlayer] = usePlayer(gameState);
     const [stage, setStage] = useStage(player, createPlayer, gameState);
     const [dropInterval, setDropInterval] = useState(0);
-    const [gameTime, _] = useGameTime(gameState.current_phase, 1000);
+    const [getTime] = useGameTime(gameState.current_phase, 1000);
 
     function movePlayer(velocity : Vector2) : void {
         if (hasCollided(player, stage, velocity) === 'none')
@@ -145,7 +145,7 @@ export default function GamePage() {
             <StyledGamePage>
                 <div>
                     <Stage stage={stage} />
-                    <GameInfo gameTime={getTime(gameTime)} />
+                    <GameInfo gameTime={getTime()} />
                     <StyledStartStopButton onClick={(e) => {handlePause(e)}}>{text}
                     </StyledStartStopButton>
                 </div>

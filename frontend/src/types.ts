@@ -123,8 +123,12 @@ export type GameState = {
     current_phase : Game_Phase,
     crossed_finish_line : boolean,
     win_state : WinState,
-    isPaused : boolean,
-    tetris_pieces : Array<number>
+    isPaused : boolean
+};
+
+export type Stage = {
+  size : Vector2,
+  pixel_size : Vector2
 };
 
 export type WinState = {
