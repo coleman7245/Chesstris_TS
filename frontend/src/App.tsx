@@ -48,9 +48,7 @@ function checkGamePhase(gameState : GameState) : Game_Phase {
     if (gameState.isPaused)
         return Game_Phase.PAUSE;
     if (gameState.score <= gameState.win_state.win_score && gameState.crossed_finish_line)
-        return Game_Phase.WIN;
-    else if (gameState.crossed_finish_line)
-        return Game_Phase.LOSE;
+        return Game_Phase.GAME_OVER;
     else
         return Game_Phase.PLAY;
 };
@@ -67,8 +65,7 @@ function App() {
                 <Route path='/rankings' element={<RankingsPage />} />
                 <Route path='/rules' element={<RulesPage />} />
                 <Route path='/about' element={<AboutPage />} />
-                <Route path='/win' element={<ResultPage message='You win!' />} />
-                <Route path='/lose' element={<ResultPage message='You lose!' />} />
+                <Route path='/gameover' element={<ResultPage message='Game Over!' />} />
                 <Route path='/edit' element={<EditPage />} />
             </Routes>
         </GameContext.Provider>

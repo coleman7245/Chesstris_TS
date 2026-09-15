@@ -127,14 +127,10 @@ export default function GamePage() {
     };
 
     useEffect(() => {
-        if (gameState.current_phase === Game_Phase.WIN) {
-            const timeout = setTimeout(() => navigate('/win'), 0);
+        if (gameState.current_phase === Game_Phase.GAME_OVER) {
+            const timeout = setTimeout(() => navigate('/gameover'), 0);
             return () => clearInterval(timeout);
          }
-        else if (gameState.current_phase === Game_Phase.LOSE) {
-            const timeout = setTimeout(() => navigate('/lose'), 0);
-            return () => clearInterval(timeout);
-        }
     }, [gameState.current_phase, navigate]);
 
     useInterval(drop, dropInterval, gameState.current_phase);

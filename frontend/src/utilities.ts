@@ -40,8 +40,7 @@ export function getRandomChessPieces(chessPieceImages : ChessPieces, spaces : Sp
 
 export enum Game_Phase {
     PLAY,
-    LOSE,
-    WIN,
+    GAME_OVER,
     START,
     PAUSE,
     PREGAME
