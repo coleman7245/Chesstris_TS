@@ -7,7 +7,8 @@ import Vector2 from '../classes/Vector2.ts';
 function useStage(player : Player, createPlayer : Function, gameState : GameState) {
     const [stage, setStage] = useState(createStage(gameState.stage_size, gameState.chess_piece_pixel_size));
 
-    function clearBlocks(stage : Array<Array<BlockStatus>>) : void {
+    function clearBlocks(stage : Array<Array<BlockStatus>>) : boolean {
+        let shiftReady : boolean = false;
         let eliminated : boolean = false;
 
         for (let y : number = 0; y < stage.length; y++) {
@@ -24,11 +25,13 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
                     else if (stage[y][x].chess_piece.type === 'king')
                         eliminated = rules.eliminatePawns(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
 
-                    if (eliminated)
-                            stage[y][x] = clearBlock();
+                    shiftReady = shiftReady || eliminated;
+                    eliminated = false;
                 }
             }
         }
+
+        return shiftReady;
     };
 
     function shiftDownBlocks(stage : Array<Array<BlockStatus>>) : void {
@@ -70,8 +73,11 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
 
     function drawStage(prev : Array<Array<BlockStatus>>) {
         const newStage = refreshStage(prev);
-        clearBlocks(newStage);
-        shiftDownBlocks(newStage);
+        let shiftReady : boolean = clearBlocks(newStage);
+
+        if (shiftReady)
+            shiftDownBlocks(newStage);
+        
         drawPlayer(newStage);
 
         if (player.finished)
