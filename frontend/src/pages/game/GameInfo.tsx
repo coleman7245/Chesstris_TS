@@ -1,6 +1,4 @@
-import { useContext } from 'react';
 import { styled } from 'styled-components';
-import { GameContext } from '../../App.tsx';
 import { Time } from '../../types.ts';
 
 const StyledGameInfo = styled.div`
@@ -14,14 +12,12 @@ const StyledGameInfo = styled.div`
     left: -300px;
 `;
 
-export default function GameInfo({gameTime} : {gameTime : Time}) {
-    const [gameState] = useContext(GameContext);
-
+export default function GameInfo({playerName, gameTime, score} : {playerName : string, gameTime : Time, score : number}) {
     return (
         <StyledGameInfo className='gameinfo'>
-            Player: {gameState.player_name} <br />
+            Player: {playerName} <br />
             Time: {gameTime.hours} : {gameTime.minutes} : {gameTime.seconds} <br />
-            Score: {gameState.score}
+            Score: {score}
         </StyledGameInfo>
     )
 };

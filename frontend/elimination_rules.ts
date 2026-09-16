@@ -2,8 +2,8 @@ import { BlockStatus } from "./src/types.ts";
 import Vector2 from "./src/classes/Vector2.ts";
 import { clearBlock } from "./src/utilities.ts";
 
-export function eliminateKnights(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : boolean {
-    let eliminated : boolean = false;
+export function eliminateKnights(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : number {
+    let eliminations : number = 0;
 
     for (let y : number = -2; y <= 2; y++) {
         for (let x : number = -2; x <= 2; x++) {
@@ -13,17 +13,17 @@ export function eliminateKnights(stage : Array<Array<BlockStatus>>, position : V
                     stage[position.y + y][position.x + x].chess_piece.color !== 'none' && 
                     stage[position.y + y][position.x + x].chess_piece.color !== color) {
                         stage[position.y + y][position.x + x] = clearBlock();
-                        eliminated = true;
+                        eliminations++;
                 }
             }
         }
     };
 
-    return eliminated;
+    return eliminations;
 };
 
-export function eliminatePawns(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : boolean {
-    let eliminated : boolean = false;
+export function eliminatePawns(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : number {
+    let eliminations : number = 0;
 
     for (let y : number = -1; y <= 1; y++) {
         for (let x : number = -1; x <= 1; x++) {
@@ -33,17 +33,17 @@ export function eliminatePawns(stage : Array<Array<BlockStatus>>, position : Vec
                     stage[position.y + y][position.x + x].chess_piece.color !== 'none' && 
                     stage[position.y + y][position.x + x].chess_piece.color !== color) {
                         stage[position.y + y][position.x + x] = clearBlock();
-                        eliminated = true;
+                        eliminations++;
                 }
             }
         }
     };
 
-    return eliminated;
+    return eliminations;
 };
 
-export function eliminateBishops(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : boolean {
-    let eliminated : boolean = false;
+export function eliminateBishops(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : number {
+    let eliminations : number = 0;
 
     for (let y : number = -1; y <= 1; y++) {
         for (let x : number = -1; x <= 1; x++) {
@@ -52,18 +52,18 @@ export function eliminateBishops(stage : Array<Array<BlockStatus>>, position : V
                     if (stage[position.y + (y * step)][position.x + (x * step)].chess_piece.color !== color &&
                         stage[position.y + (y * step)][position.x + (x * step)].chess_piece.color !== 'none') {
                         stage[position.y + (y * step)][position.x + (x * step)] = clearBlock();
-                        eliminated = true;
+                        eliminations++;
                     }
                 }
             }
         }
     };
 
-    return eliminated;
+    return eliminations;
 };
 
-export function eliminateRooks(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : boolean {
-    let eliminated : boolean = false;
+export function eliminateRooks(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : number {
+    let eliminations : number = 0;
 
     for (let step : number = -1; step <= 1; step++) {
         if (step !== 0) {
@@ -71,7 +71,7 @@ export function eliminateRooks(stage : Array<Array<BlockStatus>>, position : Vec
                 if (stage[position.y + (y * step)][position.x].chess_piece.color !== color &&
                     stage[position.y + (y * step)][position.x].chess_piece.color !== 'none') {
                     stage[position.y + (y * step)][position.x] = clearBlock();
-                    eliminated = true;
+                    eliminations++;
                 }
             }
 
@@ -79,17 +79,17 @@ export function eliminateRooks(stage : Array<Array<BlockStatus>>, position : Vec
                 if (stage[position.y][position.x + (x * step)].chess_piece.color !== color &&
                     stage[position.y][position.x + (x * step)].chess_piece.color !== 'none') {
                     stage[position.y][position.x + (x * step)] = clearBlock();
-                    eliminated = true;
+                    eliminations++;
                 }
             }
         }
     };
 
-    return eliminated;
+    return eliminations;
 };
 
-export function eliminateQueens(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : boolean {
-    let eliminated : boolean = false;
+export function eliminateQueens(stage : Array<Array<BlockStatus>>, position : Vector2, color : string) : number {
+    let eliminations : number = 0;
 
     for (let step : number = -1; step <= 1; step++) {
         if (step !== 0) {
@@ -97,7 +97,7 @@ export function eliminateQueens(stage : Array<Array<BlockStatus>>, position : Ve
                 if (stage[position.y + (y * step)][position.x].chess_piece.color !== color &&
                     stage[position.y + (y * step)][position.x].chess_piece.color !== 'none') {
                     stage[position.y + (y * step)][position.x] = clearBlock();
-                    eliminated = true;
+                    eliminations++;
                 }
             }
 
@@ -105,7 +105,7 @@ export function eliminateQueens(stage : Array<Array<BlockStatus>>, position : Ve
                 if (stage[position.y][position.x + (x * step)].chess_piece.color !== color && 
                     stage[position.y][position.x + (x * step)].chess_piece.color !== 'none') {
                     stage[position.y][position.x + (x * step)] = clearBlock();
-                    eliminated = true;
+                    eliminations++;
                 }
             }
         }
@@ -118,12 +118,12 @@ export function eliminateQueens(stage : Array<Array<BlockStatus>>, position : Ve
                     if (stage[position.y + (y * step)][position.x + (x * step)].chess_piece.color !== color &&
                         stage[position.y + (y * step)][position.x + (x * step)].chess_piece.color !== 'none') {
                             stage[position.y + (y * step)][position.x + (x * step)] = clearBlock();
-                            eliminated = true;
+                            eliminations++;
                     }
                 }
             }
         }
     };
 
-    return eliminated;
+    return eliminations;
 };

@@ -11,7 +11,7 @@ function createRandomTetrisBlock() : TetrisBlock {
     return TETRIS_BLOCKS[randomKey];
 };
 
-function usePlayer(gameState : GameState) {
+export default function usePlayer(gameState : GameState) {
     const [player, setPlayer] = useState({name : gameState.player_name, email : gameState.email,
         position : new Vector2(Math.floor(gameState.stage_size.x / gameState.chess_piece_pixel_size.x / 2), 0), 
             tetrisBlock : createRandomTetrisBlock(), finished : false});
@@ -57,5 +57,3 @@ function usePlayer(gameState : GameState) {
 
     return [player, createPlayer, move, rotatePlayer] as const;
 };
-
-export default usePlayer 

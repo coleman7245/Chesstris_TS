@@ -4,34 +4,31 @@ import { chess_pieces, createStage, Game_Phase, clearBlock } from '../utilities.
 import * as rules from '../../elimination_rules.ts';
 import Vector2 from '../classes/Vector2.ts';
 
-function useStage(player : Player, createPlayer : Function, gameState : GameState) {
+export default function useStage(player : Player, createPlayer : Function, gameState : GameState) {
     const [stage, setStage] = useState(createStage(gameState.stage_size, gameState.chess_piece_pixel_size));
+    const [blocksCleared, setBlocksCleared] = useState(0);
 
-    function clearBlocks(stage : Array<Array<BlockStatus>>) : boolean {
-        let shiftReady : boolean = false;
-        let eliminated : boolean = false;
+    function clearBlocks(stage : Array<Array<BlockStatus>>) : number {
+        let eliminations : number = 0;
 
         for (let y : number = 0; y < stage.length; y++) {
             for (let x : number = 0; x < stage[y].length; x++) {
                 if (stage[y][x].type !== 0) {
                     if (stage[y][x].chess_piece.type === 'knight')
-                        eliminated = rules.eliminateKnights(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
+                        eliminations += rules.eliminateKnights(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
                     else if (stage[y][x].chess_piece.type === 'pawn')
-                        eliminated = rules.eliminatePawns(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
+                        eliminations += rules.eliminatePawns(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
                     else if (stage[y][x].chess_piece.type === 'bishop')
-                        eliminated = rules.eliminateBishops(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
+                        eliminations += rules.eliminateBishops(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
                     else if (stage[y][x].chess_piece.type === 'rook')
-                        eliminated = rules.eliminateRooks(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
+                        eliminations += rules.eliminateRooks(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
                     else if (stage[y][x].chess_piece.type === 'king')
-                        eliminated = rules.eliminatePawns(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
-
-                    shiftReady = shiftReady || eliminated;
-                    eliminated = false;
+                        eliminations += rules.eliminatePawns(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
                 }
             }
         }
 
-        return shiftReady;
+        return eliminations;
     };
 
     function shiftDownBlocks(stage : Array<Array<BlockStatus>>) : void {
@@ -73,9 +70,10 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
 
     function drawStage(prev : Array<Array<BlockStatus>>) {
         const newStage = refreshStage(prev);
-        let shiftReady : boolean = clearBlocks(newStage);
+        const eliminations : number = clearBlocks(newStage);
+        setBlocksCleared(eliminations);
 
-        if (shiftReady)
+        if (eliminations)
             shiftDownBlocks(newStage);
         
         drawPlayer(newStage);
@@ -91,7 +89,5 @@ function useStage(player : Player, createPlayer : Function, gameState : GameStat
             setStage(prev => drawStage(prev));
     }, [player, createPlayer]);
 
-    return [stage, setStage] as const;
+    return [stage, setStage, blocksCleared] as const;
 };
-
-export default useStage;

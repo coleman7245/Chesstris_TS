@@ -51,13 +51,18 @@ export default function GamePage() {
     const [gameState, dispatch] = useContext(GameContext);
     const navigate : Function = useNavigate();
     const [player, createPlayer, move, rotatePlayer] = usePlayer(gameState);
-    const [stage, setStage] = useStage(player, createPlayer, gameState);
+    const [stage, setStage, blocksCleared] = useStage(player, createPlayer, gameState);
     const [dropInterval, setDropInterval] = useState(0);
     const [getTime] = useGameTime(gameState.current_phase, 1000);
+    const [score, setScore] = useState(0);
 
     function movePlayer(velocity : Vector2) : void {
         if (hasCollided(player, stage, velocity) === 'none')
             move(velocity, false);
+    };
+
+    function addScore(score : number) {
+        setScore(prev => prev + score);
     };
 
     function startDrop() {
@@ -133,6 +138,10 @@ export default function GamePage() {
          }
     }, [gameState.current_phase, navigate]);
 
+    useEffect(() => {
+        addScore(blocksCleared);
+    }, [blocksCleared]);
+
     useInterval(drop, dropInterval, gameState.current_phase);
 
     return (
@@ -141,7 +150,7 @@ export default function GamePage() {
             <StyledGamePage>
                 <div>
                     <Stage stage={stage} />
-                    <GameInfo gameTime={getTime()} />
+                    <GameInfo playerName={gameState.player_name} score={score} gameTime={getTime()} />
                     <StyledStartStopButton onClick={(e) => {handlePause(e)}}>{text}
                     </StyledStartStopButton>
                 </div>
