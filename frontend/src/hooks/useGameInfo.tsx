@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function useGameState(blocksCleared : number) {
+export default function useGameInfo(blocksCleared : number) {
     const [score, setScore] = useState(0);
     // const [level, setLevel] = useState(1);
 

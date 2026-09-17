@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import usePlayer from '../../hooks/usePlayer.tsx';
 import useStage from '../../hooks/useStage.tsx';
 import useInterval from '../../hooks/useInterval.tsx';
-import useGameState from '../../hooks/useGameState.tsx';
+import useGameState from '../../hooks/useGameInfo.tsx';
 import Navbar from '../../shared_components/Navbar.tsx';
 import Stage from './Stage.tsx';
 import GameInfo from './GameInfo.tsx';
