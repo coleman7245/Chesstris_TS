@@ -10,6 +10,7 @@ export default function useStage(player : Player, createPlayer : Function, gameS
 
     function clearBlocks(stage : Array<Array<BlockStatus>>) : number {
         let eliminations : number = 0;
+        let totalEliminations : number = 0;
 
         for (let y : number = 0; y < stage.length; y++) {
             for (let x : number = 0; x < stage[y].length; x++) {
@@ -24,11 +25,17 @@ export default function useStage(player : Player, createPlayer : Function, gameS
                         eliminations += rules.eliminateRooks(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
                     else if (stage[y][x].chess_piece.type === 'king')
                         eliminations += rules.eliminatePawns(stage, new Vector2(x, y), stage[y][x].chess_piece.color);
+
+                    if (eliminations) {
+                        stage[y][x] = clearBlock();
+                        totalEliminations += eliminations;
+                        eliminations = 0;
+                    }
                 }
             }
         }
 
-        return eliminations;
+        return totalEliminations;
     };
 
     function shiftDownBlocks(stage : Array<Array<BlockStatus>>) : void {

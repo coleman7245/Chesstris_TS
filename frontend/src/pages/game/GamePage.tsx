@@ -4,6 +4,7 @@ import { styled } from 'styled-components';
 import usePlayer from '../../hooks/usePlayer.tsx';
 import useStage from '../../hooks/useStage.tsx';
 import useInterval from '../../hooks/useInterval.tsx';
+import useGameState from '../../hooks/useGameState.tsx';
 import Navbar from '../../shared_components/Navbar.tsx';
 import Stage from './Stage.tsx';
 import GameInfo from './GameInfo.tsx';
@@ -54,15 +55,11 @@ export default function GamePage() {
     const [stage, setStage, blocksCleared] = useStage(player, createPlayer, gameState);
     const [dropInterval, setDropInterval] = useState(0);
     const [getTime] = useGameTime(gameState.current_phase, 1000);
-    const [score, setScore] = useState(0);
+    const [score] = useGameState(blocksCleared);
 
     function movePlayer(velocity : Vector2) : void {
         if (hasCollided(player, stage, velocity) === 'none')
             move(velocity, false);
-    };
-
-    function addScore(score : number) {
-        setScore(prev => prev + score);
     };
 
     function startDrop() {
@@ -137,10 +134,6 @@ export default function GamePage() {
             return () => clearInterval(timeout);
          }
     }, [gameState.current_phase, navigate]);
-
-    useEffect(() => {
-        addScore(blocksCleared);
-    }, [blocksCleared]);
 
     useInterval(drop, dropInterval, gameState.current_phase);
 
