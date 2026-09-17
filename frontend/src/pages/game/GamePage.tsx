@@ -55,7 +55,7 @@ export default function GamePage() {
     const [stage, setStage, blocksCleared] = useStage(player, createPlayer, gameState);
     const [dropInterval, setDropInterval] = useState(0);
     const [getTime] = useGameTime(gameState.current_phase, 1000);
-    const [score] = useGameState(blocksCleared);
+    const [score, level] = useGameState(blocksCleared);
 
     function movePlayer(velocity : Vector2) : void {
         if (hasCollided(player, stage, velocity) === 'none')
@@ -63,7 +63,7 @@ export default function GamePage() {
     };
 
     function startDrop() {
-        setDropInterval(1000);
+        setDropInterval(1000 / level);
     }
 
     function dropPlayer() {
