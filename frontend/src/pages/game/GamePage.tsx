@@ -4,14 +4,13 @@ import { styled } from 'styled-components';
 import usePlayer from '../../hooks/usePlayer.tsx';
 import useStage from '../../hooks/useStage.tsx';
 import useInterval from '../../hooks/useInterval.tsx';
-import useGameState from '../../hooks/useGameInfo.tsx';
+import useGameInfo from '../../hooks/useGameInfo.tsx';
 import Navbar from '../../shared_components/Navbar.tsx';
 import Stage from './Stage.tsx';
 import GameInfo from './GameInfo.tsx';
 import Vector2 from '../../classes/Vector2.ts';
 import { createStage, Game_Phase, hasCollided } from '../../utilities.ts';
 import { GameContext } from '../../App.tsx';
-import useGameTime from '../../hooks/useGameTime.tsx';
 
 const StyledGamePage = styled.div`
     font: 8em 'Georgia';
@@ -54,8 +53,7 @@ export default function GamePage() {
     const [player, createPlayer, move, rotatePlayer] = usePlayer(gameState);
     const [stage, setStage, blocksCleared] = useStage(player, createPlayer, gameState);
     const [dropInterval, setDropInterval] = useState(0);
-    const [getTime] = useGameTime(gameState.current_phase, 1000);
-    const [score, level] = useGameState(blocksCleared);
+    const [score, level, getTime] = useGameInfo(blocksCleared, gameState.current_phase, 1000);
 
     function movePlayer(velocity : Vector2) : void {
         if (hasCollided(player, stage, velocity) === 'none')
