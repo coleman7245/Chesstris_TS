@@ -34,17 +34,6 @@ export default function useGameInfo(blocksCleared : number, delay : number, game
     }, [gameState]);
 
     useEffect(() => {
-        function uptick() : void {
-            setGameTime(prev => prev += 1000);
-        }
-
-        if (gameState === GameState.PLAY) {
-            const id = setInterval(uptick, delay);
-            return () => clearInterval(id);
-        }
-    }, [gameState]);
-
-    useEffect(() => {
         function increaseLevel() : void {
             setLevel(prev => prev + 1);
         };
