@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Time } from '../types.ts';
 import { GameState } from '../utilities.ts';
 
-// export default function useGameInfo(blocksCleared : number, gamePhase : Game_Phase, delay : number) {
+// export default function useGameInfo(blocksCleared : number, gameState : GameState, delay : number) {
 export default function useGameInfo(blocksCleared : number, delay : number, gameState : GameState) {
     const [score, setScore] = useState(0);
     const [level, setLevel] = useState(1);
@@ -21,6 +21,17 @@ export default function useGameInfo(blocksCleared : number, delay : number, game
         
         return displayTime;
     };
+
+    useEffect(() => {
+        function uptick() : void {
+            setGameTime(prev => prev += 1000);
+        }
+
+        if (gameState === GameState.PLAY) {
+            const id = setInterval(uptick, delay);
+            return () => clearInterval(id);
+        }
+    }, [gameState]);
 
     useEffect(() => {
         function uptick() : void {
