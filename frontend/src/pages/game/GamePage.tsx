@@ -1,4 +1,5 @@
-import { useState, useEffect, useContext } from 'react';
+// import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import usePlayer from '../../hooks/usePlayer.tsx';
@@ -9,8 +10,9 @@ import Navbar from '../../shared_components/Navbar.tsx';
 import Stage from './Stage.tsx';
 import GameInfo from './GameInfo.tsx';
 import Vector2 from '../../classes/Vector2.ts';
-import { createStage, Game_Phase, hasCollided } from '../../utilities.ts';
-import { GameContext } from '../../App.tsx';
+import { StageInfo } from '../../types.ts';
+import { createStage, GameState, hasCollided } from '../../utilities.ts';
+// import { GameContext } from '../../App.tsx';
 
 const StyledGamePage = styled.div`
     font: 8em 'Georgia';
@@ -48,12 +50,28 @@ const StyledStartStopButton = styled.button`
 
 export default function GamePage() {
     const [text, setText] = useState('Start');
-    const [gameState, dispatch] = useContext(GameContext);
+    const stageInfo : StageInfo = {size : new Vector2(285, 540), pixel_size : new Vector2(30, 30)};
+    const defaultPosition = new Vector2(Math.floor(stageInfo.size.x / stageInfo.pixel_size.x / 2), 0);
+    // const [gameState, dispatch] = useContext(GameContext);
     const navigate : Function = useNavigate();
-    const [player, createPlayer, move, rotatePlayer] = usePlayer(gameState);
-    const [stage, setStage, blocksCleared] = useStage(player, createPlayer, gameState);
+    const [gameState, setGameState] = useState(GameState.PREGAME);
+    const [player, createPlayer, move, rotatePlayer] = usePlayer('', '', defaultPosition);
+    const [stage, setStage, blocksCleared] = useStage(player, createPlayer, stageInfo, gameState);
     const [dropInterval, setDropInterval] = useState(0);
-    const [score, level, getTime] = useGameInfo(blocksCleared, gameState.current_phase, 1000);
+    const [score, level, getTime] = useGameInfo(blocksCleared, 1000, gameState);
+
+    function checkGameState(gameState : GameState) : void {
+        let newState : GameState = gameState;
+
+        if (text === 'Pause')
+            newState = GameState.PLAY;
+        else if (hasCollided(player, stage, new Vector2(0, 1)) !== 'none' && player.position.equals(defaultPosition))
+            newState = GameState.GAME_OVER;
+        else if (text === 'Resume')
+            newState = GameState.PAUSE;
+
+        setGameState(newState);
+    };
 
     function movePlayer(velocity : Vector2) : void {
         if (hasCollided(player, stage, velocity) === 'none')
@@ -79,23 +97,40 @@ export default function GamePage() {
             move(Vector2.zero(), true);
     };
 
+    // function handlePause(e : React.MouseEvent) {
+    //     e.preventDefault();
+
+    //     if (gameState.current_phase === Game_Phase.PREGAME) {
+    //         initializeGame();
+    //         setText('Pause');
+    //         dispatch('START');
+    //     }
+    //     else if (gameState.current_phase === Game_Phase.PAUSE) {
+    //         setText('Pause');
+    //         setDropInterval(1000);
+    //         dispatch({type: 'PAUSE'});
+    //     }
+    //     else if (gameState.current_phase === Game_Phase.PLAY) {
+    //         setText('Resume');
+    //         setDropInterval(0);
+    //         dispatch({type : 'PAUSE'});
+    //     }
+    // }
+
     function handlePause(e : React.MouseEvent) {
         e.preventDefault();
 
-        if (gameState.current_phase === Game_Phase.PREGAME) {
+        if (gameState === GameState.PREGAME) {
             initializeGame();
             setText('Pause');
-            dispatch('START');
         }
-        else if (gameState.current_phase === Game_Phase.PAUSE) {
+        else if (gameState === GameState.PAUSE) {
             setText('Pause');
             setDropInterval(1000);
-            dispatch({type: 'PAUSE'});
         }
-        else if (gameState.current_phase === Game_Phase.PLAY) {
+        else if (gameState === GameState.PLAY) {
             setText('Resume');
             setDropInterval(0);
-            dispatch({type : 'PAUSE'});
         }
     }
 
@@ -120,30 +155,46 @@ export default function GamePage() {
         }
     };
 
+    // function initializeGame() {
+    //     setStage(createStage(gameState.stage_size, gameState.chess_piece_pixel_size));
+    //     createPlayer();
+    //     setDropInterval(1000);
+    // };
+
     function initializeGame() {
-        setStage(createStage(gameState.stage_size, gameState.chess_piece_pixel_size));
+        setStage(createStage(stageInfo.size, stageInfo.pixel_size));
         createPlayer();
         setDropInterval(1000);
     };
 
+    // useEffect(() => {
+    //     if (gameState.current_phase === Game_Phase.GAME_OVER) {
+    //         const timeout = setTimeout(() => navigate('/gameover'), 0);
+    //         return () => clearInterval(timeout);
+    //      }
+    // }, [gameState.current_phase, navigate]);
+
     useEffect(() => {
-        if (gameState.current_phase === Game_Phase.GAME_OVER) {
+        checkGameState(gameState);
+    }, [handlePause, useInterval]);
+
+    useEffect(() => {
+        if (gameState === GameState.GAME_OVER) {
             const timeout = setTimeout(() => navigate('/gameover'), 0);
             return () => clearInterval(timeout);
          }
-    }, [gameState.current_phase, navigate]);
+    }, [gameState, navigate]);
 
-    useInterval(drop, dropInterval, gameState.current_phase);
+    useInterval(drop, dropInterval, gameState);
 
     return (
         <div onKeyDown={e => handleInput(e)} onKeyUp={startDrop}>
-            <Navbar />
+            <Navbar name={''} />
             <StyledGamePage>
                 <div>
-                    <Stage stage={stage} />
-                    <GameInfo playerName={gameState.player_name} score={score} gameTime={getTime()} />
-                    <StyledStartStopButton onClick={(e) => {handlePause(e)}}>{text}
-                    </StyledStartStopButton>
+                    <Stage stageInfo={stageInfo} stage={stage} />
+                    <GameInfo playerName={''} score={score} gameTime={getTime()} />
+                    <StyledStartStopButton onClick={(e) => {handlePause(e)}}>{text}</StyledStartStopButton>
                 </div>
             </StyledGamePage>
         </div>

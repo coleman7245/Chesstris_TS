@@ -1,19 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Time } from '../types.ts';
-import { Game_Phase } from '../utilities.ts';
+import { GameState } from '../utilities.ts';
 
-export default function useGameInfo(blocksCleared : number, gamePhase : Game_Phase, delay : number) {
+// export default function useGameInfo(blocksCleared : number, gamePhase : Game_Phase, delay : number) {
+export default function useGameInfo(blocksCleared : number, delay : number, gameState : GameState) {
     const [score, setScore] = useState(0);
     const [level, setLevel] = useState(1);
     const [gameTime, setGameTime] = useState(0);
-
-    function addScore(score : number) : void {
-        setScore(prev => prev + (level * score));
-    };
-
-    function increaseLevel() : void {
-        setLevel(prev => prev + 1);
-    };
 
     function getTime() : Time {
         let seconds : number = (gameTime as number) / 1000;
@@ -34,18 +27,26 @@ export default function useGameInfo(blocksCleared : number, gamePhase : Game_Pha
             setGameTime(prev => prev += 1000);
         }
 
-        if (gamePhase === Game_Phase.PLAY) {
+        if (gameState === GameState.PLAY) {
             const id = setInterval(uptick, delay);
             return () => clearInterval(id);
         }
-    }, [gamePhase]);
+    }, [gameState]);
 
     useEffect(() => {
+        function increaseLevel() : void {
+            setLevel(prev => prev + 1);
+        };
+
         if (score >= (level * 5000))
             increaseLevel();
     }, [score]);
 
     useEffect(() => {
+        function addScore(score : number) : void {
+            setScore(prev => prev + (level * score));
+        };
+
         addScore(blocksCleared);
     }, [blocksCleared]);
 

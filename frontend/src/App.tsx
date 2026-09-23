@@ -8,56 +8,56 @@ import RulesPage from './pages/rules/RulesPage.tsx';
 import ResultPage from './pages/result/ResultPage.tsx';
 import EditPage from './pages/edit/EditPage.tsx';
 import Login from './pages/login/Login.tsx';
-import { initialGameState, Game_Phase } from './utilities.ts';
-import DataHandler from './classes/DataHandler.ts';
-import { GameState, Action } from './types.ts';
+// import { initialGameState, Game_Phase } from './utilities.ts';
+// import DataHandler from './classes/DataHandler.ts';
+// import { GameState, Action } from './types.ts';
 
 const GameContext : React.Context<any> = createContext({});
 
-function handleGameState(gameState : GameState, action : Action) : GameState {
-    let newGameState : GameState = {...gameState};
-    let url : string = '';
+// function handleGameState(gameState : GameState, action : Action) : GameState {
+//     let newGameState : GameState = {...gameState};
+//     let url : string = '';
 
-    switch (action.type) {
-        case 'ADD_NEW_PLAYER':
-            DataHandler.post(action.player, url);
-            newGameState.player_name = action.player.name;
-            newGameState.startTime = Date.now();
-            break;
-        case 'EDIT_INPUT':
-            DataHandler.put(action.player, url, action.player.name);
-            newGameState.player_name = action.player.name;
-            break;
-        case 'PAUSE':
-            newGameState.isPaused = !gameState.isPaused;
-            break;
-        case 'CHANGE_SCORE':
-            if (action.hasScored)
-                newGameState.score += 1;
-            newGameState.crossed_finish_line = action.crossedFinishLine;
-            break;
-        default:
-            break;
-    }
+//     switch (action.type) {
+//         case 'ADD_NEW_PLAYER':
+//             DataHandler.post(action.player, url);
+//             newGameState.player_name = action.player.name;
+//             newGameState.startTime = Date.now();
+//             break;
+//         case 'EDIT_INPUT':
+//             DataHandler.put(action.player, url, action.player.name);
+//             newGameState.player_name = action.player.name;
+//             break;
+//         case 'PAUSE':
+//             newGameState.isPaused = !gameState.isPaused;
+//             break;
+//         case 'CHANGE_SCORE':
+//             if (action.hasScored)
+//                 newGameState.score += 1;
+//             newGameState.crossed_finish_line = action.crossedFinishLine;
+//             break;
+//         default:
+//             break;
+//     }
 
-    newGameState.current_phase = checkGamePhase(newGameState);
-    return newGameState;
-}
+//     newGameState.current_phase = checkGamePhase(newGameState);
+//     return newGameState;
+// }
 
-function checkGamePhase(gameState : GameState) : Game_Phase {
-    if (gameState.isPaused)
-        return Game_Phase.PAUSE;
-    if (gameState.score <= gameState.win_state.win_score && gameState.crossed_finish_line)
-        return Game_Phase.GAME_OVER;
-    else
-        return Game_Phase.PLAY;
-};
+// function checkGamePhase(gameState : GameState) : Game_Phase {
+//     if (gameState.isPaused)
+//         return Game_Phase.PAUSE;
+//     if (gameState.score <= gameState.win_state.win_score && gameState.crossed_finish_line)
+//         return Game_Phase.GAME_OVER;
+//     else
+//         return Game_Phase.PLAY;
+// };
 
 function App() {
-    const [gameState, dispatch] = useReducer(handleGameState, initialGameState);
+    // const [gameState, dispatch] = useReducer(handleGameState, initialGameState);
 
     return (
-        <GameContext.Provider value={[gameState, dispatch]}>
+        // <GameContext.Provider value={[gameState, dispatch]}>
             <Routes>
                 <Route path='/' element={<HomePage />} />
                 <Route path='/login' element={<Login />} />
@@ -68,7 +68,7 @@ function App() {
                 <Route path='/gameover' element={<ResultPage message='Game Over!' />} />
                 <Route path='/edit' element={<EditPage />} />
             </Routes>
-        </GameContext.Provider>
+        // </GameContext.Provider>
     )
 }
 

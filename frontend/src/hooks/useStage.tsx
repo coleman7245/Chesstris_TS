@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Player, GameState, BlockStatus } from '../types.ts';
-import { chess_pieces, createStage, Game_Phase, clearBlock } from '../utilities.ts';
+import { Player, BlockStatus, StageInfo } from '../types.ts';
+// import { chess_pieces, createStage, Game_Phase, clearBlock } from '../utilities.ts';
+import { chess_pieces, createStage, GameState, clearBlock } from '../utilities.ts';
 import * as rules from '../../elimination_rules.ts';
 import Vector2 from '../classes/Vector2.ts';
 
-export default function useStage(player : Player, createPlayer : Function, gameState : GameState) {
-    const [stage, setStage] = useState(createStage(gameState.stage_size, gameState.chess_piece_pixel_size));
+// export default function useStage(player : Player, createPlayer : Function, stageInfo : StageInfo, gamePhase : Game_Phase) {
+export default function useStage(player : Player, createPlayer : Function, stageInfo : StageInfo, gameState : GameState) {
+    const [stage, setStage] = useState(createStage(stageInfo.size, stageInfo.pixel_size));
     const [blocksCleared, setBlocksCleared] = useState(0);
 
     function clearBlocks(stage : Array<Array<BlockStatus>>) : number {
@@ -92,9 +94,9 @@ export default function useStage(player : Player, createPlayer : Function, gameS
     };
 
     useEffect(() => {
-        if (gameState.current_phase === Game_Phase.PLAY)
+        if (gameState === GameState.PLAY)
             setStage(prev => drawStage(prev));
-    }, [player, createPlayer]);
+    }, [player, createPlayer, gameState]);
 
     return [stage, setStage, blocksCleared] as const;
 };

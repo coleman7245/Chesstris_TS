@@ -1,5 +1,5 @@
 import Vector2 from "./classes/Vector2.ts";
-import { Game_Phase } from "./utilities.ts";
+// import { Game_Phase } from "./utilities.ts";
 
 export type PositionLimit = {
   minX : number, 
@@ -112,21 +112,21 @@ export type DefaultGroupPositions = {
     line : Array<Vector2>
 };
 
-export type GameState = {
-    player_name : string,
-    email : string, 
-    startTime : number,
-    finishTime : Time, 
-    score : number,
-    chess_piece_pixel_size : Vector2,
-    stage_size : Vector2,
-    current_phase : Game_Phase,
-    crossed_finish_line : boolean,
-    win_state : WinState,
-    isPaused : boolean
-};
+// export type GameState = {
+//     player_name : string,
+//     email : string, 
+//     startTime : number,
+//     finishTime : Time, 
+//     score : number,
+//     chess_piece_pixel_size : Vector2,
+//     stage_size : Vector2,
+//     current_phase : Game_Phase,
+//     crossed_finish_line : boolean,
+//     win_state : WinState,
+//     isPaused : boolean
+// };
 
-export type Stage = {
+export type StageInfo = {
   size : Vector2,
   pixel_size : Vector2
 };

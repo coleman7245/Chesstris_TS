@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { GameContext } from '../App.tsx';
 
 const StyledNavBar = styled.div`
     background-color: white;
@@ -29,9 +28,7 @@ const StyledLink = styled(Link)`
     }
 `;
 
-export default function Navbar() {
-    const [gameState] = useContext(GameContext);
-
+export default function Navbar({name} : {name : string}) {
     return (
         <StyledNavBar>
             <StyledLink to='/'>Home</StyledLink>
@@ -40,8 +37,8 @@ export default function Navbar() {
             <StyledLink to='/edit'>Edit</StyledLink>
             <StyledLink to='/rules'>Rules</StyledLink>
             <StyledLink to='/about'>About</StyledLink>
-            {gameState.player_name ?
-                <StyledPlayerLogin>Player: {gameState.player_name} logged in</StyledPlayerLogin>
+            {name ?
+                <StyledPlayerLogin>Player: {name} logged in</StyledPlayerLogin>
                 :
                 <StyledPlayerLogin><StyledLink to='/login'>Sign In</StyledLink></StyledPlayerLogin>}
         </StyledNavBar>

@@ -1,5 +1,6 @@
 import Vector2 from './classes/Vector2.ts';
-import { BlockStatus, ChessPieces, ChessPiece, GameState, Player, Spaces } from './types.ts';
+// import { BlockStatus, ChessPieces, ChessPiece, GameState, Player, Spaces } from './types.ts';
+import { BlockStatus, ChessPieces, ChessPiece, Player, Spaces } from './types.ts';
 
 export function copyBlockStatusMatrix(matrix : Array<Array<BlockStatus>>) : Array<Array<BlockStatus>> {return matrix.map((row) => row.map(col => col));};
 
@@ -38,7 +39,7 @@ export function getRandomChessPieces(chessPieceImages : ChessPieces, spaces : Sp
     return source_images;
 };
 
-export enum Game_Phase {
+export enum GameState {
     PLAY,
     GAME_OVER,
     START,
@@ -46,22 +47,22 @@ export enum Game_Phase {
     PREGAME
 };
 
-export const initialGameState : GameState = {
-    player_name : '',
-    email : '', 
-    startTime : Date.now(),
-    finishTime : {hours : 0, minutes: 0, seconds: 0}, 
-    score : 0,
-    chess_piece_pixel_size : new Vector2(30, 30),
-    stage_size : new Vector2(285, 540),
-    current_phase : Game_Phase.PREGAME,
-    crossed_finish_line : false,
-    win_state : {
-        win_pos_y : 480,
-        win_score : 18
-    },
-    isPaused : false
-};
+// export const initialGameState : GameState = {
+//     player_name : '',
+//     email : '', 
+//     startTime : Date.now(),
+//     finishTime : {hours : 0, minutes: 0, seconds: 0}, 
+//     score : 0,
+//     chess_piece_pixel_size : new Vector2(30, 30),
+//     stage_size : new Vector2(285, 540),
+//     current_phase : Game_Phase.PREGAME,
+//     crossed_finish_line : false,
+//     win_state : {
+//         win_pos_y : 480,
+//         win_score : 18
+//     },
+//     isPaused : false
+// };
 
 export async function getCurrentGame(dispatch : Function) : Promise<void> {
     try {

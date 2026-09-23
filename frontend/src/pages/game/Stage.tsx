@@ -1,9 +1,8 @@
-import { useContext } from 'react';
+// import { useContext } from 'react';
 import { styled } from 'styled-components';
-
-import { GameContext } from '../../App.tsx';
+// import { GameContext } from '../../App.tsx';
 import Block from './Block.tsx';
-import { BlockStatus } from '../../types.ts';
+import { BlockStatus, StageInfo } from '../../types.ts';
 import Vector2 from '../../classes/Vector2.ts';
 
 const StyledStage = styled.div<{$blockSize : Vector2, height : number, width : number}>`
@@ -21,11 +20,11 @@ const StyledStage = styled.div<{$blockSize : Vector2, height : number, width : n
     margin-left: 5%;
 `;
 
-export default function Stage({stage} : {stage : Array<Array<BlockStatus>>}) {
-    const [gameState] = useContext(GameContext);
+export default function Stage({stage, stageInfo} : {stage : Array<Array<BlockStatus>>, stageInfo : StageInfo}) {
+    // const [gameState] = useContext(GameContext);
 
     return (
-        <StyledStage $blockSize={gameState.chess_piece_pixel_size} height={gameState.stage_size.y} width={gameState.stage_size.x}>
+        <StyledStage $blockSize={stageInfo.pixel_size} height={stageInfo.size.y} width={stageInfo.size.x}>
             {stage.map((row) => row.map((block, x) => <Block key={x} type={block['type']} 
                 image_url={block['chess_piece']['image_url']} />))}
         </StyledStage>

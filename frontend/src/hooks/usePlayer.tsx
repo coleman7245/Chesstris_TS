@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import TETRIS_BLOCKS from '../tetrisblocks.ts';
-import { TetrisBlocks, TetrisBlock, GameState, Player, BlockStatus } from '../types.ts';
+import { TetrisBlocks, TetrisBlock, Player, BlockStatus } from '../types.ts';
 import Vector2 from '../classes/Vector2.ts';
 import { copyTetrisBlockShape, hasCollided } from '../utilities.ts';
 
@@ -11,14 +11,12 @@ function createRandomTetrisBlock() : TetrisBlock {
     return TETRIS_BLOCKS[randomKey];
 };
 
-export default function usePlayer(gameState : GameState) {
-    const [player, setPlayer] = useState({name : gameState.player_name, email : gameState.email,
-        position : new Vector2(Math.floor(gameState.stage_size.x / gameState.chess_piece_pixel_size.x / 2), 0), 
-            tetrisBlock : createRandomTetrisBlock(), finished : false});
+export default function usePlayer(name : string, email : string, defaultPosition : Vector2) {
+    const [player, setPlayer] = useState({name : name, email : email,
+        position : defaultPosition, tetrisBlock : createRandomTetrisBlock(), finished : false});
 
-    const createPlayer = useCallback(() => setPlayer({name : gameState.player_name, email : gameState.email,
-        position : new Vector2(Math.floor(gameState.stage_size.x / gameState.chess_piece_pixel_size.x / 2), 0), 
-            tetrisBlock : createRandomTetrisBlock(), finished : false}), []);
+    const createPlayer = useCallback(() => setPlayer({name : name, email : email,
+        position : defaultPosition, tetrisBlock : createRandomTetrisBlock(), finished : false}), []);
 
     function move(velocity : Vector2, finished : boolean) {
         setPlayer({name : player.name, email : player.email, position : player.position.add(velocity), 

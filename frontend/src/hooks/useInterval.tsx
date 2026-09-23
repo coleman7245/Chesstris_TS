@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { Game_Phase } from '../utilities.ts';
+import { GameState } from '../utilities.ts';
 
-export default function useInterval(callback : () => void, delay : number, gamePhase : Game_Phase) {
+export default function useInterval(callback : () => void, delay : number, gameState : GameState) {
     const fnc = useRef(() => {});
 
     useEffect(() => {
@@ -13,9 +13,9 @@ export default function useInterval(callback : () => void, delay : number, gameP
             fnc.current();
         };
 
-        if (gamePhase === Game_Phase.PLAY && delay !== 0) {
+        if (gameState === GameState.PLAY && delay !== 0) {
             const id = setInterval(countdown, delay);
             return () => clearInterval(id);
         }
-    }, [delay]);
+    }, [delay, gameState]);
 };
