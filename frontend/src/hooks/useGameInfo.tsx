@@ -38,7 +38,7 @@ export default function useGameInfo(blocksCleared : number, delay : number, game
             setLevel(prev => prev + 1);
         };
 
-        if (score >= (level * 5000))
+        if (score >= (level * 5000) && gameState === GameState.PLAY)
             increaseLevel();
     }, [score]);
 
@@ -47,7 +47,8 @@ export default function useGameInfo(blocksCleared : number, delay : number, game
             setScore(prev => prev + (level * score));
         };
 
-        addScore(blocksCleared);
+        if (gameState === GameState.PLAY)
+            addScore(blocksCleared);
     }, [blocksCleared]);
 
     return [score, level, getTime] as const;

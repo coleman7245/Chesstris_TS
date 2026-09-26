@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect, useRef } from 'react';
 import { styled } from 'styled-components';
-import { GameContext } from '../App.tsx';
+import { UserInfoContext } from '../App.tsx';
 import { Player } from '../types.ts';
 
 const StyledForm = styled.form`
@@ -32,7 +32,7 @@ const StyledButton = styled.button`
 
 export default function Form() {
     const textRef = useRef<HTMLFormElement>(null);
-    const [dispatch] = useContext(GameContext);
+    const [dispatch] = useContext(UserInfoContext);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [nameTaken, setNameTaken] = useState(false);

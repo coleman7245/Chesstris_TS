@@ -1,5 +1,6 @@
 // import { useState, useEffect, useContext } from 'react';
 import { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import usePlayer from '../../hooks/usePlayer.tsx';
@@ -63,10 +64,12 @@ export default function GamePage() {
     function checkGameState(gameState : GameState) : void {
         let newState : GameState = gameState;
 
-        if (text === 'Pause')
-            newState = GameState.PLAY;
-        else if (hasCollided(player, stage, new Vector2(0, 1)) !== 'none' && player.position.equals(defaultPosition))
+        if (hasCollided(player, stage, new Vector2(0, 1)) === 'bottom' && player.position.equals(defaultPosition)) {
             newState = GameState.GAME_OVER;
+            console.log(newState);
+        }
+        else if (text === 'Pause')
+            newState = GameState.PLAY;
         else if (text === 'Resume')
             newState = GameState.PAUSE;
 
@@ -175,8 +178,9 @@ export default function GamePage() {
     // }, [gameState.current_phase, navigate]);
 
     useEffect(() => {
+        console.log(hasCollided(player, stage, new Vector2(0, 1)), player.position);
         checkGameState(gameState);
-    }, [handlePause, useInterval]);
+    }, [handlePause, useInterval, drop]);
 
     useEffect(() => {
         if (gameState === GameState.GAME_OVER) {
@@ -191,11 +195,9 @@ export default function GamePage() {
         <div onKeyDown={e => handleInput(e)} onKeyUp={startDrop}>
             <Navbar name={''} />
             <StyledGamePage>
-                <div>
                     <Stage stageInfo={stageInfo} stage={stage} />
                     <GameInfo playerName={''} score={score} gameTime={getTime()} />
                     <StyledStartStopButton onClick={(e) => {handlePause(e)}}>{text}</StyledStartStopButton>
-                </div>
             </StyledGamePage>
         </div>
     );

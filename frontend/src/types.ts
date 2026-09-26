@@ -62,6 +62,12 @@ export type Player = {
   finished : boolean
 };
 
+export type UserInfo = {
+  name : string,
+  email : string,
+  score : string
+};
+
 export type ChessPieces = {
     'black_bishop': ChessPiece,
     'black_king' : ChessPiece,

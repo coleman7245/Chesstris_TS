@@ -1,7 +1,8 @@
-import { useContext } from 'react';
+// import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { GameContext } from '../../App.tsx';
+// import { GameContext } from '../../App.tsx';
+import { Time } from '../../types.ts'; 
 
 const StyledContinueBox = styled.div`
     font: 50px 'Georgia';
@@ -33,16 +34,16 @@ const StyledButton = styled.button`
     }
 `;
 
-export default function ContinueBox({message} : {message : string}) {
+export default function ContinueBox({name, time, score, message} : {name : string, time : Time, score : number, message : string}) {
     const navigate = useNavigate();
-    const [gameState, dispatch] = useContext(GameContext);
+    // const [gameState, dispatch] = useContext(GameContext);
 
     function handleContinue(e : React.MouseEvent<HTMLButtonElement, MouseEvent>) : void {
         const button : HTMLElement = e.target as HTMLElement;
 
         if (button.innerText === 'Yes') {
             //NOTE: Save player data here!!!
-            dispatch({type: 'RESET_GAME'});
+            // dispatch({type: 'RESET_GAME'});
             navigate('/game');
         }
         else if (button.innerText === 'No')
@@ -52,9 +53,9 @@ export default function ContinueBox({message} : {message : string}) {
     return (
         <StyledContinueBox>
             {message} <br /> <br />
-            Player: {gameState.player_name} <br />
-            Time: {gameState.finishTime.hours} : {gameState.finishTime.minutes} : {gameState.finishTime.seconds} <br />
-            Score: {gameState.score} <br /> <br />
+            Player: {name} <br />
+            Time: {time.hours} : {time.minutes} : {time.seconds} <br />
+            Score: {score} <br /> <br />
             Continue? <br />
             <StyledButton id='yes' onClick={(e) => {
                 const event : React.MouseEvent<HTMLButtonElement, MouseEvent> = e as React.MouseEvent<HTMLButtonElement, MouseEvent>;

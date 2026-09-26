@@ -6,13 +6,17 @@ import RankingsPage from './pages/rankings/RankingsPage.tsx';
 import AboutPage from './pages/about/AboutPage.tsx';
 import RulesPage from './pages/rules/RulesPage.tsx';
 import ResultPage from './pages/result/ResultPage.tsx';
-import EditPage from './pages/edit/EditPage.tsx';
+// import EditPage from './pages/edit/EditPage.tsx';
 import Login from './pages/login/Login.tsx';
 // import { initialGameState, Game_Phase } from './utilities.ts';
 // import DataHandler from './classes/DataHandler.ts';
-// import { GameState, Action } from './types.ts';
+import { UserInfo, Action } from './types.ts';
 
-const GameContext : React.Context<any> = createContext({});
+const UserInfoContext : React.Context<any> = createContext({});
+
+function handleUserInfo(userInfo : UserInfo, action : Action) : UserInfo {
+    return userInfo;
+};
 
 // function handleGameState(gameState : GameState, action : Action) : GameState {
 //     let newGameState : GameState = {...gameState};
@@ -54,10 +58,10 @@ const GameContext : React.Context<any> = createContext({});
 // };
 
 function App() {
-    // const [gameState, dispatch] = useReducer(handleGameState, initialGameState);
+    const [userInfo, dispatch] = useReducer(handleUserInfo, {name : '', email : '', score : ''});
 
     return (
-        // <GameContext.Provider value={[gameState, dispatch]}>
+        <UserInfoContext.Provider value={[userInfo, dispatch]}>
             <Routes>
                 <Route path='/' element={<HomePage />} />
                 <Route path='/login' element={<Login />} />
@@ -66,10 +70,10 @@ function App() {
                 <Route path='/rules' element={<RulesPage />} />
                 <Route path='/about' element={<AboutPage />} />
                 <Route path='/gameover' element={<ResultPage message='Game Over!' />} />
-                <Route path='/edit' element={<EditPage />} />
+                {/* <Route path='/edit' element={<EditPage />} /> */}
             </Routes>
-        // </GameContext.Provider>
+        </UserInfoContext.Provider>
     )
 }
 
-export { App, GameContext };
+export { App, UserInfoContext };

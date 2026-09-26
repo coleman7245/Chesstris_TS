@@ -1,9 +1,10 @@
+import { useContext } from 'react';
 import { styled } from 'styled-components';
-
+import { UserInfoContext } from '../../App.tsx';
 import Navbar from '../../shared_components/Navbar.tsx';
 import ContinueBox from './ContinueBox.tsx';
-import SaveBox from './SaveBox.tsx';
-import DeleteBox from './DeleteBox.tsx';
+// import SaveBox from './SaveBox.tsx';
+// import DeleteBox from './DeleteBox.tsx';
 
 const StyledResultsPage = styled.div`
     border-bottom: 10px double black;
@@ -15,13 +16,15 @@ const StyledResultsPage = styled.div`
 `;
 
 export default function ResultPage({message} : {message : string}) {
+    const [userInfo, _] = useContext(UserInfoContext);
+
     return (
         <>
-            <Navbar />
+            <Navbar name={userInfo.name} />
             <StyledResultsPage>
-                <ContinueBox message={message} />
-                <SaveBox  />
-                <DeleteBox  />
+                <ContinueBox name={userInfo.name} time={userInfo.time} score={userInfo.score} message={message} />
+                {/* <SaveBox  /> */}
+                {/* <DeleteBox  /> */}
             </StyledResultsPage>
         </>
     )
