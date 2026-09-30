@@ -9,12 +9,28 @@ import ResultPage from './pages/result/ResultPage.tsx';
 // import EditPage from './pages/edit/EditPage.tsx';
 import Login from './pages/login/Login.tsx';
 // import { initialGameState, Game_Phase } from './utilities.ts';
-// import DataHandler from './classes/DataHandler.ts';
+import DataHandler from './classes/DataHandler.ts';
 import { UserInfo, Action } from './types.ts';
 
 const UserInfoContext : React.Context<any> = createContext({});
 
 function handleUserInfo(userInfo : UserInfo, action : Action) : UserInfo {
+    let newUserInfo : UserInfo = {...userInfo};
+    let url : string = '';
+
+        switch (action.type) {
+            case 'ADD_NEW_PLAYER':
+                DataHandler.post(action.player, url);
+                newUserInfo.name = action.player.name;
+                break;
+            case 'EDIT_INPUT':
+                DataHandler.put(action.player, url, action.player.name);
+                newUserInfo.name = action.player.name;
+                break;
+            default:
+                break;    
+        }
+
     return userInfo;
 };
 
