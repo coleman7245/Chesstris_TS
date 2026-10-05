@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { styled } from 'styled-components';
-import { GameContext } from '../../App.tsx';
+import { UserInfoContext } from '../../App.tsx';
 
 const StyledDeleteBox = styled.div`
     font: 50px 'Georgia';
@@ -36,7 +36,7 @@ const StyledButton = styled.button`
 
 export default function DeleteBox() {
     const [isDeleted, setIsDeleted] = useState(false);
-    const [gameState] = useContext(GameContext);
+    const [userInfo] = useContext(UserInfoContext);
 
     async function handleDelete(url : string, name : string) : Promise<void> {
         try {
@@ -69,7 +69,7 @@ export default function DeleteBox() {
         <StyledDeleteBox>
             {!isDeleted? 'Delete Data?' : 'Data Deleted!'}
             {isDeleted ? null : 
-                <StyledButton id='delete'  onClick={() => handleDelete("http://localhost:8080/api", gameState.player_name)}>Delete</StyledButton>}
+                <StyledButton id='delete'  onClick={() => handleDelete("http://localhost:8080/api", userInfo.name)}>Delete</StyledButton>}
         </StyledDeleteBox>
     )
 };

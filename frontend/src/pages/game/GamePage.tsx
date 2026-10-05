@@ -193,7 +193,7 @@ export default function GamePage() {
 
     return (
         <div onKeyDown={e => handleInput(e)} onKeyUp={startDrop}>
-            <Navbar name={''} />
+            <Navbar />
             <StyledGamePage>
                     <Stage stageInfo={stageInfo} stage={stage} />
                     <GameInfo playerName={''} score={score} gameTime={getTime()} />

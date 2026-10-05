@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
+import { UserInfoContext } from '../App.tsx';
 
 const StyledNavBar = styled.div`
     background-color: white;
@@ -28,7 +29,9 @@ const StyledLink = styled(Link)`
     }
 `;
 
-export default function Navbar({name} : {name : string}) {
+export default function Navbar() {
+    const [userInfo, _] = useContext(UserInfoContext);
+
     return (
         <StyledNavBar>
             <StyledLink to='/'>Home</StyledLink>
@@ -37,8 +40,8 @@ export default function Navbar({name} : {name : string}) {
             <StyledLink to='/edit'>Edit</StyledLink>
             <StyledLink to='/rules'>Rules</StyledLink>
             <StyledLink to='/about'>About</StyledLink>
-            {name ?
-                <StyledPlayerLogin>Player: {name} logged in</StyledPlayerLogin>
+            {userInfo.name ?
+                <StyledPlayerLogin>Player: {userInfo.name} logged in</StyledPlayerLogin>
                 :
                 <StyledPlayerLogin><StyledLink to='/login'>Sign In</StyledLink></StyledPlayerLogin>}
         </StyledNavBar>

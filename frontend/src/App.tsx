@@ -6,7 +6,7 @@ import RankingsPage from './pages/rankings/RankingsPage.tsx';
 import AboutPage from './pages/about/AboutPage.tsx';
 import RulesPage from './pages/rules/RulesPage.tsx';
 import ResultPage from './pages/result/ResultPage.tsx';
-// import EditPage from './pages/edit/EditPage.tsx';
+import EditPage from './pages/edit/EditPage.tsx';
 import Login from './pages/login/Login.tsx';
 // import { initialGameState, Game_Phase } from './utilities.ts';
 import DataHandler from './classes/DataHandler.ts';
@@ -86,7 +86,7 @@ function App() {
                 <Route path='/rules' element={<RulesPage />} />
                 <Route path='/about' element={<AboutPage />} />
                 <Route path='/gameover' element={<ResultPage message='Game Over!' />} />
-                {/* <Route path='/edit' element={<EditPage />} /> */}
+                <Route path='/edit' element={<EditPage />} />
             </Routes>
         </UserInfoContext.Provider>
     )

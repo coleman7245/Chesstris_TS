@@ -20,7 +20,7 @@ export default function ResultPage({message} : {message : string}) {
 
     return (
         <>
-            <Navbar name={userInfo.name} />
+            <Navbar />
             <StyledResultsPage>
                 <ContinueBox name={userInfo.name} time={userInfo.time} score={userInfo.score} message={message} />
                 {/* <SaveBox  /> */}
