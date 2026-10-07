@@ -1,6 +1,5 @@
 // import { useState, useEffect, useContext } from 'react';
 import { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import usePlayer from '../../hooks/usePlayer.tsx';
@@ -184,7 +183,7 @@ export default function GamePage() {
 
     useEffect(() => {
         if (gameState === GameState.GAME_OVER) {
-            const timeout = setTimeout(() => navigate('/gameover'), 0);
+            const timeout = setTimeout(() => navigate('/gameover'), 3000);
             return () => clearInterval(timeout);
          }
     }, [gameState, navigate]);
