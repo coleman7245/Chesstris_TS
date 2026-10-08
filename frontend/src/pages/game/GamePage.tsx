@@ -75,6 +75,14 @@ export default function GamePage() {
         setGameState(newState);
     };
 
+    function checkGameOver() : boolean {
+        for (let i : number = 0; i < 4; i++) {
+            
+        }
+
+        return false;
+    };
+
     function movePlayer(velocity : Vector2) : void {
         if (hasCollided(player, stage, velocity) === 'none')
             move(velocity, false);
