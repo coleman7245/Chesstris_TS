@@ -63,7 +63,7 @@ export default function GamePage() {
     function checkGameState(gameState : GameState) : void {
         let newState : GameState = gameState;
 
-        if (hasCollided(player, stage, new Vector2(0, 1)) === 'bottom' && player.position.equals(defaultPosition)) {
+        if (checkGameOver() && player.position.equals(defaultPosition)) {
             newState = GameState.GAME_OVER;
             console.log(newState);
         }
@@ -77,10 +77,13 @@ export default function GamePage() {
 
     function checkGameOver() : boolean {
         for (let i : number = 0; i < 4; i++) {
-            
+            rotatePlayer(stage);
+
+            if (hasCollided(player, stage, defaultPosition) !== 'bottom')
+                return false;
         }
 
-        return false;
+        return true;
     };
 
     function movePlayer(velocity : Vector2) : void {
