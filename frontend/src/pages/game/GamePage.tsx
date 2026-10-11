@@ -63,7 +63,7 @@ export default function GamePage() {
     function checkGameState(gameState : GameState) : void {
         let newState : GameState = gameState;
 
-        if (hasCollided(player, stage, Vector2.zero()) === 'bottom' && player.position.equals(defaultPosition)) {
+        if (hasCollided(player, stage, new Vector2(0, 1)) === 'bottom' && player.position.equals(defaultPosition)) {
             newState = GameState.GAME_OVER;
         }
         else if (text === 'Pause')
@@ -72,17 +72,6 @@ export default function GamePage() {
             newState = GameState.PAUSE;
 
         setGameState(newState);
-    };
-
-    function checkGameOver() : boolean {
-        for (let i : number = 0; i < 4; i++) {
-            rotatePlayer(stage);
-
-            if (hasCollided(player, stage, Vector2.zero()) === 'bottom' && player.position.equals(defaultPosition))
-                return true;
-        }
-
-        return false;
     };
 
     function movePlayer(velocity : Vector2) : void {
