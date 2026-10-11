@@ -188,7 +188,7 @@ export default function GamePage() {
 
     useEffect(() => {
         checkGameState(gameState);
-    }, [handlePause, useInterval, drop]);
+    }, [drop]);
 
     useEffect(() => {
         if (gameState === GameState.GAME_OVER) {
