@@ -1,6 +1,5 @@
-import { useContext } from 'react';
+import { useLocation, Location } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { UserInfoContext } from '../../App.tsx';
 import Navbar from '../../shared_components/Navbar.tsx';
 import ContinueBox from './ContinueBox.tsx';
 // import SaveBox from './SaveBox.tsx';
@@ -16,13 +15,13 @@ const StyledResultsPage = styled.div`
 `;
 
 export default function ResultPage() {
-    const [userInfo, _] = useContext(UserInfoContext);
+    const location : Location = useLocation();
 
     return (
         <>
             <Navbar />
             <StyledResultsPage>
-                <ContinueBox name={userInfo.name} time={userInfo.time} score={userInfo.score} />
+                <ContinueBox name={location.state.name} time={location.state.time} score={location.state.score} />
                 {/* <SaveBox  /> */}
                 {/* <DeleteBox  /> */}
             </StyledResultsPage>
