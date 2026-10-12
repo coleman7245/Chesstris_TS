@@ -34,7 +34,7 @@ const StyledButton = styled.button`
     }
 `;
 
-export default function ContinueBox({name, time, score, message} : {name : string, time : Time, score : number, message : string}) {
+export default function ContinueBox({name, time, score} : {name : string, time : Time, score : number}) {
     const navigate = useNavigate();
     // const [gameState, dispatch] = useContext(GameContext);
 
@@ -52,7 +52,7 @@ export default function ContinueBox({name, time, score, message} : {name : strin
 
     return (
         <StyledContinueBox>
-            {message} <br /> <br />
+            {'Game Over!'} <br /> <br />
             Player: {name} <br />
             Time: {time.hours} : {time.minutes} : {time.seconds} <br />
             Score: {score} <br /> <br />

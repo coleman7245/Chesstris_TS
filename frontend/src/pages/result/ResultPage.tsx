@@ -15,14 +15,14 @@ const StyledResultsPage = styled.div`
     width: 1487px;
 `;
 
-export default function ResultPage({message} : {message : string}) {
+export default function ResultPage() {
     const [userInfo, _] = useContext(UserInfoContext);
 
     return (
         <>
             <Navbar />
             <StyledResultsPage>
-                <ContinueBox name={userInfo.name} time={userInfo.time} score={userInfo.score} message={message} />
+                <ContinueBox name={userInfo.name} time={userInfo.time} score={userInfo.score} />
                 {/* <SaveBox  /> */}
                 {/* <DeleteBox  /> */}
             </StyledResultsPage>

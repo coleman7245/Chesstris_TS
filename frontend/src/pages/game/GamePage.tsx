@@ -181,7 +181,8 @@ export default function GamePage() {
 
     useEffect(() => {
         if (gameState === GameState.GAME_OVER) {
-            const timeout = setTimeout(() => navigate('/gameover'), 3000);
+            const timeout = setTimeout(() => navigate({pathname : '/gameover'}, 
+                {state : {name : player.name, email : player.email, score : score}}), 3000);
             return () => clearInterval(timeout);
          }
     }, [gameState, navigate]);

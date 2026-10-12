@@ -85,7 +85,7 @@ function App() {
                 <Route path='/rankings' element={<RankingsPage />} />
                 <Route path='/rules' element={<RulesPage />} />
                 <Route path='/about' element={<AboutPage />} />
-                <Route path='/gameover' element={<ResultPage message='Game Over!' />} />
+                <Route path='/gameover' element={<ResultPage />} />
                 <Route path='/edit' element={<EditPage />} />
             </Routes>
         </UserInfoContext.Provider>
