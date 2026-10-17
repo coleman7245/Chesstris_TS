@@ -53,7 +53,7 @@ export function eliminateBishops(stage : Array<Array<BlockStatus>>, position : V
 
                     if (selected.color === color)
                         break;
-                    else if (selected.color !== 'none' && selected.type !== 'white_space' && selected.type !== 'black_space') {
+                    else if (selected.color !== 'none' && selected.type !== 'space') {
                         stage[position.y + (y * step)][position.x + (x * step)] = clearBlock();
                         eliminations++;
                         break;
@@ -76,7 +76,7 @@ export function eliminateRooks(stage : Array<Array<BlockStatus>>, position : Vec
 
                 if (selected.color === color)
                     break;
-                else if (selected.color !== 'none' && selected.type !== 'white_space' && selected.type !== 'black_space') {
+                else if (selected.color !== 'none' && selected.type !== 'space') {
                     stage[position.y + (y * step)][position.x] = clearBlock();
                     eliminations++;
                     break;
@@ -88,7 +88,7 @@ export function eliminateRooks(stage : Array<Array<BlockStatus>>, position : Vec
 
                 if (selected.color === color)
                     break;
-                else if (selected.color !== 'none' && selected.type !== 'white_space' && selected.type !== 'black_space') {
+                else if (selected.color !== 'none' && selected.type !== 'space') {
                     stage[position.y][position.x + (x * step)] = clearBlock();
                     eliminations++;
                     break;
@@ -110,7 +110,7 @@ export function eliminateQueens(stage : Array<Array<BlockStatus>>, position : Ve
 
                 if (selected.color === color)
                     break;
-                else if (selected.color !== 'none' && selected.type !== 'white_space' && selected.type !== 'black_space') {
+                else if (selected.color !== 'none' && selected.type !== 'space') {
                     stage[position.y + (y * step)][position.x] = clearBlock();
                     eliminations++;
                     break;
@@ -122,7 +122,7 @@ export function eliminateQueens(stage : Array<Array<BlockStatus>>, position : Ve
 
                 if (selected.color === color)
                     break;
-                else if (selected.color !== 'none' && selected.type !== 'white_space' && selected.type !== 'black_space') {
+                else if (selected.color !== 'none' && selected.type !== 'space') {
                     stage[position.y][position.x + (x * step)] = clearBlock();
                     eliminations++;
                     break;
@@ -139,7 +139,7 @@ export function eliminateQueens(stage : Array<Array<BlockStatus>>, position : Ve
 
                     if (selected.color === color)
                         break;
-                    else if (selected.color !== 'none' && selected.type !== 'white_space' && selected.type !== 'black_space') {
+                    else if (selected.color !== 'none' && selected.type !== 'space') {
                         stage[position.y + (y * step)][position.x + (x * step)] = clearBlock();
                         eliminations++;
                         break;
@@ -151,3 +151,21 @@ export function eliminateQueens(stage : Array<Array<BlockStatus>>, position : Ve
 
     return eliminations;
 };
+
+export function eliminateSurroundingBlankSpaces(xCenter : number, yCenter : number, color : string, stage : Array<Array<BlockStatus>>) : number {
+    let eliminations : number = 0;
+    let block : BlockStatus;
+
+    for (let y : number = -1; y <= 1; y++) {
+        for (let x : number = -1; x <= 1; x++) {
+            block = stage[y + yCenter][x + xCenter];
+
+            if ((x !== 0 || y !== 0) && block && block.chess_piece.color === color && block.chess_piece.type === 'space') {
+                block = clearBlock();
+                eliminations++;
+            }
+        }
+    }
+
+    return eliminations;
+}

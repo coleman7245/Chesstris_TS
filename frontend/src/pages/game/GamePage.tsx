@@ -10,7 +10,7 @@ import Navbar from '../../shared_components/Navbar.tsx';
 import Stage from './Stage.tsx';
 import GameInfo from './GameInfo.tsx';
 import Vector2 from '../../classes/Vector2.ts';
-import { StageInfo, Time } from '../../types.ts';
+import { StageInfo } from '../../types.ts';
 import { createStage, GameState, hasCollided } from '../../utilities.ts';
 // import { GameContext } from '../../App.tsx';
 

@@ -114,8 +114,8 @@ export const chess_pieces : ChessPieces = {
 };
 
 export const spaces : Spaces = {
-    'white_space' : { type : 'white_space', color : 'white', image_url : '/src/assets/images/space_block_w.png' },
-    'black_space' : { type : 'black_space', color : 'black', image_url : '/src/assets/images/space_block_b.png' }
+    'white_space' : { type : 'space', color : 'white', image_url : '/src/assets/images/space_block_w.png' },
+    'black_space' : { type : 'space', color : 'black', image_url : '/src/assets/images/space_block_b.png' }
 };
 
 export const tetris_block_types : Array<string> = [
