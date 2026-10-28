@@ -176,10 +176,18 @@ export function eliminateQueens(stage : Array<Array<BlockStatus>>, position : Ve
 export function eliminateSurroundingBlankSpaces(position : Vector2, color : string, stage : Array<Array<BlockStatus>>) : number {
     let eliminations : number = 0;
     let block : BlockStatus;
+    let posY : number = 0;
+    let posX : number = 0;
 
     for (let y : number = -1; y <= 1; y++) {
         for (let x : number = -1; x <= 1; x++) {
-            block = stage[y + position.y][x + position.x];
+            posY = y + position.y;
+            posX = x + position.x;
+            
+            if (posY < 0 || posY >= stage.length || posX < 0 || posX >= stage[posY].length)
+                continue;
+
+            block = stage[posY][posX];
 
             if ((x !== 0 || y !== 0) && block && block.chess_piece.color === color && block.chess_piece.type === 'space') {
                 block = clearBlock();
