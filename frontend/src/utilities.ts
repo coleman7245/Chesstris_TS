@@ -12,9 +12,28 @@ export function createStage(stageSize : Vector2, pixelSize : Vector2) : Array<Ar
                 chess_piece : chess_pieces['blank_block']}));
 };
 
+function swap(first : number, second : number, array : Array<ChessPiece>) : void {
+    let temp : ChessPiece = array[first];
+    array[first] = array[second];
+    array[second] = temp;
+}
+
+function randomShuffle(array : Array<ChessPiece>) : Array<ChessPiece> {
+    let first : number = Math.floor(Math.random() * (array.length - 1));
+    let second : number = Math.floor(Math.random() * (array.length - 1));
+
+    for (let i : number = 0; i < array.length; i++) {
+        swap(first, second, array);
+        first = Math.floor(Math.random() * (array.length));
+        second = Math.floor(Math.random() * (array.length));
+    }
+
+    return array;
+}
+
 function getRandomChessPiece(start : number, end : number, chessPieces : ChessPieces) : ChessPiece {
     let segmentLength : number = end - start;
-    const randomIndex : number = Math.floor(Math.random() * (segmentLength - 1)) + start;
+    const randomIndex : number = Math.floor(Math.random() * (segmentLength + 1)) + start;
 
     return chessPieces[Object.keys(chessPieces)[randomIndex] as keyof ChessPieces];
 };
@@ -22,12 +41,14 @@ function getRandomChessPiece(start : number, end : number, chessPieces : ChessPi
 function getSpace(chessPieces : ChessPieces, color : string) : ChessPiece {return (color === 'black')? 
     chessPieces['black_space'] : chessPieces['white_space'];}
 
-//Indices of black pieces: 0-6
-//Indices of white pieces: 7-12
-//13 is the blank block.
+//Notes: 
+//Indices of black pieces: 0-5
+//Indices of white pieces: 6-11
+//Indices 12 and 13 are spaces.
+//Index 14 is the blank block.
 export function getRandomChessPieces(chessPieceTypes : ChessPieces) : Array<ChessPiece> {
-    const chessPieces : Array<ChessPiece> = new Array<ChessPiece>();
-    let currentPiece : ChessPiece = getRandomChessPiece(0, Object.keys(chessPieceTypes).length, chessPieceTypes);
+    let chessPieces : Array<ChessPiece> = new Array<ChessPiece>();
+    let currentPiece : ChessPiece = getRandomChessPiece(0, Object.keys(chessPieceTypes).length - 2, chessPieceTypes);
     let spaceNum : number = 0;
     let pieceNum : number = 0;
     let count : number = 0;
@@ -39,16 +60,15 @@ export function getRandomChessPieces(chessPieceTypes : ChessPieces) : Array<Ches
             spaceNum++;
         else
             pieceNum++;
-        if (spaceNum < 2 && pieceNum < 2)
-            currentPiece = (currentColor === 'black')? getRandomChessPiece(0, 6, chessPieceTypes) : 
-                getRandomChessPiece(7, 12, chessPieceTypes);
-        else if (pieceNum < 2)
-            currentPiece = (currentColor === 'black')? getRandomChessPiece(0, 5, chessPieceTypes) : 
-                getRandomChessPiece(7, 11, chessPieceTypes);
+        if (spaceNum < 2)
+            currentPiece = getRandomChessPiece(12, 13, chessPieceTypes);
         else
-            currentPiece = getSpace(chessPieceTypes, currentColor);
+            currentPiece = (currentColor === 'black')? getRandomChessPiece(0, 5, chessPieceTypes) : 
+                getRandomChessPiece(6, 11, chessPieceTypes);
         count++;
     } while (count < 4);
+
+    chessPieces = randomShuffle(chessPieces);
 
     return chessPieces;
 };
@@ -118,13 +138,13 @@ export const chess_pieces : ChessPieces = {
     'black_pawn' : { type : 'pawn', color : 'black', image_url : '/src/assets/images/chess_black_pawn.png' },
     'black_queen' : { type : 'queen', color : 'black', image_url : '/src/assets/images/chess_black_queen.png' },
     'black_rook' : { type : 'bishop', color : 'black', image_url : '/src/assets/images/chess_black_rook.png' },
-    'black_space' : { type : 'space', color : 'black', image_url : '/src/assets/images/space_block_b.png' },
     'white_bishop' : { type : 'bishop', color : 'white', image_url : '/src/assets/images/chess_white_bishop.png' },
     'white_king' : { type : 'king', color : 'white', image_url : '/src/assets/images/chess_white_king.png' },
     'white_knight' : { type : 'knight', color : 'white', image_url : '/src/assets/images/chess_white_knight.png' },
     'white_pawn' : { type : 'pawn', color : 'white', image_url : '/src/assets/images/chess_white_pawn.png' },
     'white_queen' : { type : 'queen', color : 'white', image_url : '/src/assets/images/chess_white_queen.png' },
     'white_rook' : { type : 'bishop', color : 'white', image_url : '/src/assets/images/chess_white_rook.png' },
+    'black_space' : { type : 'space', color : 'black', image_url : '/src/assets/images/space_block_b.png' },
     'white_space' : { type : 'space', color : 'white', image_url : '/src/assets/images/space_block_w.png' },
     'blank_block' : { type : 'none', color : 'none', image_url : '/src/assets/images/blank_block.png' }
 };
