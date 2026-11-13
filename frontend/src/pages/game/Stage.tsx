@@ -1,6 +1,4 @@
-// import { useContext } from 'react';
 import { styled } from 'styled-components';
-// import { GameContext } from '../../App.tsx';
 import Block from './Block.tsx';
 import { BlockStatus, StageInfo } from '../../types.ts';
 import Vector2 from '../../classes/Vector2.ts';
@@ -21,8 +19,6 @@ const StyledStage = styled.div<{$blockSize : Vector2, height : number, width : n
 `;
 
 export default function Stage({stage, stageInfo} : {stage : Array<Array<BlockStatus>>, stageInfo : StageInfo}) {
-    // const [gameState] = useContext(GameContext);
-
     return (
         <StyledStage $blockSize={stageInfo.pixel_size} height={stageInfo.size.y} width={stageInfo.size.x}>
             {stage.map((row) => row.map((block, x) => <Block key={x} type={block['type']} 
