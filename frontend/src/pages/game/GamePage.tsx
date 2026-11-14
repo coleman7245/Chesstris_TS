@@ -1,4 +1,3 @@
-// import { useState, useEffect, useContext } from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
@@ -12,7 +11,6 @@ import GameInfo from './GameInfo.tsx';
 import Vector2 from '../../classes/Vector2.ts';
 import { StageInfo } from '../../types.ts';
 import { createStage, GameState, hasCollided } from '../../utilities.ts';
-// import { GameContext } from '../../App.tsx';
 
 const StyledGamePage = styled.div`
     font: 8em 'Georgia';
@@ -52,10 +50,9 @@ export default function GamePage() {
     const [text, setText] = useState('Start');
     const stageInfo : StageInfo = {size : new Vector2(285, 540), pixel_size : new Vector2(30, 30)};
     const defaultPosition = new Vector2(Math.floor(stageInfo.size.x / stageInfo.pixel_size.x / 2), 0);
-    // const [gameState, dispatch] = useContext(GameContext);
     const navigate : Function = useNavigate();
     const [gameState, setGameState] = useState(GameState.PREGAME);
-    const [player, createPlayer, move, rotatePlayer] = usePlayer('', '', defaultPosition);
+    const [player, createPlayer, move, rotatePlayer] = usePlayer(defaultPosition);
     const [stage, setStage, blocksCleared] = useStage(player, createPlayer, stageInfo, gameState);
     const [dropInterval, setDropInterval] = useState(0);
     const [score, level, getTime] = useGameInfo(blocksCleared, 1000, gameState);
@@ -98,26 +95,6 @@ export default function GamePage() {
             move(Vector2.zero(), true);
     };
 
-    // function handlePause(e : React.MouseEvent) {
-    //     e.preventDefault();
-
-    //     if (gameState.current_phase === Game_Phase.PREGAME) {
-    //         initializeGame();
-    //         setText('Pause');
-    //         dispatch('START');
-    //     }
-    //     else if (gameState.current_phase === Game_Phase.PAUSE) {
-    //         setText('Pause');
-    //         setDropInterval(1000);
-    //         dispatch({type: 'PAUSE'});
-    //     }
-    //     else if (gameState.current_phase === Game_Phase.PLAY) {
-    //         setText('Resume');
-    //         setDropInterval(0);
-    //         dispatch({type : 'PAUSE'});
-    //     }
-    // }
-
     function handlePause(e : React.MouseEvent) {
         e.preventDefault();
 
@@ -156,24 +133,11 @@ export default function GamePage() {
         }
     };
 
-    // function initializeGame() {
-    //     setStage(createStage(gameState.stage_size, gameState.chess_piece_pixel_size));
-    //     createPlayer();
-    //     setDropInterval(1000);
-    // };
-
     function initializeGame() {
         setStage(createStage(stageInfo.size, stageInfo.pixel_size));
         createPlayer();
         setDropInterval(1000);
     };
-
-    // useEffect(() => {
-    //     if (gameState.current_phase === Game_Phase.GAME_OVER) {
-    //         const timeout = setTimeout(() => navigate('/gameover'), 0);
-    //         return () => clearInterval(timeout);
-    //      }
-    // }, [gameState.current_phase, navigate]);
 
     useEffect(() => {
         checkGameState(gameState);
@@ -182,7 +146,7 @@ export default function GamePage() {
     useEffect(() => {
         if (gameState === GameState.GAME_OVER) {
             const timeout = setTimeout(() => navigate({pathname : '/gameover'}, 
-                {state : {name : player.name, time : getTime(), score : score}}), 3000);
+                {state : {time : getTime(), score : String(score)}}), 3000);
             return () => clearInterval(timeout);
          }
     }, [gameState, navigate]);

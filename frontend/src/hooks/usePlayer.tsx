@@ -11,15 +11,17 @@ function createRandomTetrisBlock() : TetrisBlock {
     return TETRIS_BLOCKS[randomKey];
 };
 
-export default function usePlayer(name : string, email : string, defaultPosition : Vector2) {
-    const [player, setPlayer] = useState({name : name, email : email,
-        position : defaultPosition, tetrisBlock : createRandomTetrisBlock(), finished : false});
+export default function usePlayer(defaultPosition : Vector2) {
+    const [player, setPlayer] = useState({position : defaultPosition, 
+        tetrisBlock : createRandomTetrisBlock(), finished : false});
+    const [nextPlayer, setNextPlayer] = useState({position : defaultPosition, 
+        tetrisBlock : createRandomTetrisBlock(), finished : false});
 
-    const createPlayer = useCallback(() => setPlayer({name : name, email : email,
-        position : defaultPosition, tetrisBlock : createRandomTetrisBlock(), finished : false}), []);
+    const createPlayer = useCallback(() => setPlayer({position : defaultPosition, tetrisBlock : createRandomTetrisBlock(), 
+        finished : false}), []);
 
     function move(velocity : Vector2, finished : boolean) {
-        setPlayer({name : player.name, email : player.email, position : player.position.add(velocity), 
+        setPlayer({position : player.position.add(velocity), 
             tetrisBlock : {shape : copyTetrisBlockShape(player.tetrisBlock.shape), 
                 chess_pieces : player.tetrisBlock.chess_pieces.slice()}, finished : finished}
         );
@@ -34,7 +36,7 @@ export default function usePlayer(name : string, email : string, defaultPosition
     };
 
     function rotatePlayer(stage : Array<Array<BlockStatus>>) : void {
-        const rotatedPlayer : Player = {name : player.name, email : player.email, position : player.position.copy(), 
+        const rotatedPlayer : Player = {position : player.position.copy(), 
             tetrisBlock : {shape : rotate(), 
                 chess_pieces : player.tetrisBlock.chess_pieces.slice()}, finished : player.finished};
 

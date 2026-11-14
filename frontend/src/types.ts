@@ -1,36 +1,4 @@
 import Vector2 from "./classes/Vector2.ts";
-// import { Game_Phase } from "./utilities.ts";
-
-export type PositionLimit = {
-  minX : number, 
-  minY : number, 
-  maxX : number, 
-  maxY : number
-};
-
-export type CollisionPoints = {
-  top : number,
-  bottom : number,
-  left : number,
-  right : number
-};
-
-export type CollisionDirection = {
-  top : boolean,
-  bottom : boolean,
-  left : boolean,
-  right : boolean
-};
-
-// export type CollisionInfo = {
-//   points : CollisionPoints,
-//   direction : CollisionDirection
-// };
-
-export type CollisionInfo = {
-  collision : boolean,
-  direction : string
-}
 
 export type BlockStatus = {
   type : number,
@@ -55,14 +23,17 @@ export type TetrisBlocks = {
 };
 
 export type Player = {
-  name : string,
-  email : string,
   position : Vector2,
   tetrisBlock : TetrisBlock,
   finished : boolean
 };
 
-export type UserInfo = {
+export type PlayerQueue = {
+  current : Player,
+  next : Player
+};
+
+export type User = {
   name : string,
   email : string,
   score : string
@@ -93,50 +64,14 @@ export type ChessPiece = {
 };
 
 export type Score = {
-    score : number,
+    score : string,
     player_name : string,
     game_id : string
 };
 
-export type Action = {
-    type : string,
-    player : Player,
-    hasScored : boolean,
-    crossedFinishLine : boolean
-};
-
-export type DefaultGroupPositions = {
-    t : Array<Vector2>,
-    squiggly : Array<Vector2>,
-    reverse_squiggly : Array<Vector2>,
-    l : Array<Vector2>,
-    reverse_l : Array<Vector2>,
-    square : Array<Vector2>,
-    line : Array<Vector2>
-};
-
-// export type GameState = {
-//     player_name : string,
-//     email : string, 
-//     startTime : number,
-//     finishTime : Time, 
-//     score : number,
-//     chess_piece_pixel_size : Vector2,
-//     stage_size : Vector2,
-//     current_phase : Game_Phase,
-//     crossed_finish_line : boolean,
-//     win_state : WinState,
-//     isPaused : boolean
-// };
-
 export type StageInfo = {
   size : Vector2,
   pixel_size : Vector2
-};
-
-export type WinState = {
-    win_pos_y : number,
-    win_score : number
 };
 
 export type Time = {
