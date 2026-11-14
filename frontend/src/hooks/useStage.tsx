@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Player, BlockStatus, StageInfo } from '../types.ts';
-// import { chess_pieces, createStage, Game_Phase, clearBlock } from '../utilities.ts';
 import { chess_pieces, createStage, GameState, clearBlock } from '../utilities.ts';
 import * as rules from '../../elimination_rules.ts';
 import Vector2 from '../classes/Vector2.ts';
 
-// export default function useStage(player : Player, createPlayer : Function, stageInfo : StageInfo, gamePhase : Game_Phase) {
 export default function useStage(player : Player, createPlayer : Function, stageInfo : StageInfo, gameState : GameState) {
     const [stage, setStage] = useState(createStage(stageInfo.size, stageInfo.pixel_size));
     const [blocksCleared, setBlocksCleared] = useState(0);
