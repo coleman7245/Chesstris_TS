@@ -3,6 +3,16 @@ import { BlockStatus, ChessPieces, ChessPiece, Player } from './types.ts';
 
 export function copyBlockStatusMatrix(matrix : Array<Array<BlockStatus>>) : Array<Array<BlockStatus>> {return matrix.map((row) => row.map(col => col));};
 
+// export function copyPlayer(original : Player) : Player {
+//     return {position : original.position.copy(), }
+// }
+
+export function copyChessPieces(original : Array<ChessPiece>) : Array<ChessPiece> {
+    const copy : Array<ChessPiece> = new Array<ChessPiece>(original.length);
+
+    return copy;
+};
+
 export function copyTetrisBlockShape(matrix : Array<Array<number>>) : Array<Array<number>> {return matrix.map((row) => row.map(col => col));}
 
 export function createStage(stageSize : Vector2, pixelSize : Vector2) : Array<Array<BlockStatus>> {
