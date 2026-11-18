@@ -52,8 +52,8 @@ export default function GamePage() {
     const defaultPosition = new Vector2(Math.floor(stageInfo.size.x / stageInfo.pixel_size.x / 2), 0);
     const navigate : Function = useNavigate();
     const [gameState, setGameState] = useState(GameState.PREGAME);
-    const [player, createPlayer, move, rotatePlayer] = usePlayer(defaultPosition);
-    const [stage, setStage, blocksCleared] = useStage(player, createPlayer, stageInfo, gameState);
+    const [player, nextPlayer, loadPlayer, move, rotatePlayer] = usePlayer(defaultPosition);
+    const [stage, setStage, blocksCleared] = useStage(player, loadPlayer, stageInfo, gameState);
     const [dropInterval, setDropInterval] = useState(0);
     const [score, level, getTime] = useGameInfo(blocksCleared, 1000, gameState);
 
@@ -135,7 +135,7 @@ export default function GamePage() {
 
     function initializeGame() {
         setStage(createStage(stageInfo.size, stageInfo.pixel_size));
-        createPlayer();
+        loadPlayer();
         setDropInterval(1000);
     };
 

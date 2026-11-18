@@ -4,7 +4,7 @@ import { chess_pieces, createStage, GameState, clearBlock } from '../utilities.t
 import * as rules from '../../elimination_rules.ts';
 import Vector2 from '../classes/Vector2.ts';
 
-export default function useStage(player : Player, createPlayer : Function, stageInfo : StageInfo, gameState : GameState) {
+export default function useStage(player : Player, loadPlayer : Function, stageInfo : StageInfo, gameState : GameState) {
     const [stage, setStage] = useState(createStage(stageInfo.size, stageInfo.pixel_size));
     const [blocksCleared, setBlocksCleared] = useState(0);
 
@@ -86,7 +86,7 @@ export default function useStage(player : Player, createPlayer : Function, stage
         drawPlayer(newStage);
 
         if (player.finished)
-            createPlayer();
+            loadPlayer();
 
         return newStage;
     };
@@ -94,7 +94,7 @@ export default function useStage(player : Player, createPlayer : Function, stage
     useEffect(() => {
         if (gameState === GameState.PLAY)
             setStage(prev => drawStage(prev));
-    }, [player, createPlayer, gameState]);
+    }, [player, loadPlayer, gameState]);
 
     return [stage, setStage, blocksCleared] as const;
 };

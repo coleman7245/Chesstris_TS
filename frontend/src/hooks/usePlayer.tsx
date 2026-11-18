@@ -17,8 +17,8 @@ export default function usePlayer(defaultPosition : Vector2) {
     const [nextPlayer, setNextPlayer] = useState({position : defaultPosition, 
         tetrisBlock : createRandomTetrisBlock(), finished : false});
 
-    const createPlayer = useCallback(() => setPlayer({position : defaultPosition, tetrisBlock : createRandomTetrisBlock(), 
-        finished : false}), []);
+    const loadPlayer = useCallback(() => {setPlayer({...nextPlayer}); setNextPlayer({position : defaultPosition, 
+        tetrisBlock : createRandomTetrisBlock(), finished : false})}, []);
 
     function move(velocity : Vector2, finished : boolean) {
         setPlayer({position : player.position.add(velocity), 
@@ -55,5 +55,5 @@ export default function usePlayer(defaultPosition : Vector2) {
         setPlayer(rotatedPlayer);
     };
 
-    return [player, createPlayer, move, rotatePlayer] as const;
+    return [player, nextPlayer, loadPlayer, move, rotatePlayer] as const;
 };
